@@ -58,11 +58,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
+  assets: 
+    - assets/images/logo_dosewise.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -80,8 +78,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
+
+  fonts:
+  - family: Fontspring-DEMO-clarikaprogeo-md
+    fonts:
+      - asset: assets/fonts/Fontspring-DEMO-clarikaprogeo-md.ttf
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
