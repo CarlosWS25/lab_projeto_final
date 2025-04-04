@@ -44,23 +44,24 @@ class SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/images/logo_dosewise.png",
-              width: 300,
-              height: 300,
+              width: 90,
+              height: 90,
               fit: BoxFit.contain),
-            SizedBox(height: 20),
-            const Text("DoseWise",
+            SizedBox(height: 1),
+            const Text("dosewise",
               style: TextStyle(
                 fontFamily: "Fontspring-DEMO-clarikaprogeo-md",  
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
+                letterSpacing: 8.0,
                 color:Color(0xFF1B3568),)
             ), 
-            const Text("Overdose Control App",
+            const Text("OVERDOSE PREVENTION APP",
             style: TextStyle(
                 fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                 fontSize: 20,
                 color:Color(0xFF1B3568),)
-            )
+            ),
           ]
         )
       )    
@@ -68,19 +69,150 @@ class SplashScreenState extends State<SplashScreen> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  HomeScreenState createState() => HomeScreenState();
+}
+class HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1B3568),
-        title: const Text("DoseWise"),
+      backgroundColor:Color(0xFFA7C4E2),
+      body: Stack(
+        children:[
+//Botão Ajudar
+          Positioned(
+            bottom: 500,
+            right: 250,
+            child:FloatingActionButton.extended(
+              heroTag: "ajudar",
+
+              onPressed: () {
+                print("Botão Ajudar pressionado!");
+              },
+              backgroundColor: Color(0xFF1B3568),
+              label: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [ Text("Ajudar",
+                  style: TextStyle(
+                  color:Color(0xFFA7C4E2),    
+                  fontSize: 20,
+                  ),
+                )
+                ]
+              ),
+            ),
+          ),
+//Botão Ajudar Convidado
+          Positioned(
+            bottom: 500,
+            right: 50,
+            child:FloatingActionButton.extended(
+              heroTag: "ajudar_convidado",
+
+              onPressed: () {
+                print("Botão Ajudar Convidado pressionado!");
+              },
+              backgroundColor: Color(0xFF1B3568),
+              label: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [ Text("    Ajudar \n Convidado",
+                  style: TextStyle(
+                  color:Color(0xFFA7C4E2),    
+                  fontSize: 20,
+                  ),
+                )
+                ]
+              ),
+            ),
+          ),
+//Botão Alarme
+          Positioned(
+            bottom: 350,
+            right: 250,
+            child:FloatingActionButton.extended(
+            heroTag: "alarme",
+
+            onPressed: () {
+              print("Botão Alarme pressionado!");
+            },
+            backgroundColor: Color(0xFF1B3568),
+            label: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [ Text("Alarme",
+                  style: TextStyle(
+                  color:Color(0xFFA7C4E2),    
+                  fontSize: 20,
+                  ),
+                )
+                ]
+              ),
+            ),
+          ),
+//Botão Alerta Amigo
+          Positioned(
+            bottom: 350,
+            right: 50,
+            child:FloatingActionButton.extended(
+            heroTag: "alerta_amigo",
+            onPressed: () {
+              print("Botão Alerta Amigo pressionado!");
+            },
+            backgroundColor: Color(0xFF1B3568),
+            label: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [ Text("Alerta Amigo",
+                  style: TextStyle(
+                  color:Color(0xFFA7C4E2),    
+                  fontSize: 20,
+                  ),
+                )
+                ]
+              ),
+            ),
+          ),
+        ]
       ),
-      body: Center(
-        child: const Text("Bem-vindo à Tela Principal!"),
-      ),
-    );
+
+//Barra Inferior
+        bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Color(0xFF1B3568),
+        unselectedItemColor: Color(0xFFA7C4E2),
+        selectedItemColor: Color(0xFFFFFFFF),
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        items: const[
+//Main Menu
+          BottomNavigationBarItem(
+            icon: Icon(Icons.house),
+            label: "Main Menu",
+          ),
+//Perfil
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Perfil",
+          ),
+//???
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: "???",
+          ),
+//Defenições
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Defenições",
+          ),
+        ],
+      )
+    ); 
   }
 }
