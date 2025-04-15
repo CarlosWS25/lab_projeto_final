@@ -86,55 +86,64 @@ class HomeScreenState extends State<HomeScreen> {
         children:[
 //Botão Ajudar
           Positioned(
-            bottom: 500,
-            right: 250,
-            child:FloatingActionButton.extended(
-              heroTag: "ajudar",
+            bottom: 450,
+            right: 225,
+          child: SizedBox(
+            width: 150,
+            height: 100,
+          child:FloatingActionButton.extended(
+            heroTag: "ajudar",
 
-              onPressed: () {
-                print("Botão Ajudar pressionado!");
-              },
-              backgroundColor: Color(0xFF1B3568),
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [ Text("Ajudar",
-                  style: TextStyle(
-                  color:Color(0xFFA7C4E2),    
-                  fontSize: 20,
-                  ),
-                )
-                ]
-              ),
+            onPressed: () {
+              print("Botão Ajudar pressionado!");
+            },
+            backgroundColor: Color(0xFF1B3568),
+            label: Column(
+              children: const [ Text("Ajudar",
+                style: TextStyle(
+                color:Color(0xFFA7C4E2),    
+                fontSize: 20,
+                ),
+              )
+              ]
             ),
+          ),
+          ),
           ),
 //Botão Ajudar Convidado
           Positioned(
-            bottom: 500,
+            bottom: 450,
             right: 50,
-            child:FloatingActionButton.extended(
-              heroTag: "ajudar_convidado",
+          child: SizedBox(
+            width: 150,
+            height: 100,
+          child:FloatingActionButton.extended(
+            heroTag: "ajudar_convidado",
 
-              onPressed: () {
-                print("Botão Ajudar Convidado pressionado!");
-              },
-              backgroundColor: Color(0xFF1B3568),
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [ Text("    Ajudar \n Convidado",
-                  style: TextStyle(
-                  color:Color(0xFFA7C4E2),    
-                  fontSize: 20,
-                  ),
-                )
-                ]
-              ),
+            onPressed: () {
+              print("Botão Ajudar Convidado pressionado!");
+            },
+            backgroundColor: Color(0xFF1B3568),
+            label: Column(
+              children: const [ Text("    Ajudar \n Convidado",
+                style: TextStyle(
+                color:Color(0xFFA7C4E2),    
+                fontSize: 20,
+                ),
+              )
+              ]
             ),
+          ),
+          ),
           ),
 //Botão Alarme
           Positioned(
-            bottom: 350,
-            right: 250,
-            child:FloatingActionButton.extended(
+            bottom: 300,
+            right: 225,
+          child: SizedBox(
+            width: 150,
+            height: 100,
+          child:FloatingActionButton.extended(
             heroTag: "alarme",
 
             onPressed: () {
@@ -142,38 +151,42 @@ class HomeScreenState extends State<HomeScreen> {
             },
             backgroundColor: Color(0xFF1B3568),
             label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [ Text("Alarme",
-                  style: TextStyle(
-                  color:Color(0xFFA7C4E2),    
-                  fontSize: 20,
-                  ),
-                )
-                ]
-              ),
+              children: const [ Text("Alarme",
+                style: TextStyle(
+                color:Color(0xFFA7C4E2),    
+                fontSize: 20,
+                ),
+              )
+              ]
             ),
+          ),
+          ),
           ),
 //Botão Alerta Amigo
           Positioned(
-            bottom: 350,
+            bottom: 300,
             right: 50,
-            child:FloatingActionButton.extended(
+          child: SizedBox(
+            width: 150,
+            height: 100,
+          child:FloatingActionButton.extended(
             heroTag: "alerta_amigo",
+
             onPressed: () {
               print("Botão Alerta Amigo pressionado!");
             },
             backgroundColor: Color(0xFF1B3568),
             label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: const [ Text("Alerta Amigo",
-                  style: TextStyle(
-                  color:Color(0xFFA7C4E2),    
-                  fontSize: 20,
-                  ),
-                )
-                ]
-              ),
+              children: const [ Text("Alerta Amigo",
+                style: TextStyle(
+                color:Color(0xFFA7C4E2),    
+                fontSize: 20,
+                ),
+              )
+              ]
             ),
+          ),
+          ),
           ),
         ]
       ),
