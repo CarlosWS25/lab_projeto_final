@@ -13,9 +13,20 @@ class MainMenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Positioned(
+          bottom: 575,
+          right: 85,
+        child: Text("Main Menu",
+          style: TextStyle(
+            fontFamily: "Fontspring-DEMO-clarikaprogeo-md",  
+            fontWeight: FontWeight.bold,
+            fontSize: 50,
+            color:Color(0xFF1B3568),)
+        ),
+        ),
 // Botão Ajudar
         Positioned(
-          bottom: 450,
+          bottom: 400,
           right: 225,
         child: SizedBox(
           width: 150,
@@ -35,6 +46,7 @@ class MainMenuPage extends StatelessWidget {
           children: const [
             Text("Ajudar",
               style: TextStyle(
+                fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                 color: Color(0xFFA7C4E2),
                 fontSize: 20,
               ),
@@ -46,7 +58,7 @@ class MainMenuPage extends StatelessWidget {
         ),
 // Botão Ajudar Convidado
         Positioned(
-          bottom: 450,
+          bottom: 400,
           right: 50,
         child: SizedBox(
           width: 150,
@@ -66,6 +78,7 @@ class MainMenuPage extends StatelessWidget {
           children: const [
             Text("    Ajudar \n Convidado",
               style: TextStyle(
+                fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                 color: Color(0xFFA7C4E2),
                 fontSize: 20,
               ),
@@ -77,7 +90,7 @@ class MainMenuPage extends StatelessWidget {
         ),
 // Botão Alarme
         Positioned(
-          bottom: 300,
+          bottom: 250,
           right: 225,
         child: SizedBox(
           width: 150,
@@ -97,6 +110,7 @@ class MainMenuPage extends StatelessWidget {
           children: const [
             Text("Alarme",
               style: TextStyle(
+                fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                 color: Color(0xFFA7C4E2),
                 fontSize: 20,
               ),
@@ -108,7 +122,7 @@ class MainMenuPage extends StatelessWidget {
         ),
 // Botão Alerta Amigo
         Positioned(
-          bottom: 300,
+          bottom: 250,
           right: 50,
         child: SizedBox(
           width: 150,
@@ -128,6 +142,7 @@ class MainMenuPage extends StatelessWidget {
             children: const [
               Text("Alerta Amigo",
                 style: TextStyle(
+                  fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                   color: Color(0xFFA7C4E2),
                   fontSize: 20,
                 ),
