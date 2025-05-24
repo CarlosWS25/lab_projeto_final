@@ -1,19 +1,18 @@
-from datetime import datetime, timedelta
-from jose import jwt
+from datetime import datetime, timedelta, timezone
+from jose import jwt, JWTError
 
-SECRET_KEY = "tua_chave_secreta_aqui"  # Substitui por uma chave secreta forte
+SECRET_KEY = "supersecreto"
 ALGORITHM = "HS256"
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
+def create_access_token(data: dict, expires_delta: timedelta = timedelta(hours=1)):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=30))
+    expire = datetime.now(timezone.utc) + expires_delta  # ← aqui está a mudança
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def decode_token(token: str):
+def decode_access_token(token: str):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except jwt.JWTError:
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return decoded_token
+    except JWTError:
         return None

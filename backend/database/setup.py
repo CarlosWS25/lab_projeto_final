@@ -3,17 +3,23 @@ from .connection import get_connection
 def create_table():
     query = """
     CREATE TABLE IF NOT EXISTS users (
+        is_admin BOOLEAN DEFAULT FALSE NOT NULL,
         id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        email VARCHAR(100) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL
+        username VARCHAR(100) NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        altura_cm INTEGER,
+        peso REAL,
+        genero CHAR(1),
+        outras_doencas TEXT DEFAULT 'não',
+        doencas TEXT DEFAULT 'nenhuma'
+        
     );
     """
+
     conn = get_connection()
     if conn:
         with conn.cursor() as cur:
             cur.execute(query)
             conn.commit()
-            print("Tabela 'users' criada.")
+            print("Tabela 'users' atualizada.")
         conn.close()
-

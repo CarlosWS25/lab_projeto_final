@@ -1,15 +1,15 @@
 from fastapi import FastAPI
-from routes import users
+from contextlib import asynccontextmanager
 from database.setup import create_table
+from routes import users, auth
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    create_table()
+    yield
+    
 
-# Criar tabela ao iniciar
-create_table()
+app = FastAPI(lifespan=lifespan)
 
-# Incluir rotas
-app.include_router(users.router, prefix="/users", tags=["Users"])
-
-@app.get("/")
-def root():
-    return {"msg": "API DoseWise ativa"}
+app.include_router(users.router, prefix="/users")
+app.include_router(auth.router)
