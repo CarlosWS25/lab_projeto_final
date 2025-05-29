@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
-class ajudaconv_screen extends StatelessWidget {
-  const ajudaconv_screen({super.key});
+class ScreenAjuda extends StatelessWidget {
+  const ScreenAjuda({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +9,7 @@ class ajudaconv_screen extends StatelessWidget {
     backgroundColor: const Color(0xFFA7C4E2),
       body: Center(
         child: Text(
-          "Ajudar Convidado aqui!",
+          "Ajuda aqui!",
         ),
       ),
     );

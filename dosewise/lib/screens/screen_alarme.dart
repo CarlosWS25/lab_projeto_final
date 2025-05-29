@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
-class alertamigo_screen extends StatelessWidget {
-  const alertamigo_screen({super.key});
+class ScreenAlarme extends StatelessWidget {
+  const ScreenAlarme({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,10 +9,9 @@ class alertamigo_screen extends StatelessWidget {
     backgroundColor: const Color(0xFFA7C4E2),
       body: Center(
         child: Text(
-          "Alerta amigo aqui!",
+          "Alarme aqui!",
         ),
       ),
     );
   }
 }
-

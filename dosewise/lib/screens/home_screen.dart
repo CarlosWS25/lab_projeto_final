@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-import "settings_page.dart";
-import "profile_page.dart";
-import "random_page.dart";
-import "mainmenu_page.dart";
+import "page_settings.dart";
+import "page_profile.dart";
+import "page_random.dart";
+import "page_mainmenu.dart";
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,10 +14,10 @@ class HomeScreenState extends State<HomeScreen> {
   int IndexPages = 0;
 
   final List<Widget> pages = const [
-    MainMenuPage(),
-    ProfilePage(),
-    RandomPage(),
-    SettingsPage(),
+    PageMainMenu(),
+    PageProfile(),
+    PageRandom(),
+    PageSettings(),
   ];
 
   @override

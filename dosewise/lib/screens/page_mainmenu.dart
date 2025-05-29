@@ -1,13 +1,14 @@
 import "package:flutter/material.dart";
-import "package:dosewise/screens/ajuda_screen.dart";
-import "package:dosewise/screens/ajudaconv_screen.dart";
-import "package:dosewise/screens/alarme_screen.dart";
-import "package:dosewise/screens/alertamigo_screen.dart";
+import "package:dosewise/screens/screen_ajuda.dart";
+import "package:dosewise/screens/screen_ajudaconv.dart";
+import "package:dosewise/screens/screen_alarme.dart";
+import "package:dosewise/screens/screen_alertaamigo.dart";
 
 
 
-class MainMenuPage extends StatelessWidget {
-  const MainMenuPage({super.key});
+
+class PageMainMenu extends StatelessWidget {
+  const PageMainMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,7 @@ class MainMenuPage extends StatelessWidget {
             print("Botão Ajudar pressionado!");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ajuda_screen()),
+              MaterialPageRoute(builder: (context) => const ScreenAjuda()),
             );
           },
         backgroundColor: const Color(0xFF1B3568),
@@ -69,7 +70,7 @@ class MainMenuPage extends StatelessWidget {
             print("Botão Ajudar Convidado pressionado!");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ajudaconv_screen()),
+              MaterialPageRoute(builder: (context) => const ScreenAjudaconv()),
             );
           },
         backgroundColor: const Color(0xFF1B3568),
@@ -101,7 +102,7 @@ class MainMenuPage extends StatelessWidget {
             print("Botão Alarme pressionado!");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const alarme_screen()),
+              MaterialPageRoute(builder: (context) => const ScreenAlarme()),
             );
           },
         backgroundColor: const Color(0xFF1B3568),
@@ -133,7 +134,7 @@ class MainMenuPage extends StatelessWidget {
             print("Botão Alerta Amigo pressionado!");
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const alertamigo_screen()),
+              MaterialPageRoute(builder: (context) => const ScreenAlertaAmigo()),
             );
           },
         backgroundColor: const Color(0xFF1B3568),

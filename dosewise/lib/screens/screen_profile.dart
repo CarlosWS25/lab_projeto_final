@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
-import "package:dosewise/screens/login_screen.dart";
-import "package:dosewise/screens/registar_screen.dart";
+import "package:dosewise/screens/screen_login.dart";
+import "package:dosewise/screens/screen_registar.dart";
 
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ScreenProfile extends StatelessWidget {
+  const ScreenProfile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class ProfilePage extends StatelessWidget {
                 print("Botão Login de Perfil pressionado!");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Login_screen()),
+                  MaterialPageRoute(builder: (context) => const ScreenLogin()),
                 );
               },
             backgroundColor: const Color(0xFF1B3568),

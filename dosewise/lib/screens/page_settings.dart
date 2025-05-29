@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 
 
-class RandomPage extends StatelessWidget {
-  const RandomPage({super.key});
+class PageSettings extends StatelessWidget {
+  const PageSettings({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text("???")
+      child: Text("Defenições")
     );
   }
 }

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import "home_screen.dart";
+import "screen_profile.dart";
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +16,7 @@ class SplashScreenState extends State<SplashScreen> {
       Future.delayed(Duration(seconds: 5), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const ScreenProfile()),
         );
       });
     });
