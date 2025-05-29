@@ -77,7 +77,7 @@ class ScreenProfile extends StatelessWidget {
                 print("Botão Registar Perfil pressionado!");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Registar_screen()),
+                  MaterialPageRoute(builder: (context) => const RegistarScreen()),
                 );
               },
             backgroundColor: const Color(0xFF1B3568),

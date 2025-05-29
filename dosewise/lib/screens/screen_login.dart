@@ -2,36 +2,8 @@ import "dart:convert";
 import "dart:io";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
-import "package:device_info_plus/device_info_plus.dart";
 import "package:dosewise/screens/home_screen.dart";
-
-
-const String enderecoIP_host = "192.168.1.42";
-const int porta_host = 8000;
-
-Future<String> _getAndroidHost() async {
-  final deviceInfo = DeviceInfoPlugin();
-  final androidInfo = await deviceInfo.androidInfo;
-
-  if (androidInfo.isPhysicalDevice) {
-    return enderecoIP_host;
-  }
-
-  final fingerprint = androidInfo.fingerprint.toLowerCase();
-  final model = androidInfo.model.toLowerCase();
-
-  if (fingerprint.contains('genymotion') || model.contains('vbox86p')) {
-    return '10.0.3.2';
-  }
-
-  return '10.0.2.2';
-}
-
-Future<Uri> makeApiUri(String path) async {
-  final host = Platform.isAndroid ? await _getAndroidHost() : 'localhost';
-  return Uri.http('$host:$porta_host', path);
-}
-
+import "package:dosewise/veri_device.dart";
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -72,7 +44,11 @@ class ScreenLoginState extends State<ScreenLogin> {
       print('Login bem-sucedido!');
       ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Login bem-sucedido!')),
-    );
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
     } else {
       print('Falha no login: ${response.statusCode}');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -150,11 +126,9 @@ class ScreenLoginState extends State<ScreenLogin> {
                     heroTag: "botao_entrar_conta",
                     onPressed: () async {
                       print("Botão Entrar pressionado!");
+                      final uri = await makeApiUri('/utilizador/registar');
                       await fazerLogin();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      );
+                      
                     },
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     child: const Icon(Icons.login),
