@@ -64,6 +64,7 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/images/logo_dosewise.png
+    - assets/txt/doencas.txt
 
   # To add assets to your application, add an assets section, like this:
   # assets:

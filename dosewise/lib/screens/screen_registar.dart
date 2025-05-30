@@ -38,31 +38,31 @@ Future<void> fazerRegisto() async {
       return;
     }
 
-    final uri = await makeApiUri('/users/');
+    final uri = await makeApiUri("/users/");
 
     try {
       final response = await http.post(
         uri,
-        headers: {'Content-Type': 'application/json'},
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          'username': username,
-          'password': password,
+          "username": username,
+          "password": password,
         }),
       );
 
       if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Conta criada com sucesso!')),
+          const SnackBar(content: Text("Conta criada com sucesso!")),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao criar conta: ${response.statusCode}')),
+          SnackBar(content: Text("Erro ao criar conta: ${response.statusCode}")),
         );
       }
     } 
     catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro na requisição: $e')),
+      SnackBar(content: Text("Erro na requisição: $e")),
       );
     }
   }

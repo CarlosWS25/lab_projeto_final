@@ -28,36 +28,36 @@ class ScreenLoginState extends State<ScreenLogin> {
       return;
     }
 
-    final uri = await makeApiUri('/login');
+    final uri = await makeApiUri("/login");
 
     try {
       final response = await http.post(
         uri,
-        headers: {'Content-Type': 'application/json'},
+        headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          'username': usernameController.text,
-          'password': passwordController.text,
+          "username": usernameController.text,
+          "password": passwordController.text,
         }),
       );
 
     if (response.statusCode == 200) {
-      print('Login bem-sucedido!');
+      print("Login bem-sucedido!");
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Login bem-sucedido!')),
+      const SnackBar(content: Text("Login bem-sucedido!")),
       );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
     } else {
-      print('Falha no login: ${response.statusCode}');
+      print("Falha no login: ${response.statusCode}");
       ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Falha no login: ${response.statusCode}')),
+      SnackBar(content: Text("Falha no login: ${response.statusCode}")),
       );
     }
     } 
       catch (e) {
-      print('Erro na requisição: $e');
+      print("Erro na requisição: $e");
     }
   }
 

@@ -1,7 +1,7 @@
 import "dart:convert";
 import "dart:io";
 import "package:http/http.dart" as http;
-import 'package:flutter/services.dart';
+import "package:flutter/services.dart";
 import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_profile.dart";
 import "package:dosewise/veri_device.dart";
@@ -20,9 +20,10 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
   final TextEditingController idadeController = TextEditingController();
   final TextEditingController doencasController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
+
   
 
-//Função e Variável para selecionar a data de nascimento
+//Calendario data de nascimento
   DateTime? idade;
   Future<void> selecionarData(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -31,7 +32,6 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-
     if (picked != null) {
       setState(() {
         idade = picked;
@@ -41,6 +41,81 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
     }
   }
 
+//Caixa de opções de género
+final List<String> opcoesGenero = ["Masculino", "Feminino"];
+void escolherGenero(BuildContext context, TextEditingController controller, List<String> opcoes) {
+    showDialog(
+      context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Selecione o seu gênero'),
+            content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: opcoesGenero.map((String genero) {
+              return ListTile(
+                title: Text(genero),
+                onTap: () {
+                  generoController.text = genero;
+                  Navigator.pop(context);
+                },
+                );
+            }).toList(),
+            ),
+            );
+        },
+    );
+  }
+
+
+//Caixa de opções de doenças
+List<String> opcoesDoencas = [];
+@override
+void initState() {
+  super.initState();
+  carregarDoencas();
+}
+
+Future<void> carregarDoencas() async {
+  final String listaDoencas = await rootBundle.loadString('assets/txt/doencas.txt');
+  setState(() {
+    opcoesDoencas = listaDoencas
+        .split('\n')
+        .map((e) => e.trim())
+        .where((e) => e.isNotEmpty)
+        .toList();
+  });
+}
+
+void escolherDoencas(BuildContext context, TextEditingController controller) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Selecione a sua doença'),
+        content: SizedBox(
+          height: 250,
+          width: double.maxFinite,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: opcoesDoencas.map((String doenca) {
+                return ListTile(
+                  title: Text(doenca),
+                  onTap: () {
+                    doencasController.text = doenca;
+                    Navigator.pop(context);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+ 
+      
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +151,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 32),
+
 //Campo de Registar Altura
                   TextField(
                     controller: alturaController,
@@ -91,6 +167,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 16),
+
 //Campo de Registar Peso
                   TextField(
                     controller: pesoController,
@@ -106,12 +183,14 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 16),
+
 //Campo de Registar Idade
                   GestureDetector(
                     onTap: () => selecionarData(context),
                     child: AbsorbPointer(
                       child: TextField(
                         controller: idadeController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -122,10 +201,13 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 16),
+
 //Campo de Registar Doenças
                   TextField(
+                    onTap: () => escolherDoencas(context, doencasController),
                     controller: doencasController,
                     showCursor: false,
+                    readOnly: true,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -134,10 +216,13 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 16),
+
 //Campo de Registar Género
                   TextField(
+                    onTap: () => escolherGenero(context, generoController, opcoesGenero),
                     controller: generoController, 
                     showCursor: false,
+                    readOnly: true,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -146,12 +231,13 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                     ),
                   ),
                   const SizedBox(height: 32),
+
 //Botão Finalizar Registo Utilizador
                   FloatingActionButton(
                     heroTag: "finalizar_registo_conta",
                     onPressed: () async {
                       print("Finalizar Registo Utilizador pressionado!");
-                      final uri = await makeApiUri('/utilizador/registar');
+                      final uri = await makeApiUri("/utilizador/registar");
                       //await finalizarRegisto();
                         Navigator.pushReplacement(
                         context,
