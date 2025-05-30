@@ -8,9 +8,9 @@ def create_table():
         username VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
         altura_cm INTEGER,
+        ano_nascimento INTEGER,
         peso REAL,
         genero CHAR(1),
-        outras_doencas TEXT DEFAULT 'não',
         doencas TEXT DEFAULT 'nenhuma'
         
     );

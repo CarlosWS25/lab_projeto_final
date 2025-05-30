@@ -10,8 +10,8 @@ class UserCreate(BaseModel):
     username: str
     password: str
     altura_cm: int
+    ano_nascimento: int
     peso: float
     genero: str = Field(..., pattern="^(M|F)$")
-    outras_doencas: str = "não"
     doencas: str = "nenhuma"
     
