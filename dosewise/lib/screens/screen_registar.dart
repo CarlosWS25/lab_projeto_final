@@ -5,7 +5,6 @@ import "package:http/http.dart" as http;
 import "package:dosewise/screens/screen_endregistar.dart";
 import "package:dosewise/veri_device.dart";
 
-
 class RegistarScreen extends StatefulWidget {
   const RegistarScreen({super.key});
 
@@ -19,52 +18,34 @@ class RegistarScreenState extends State<RegistarScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmarPasswordController = TextEditingController();
 
-Future<void> fazerRegisto() async {
-    final username = usernameController.text.trim();
-    final password = passwordController.text;
-    final confirmarPassword = confirmarPasswordController.text;
 
-    if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Preencha todos os campos.")),
-      );
-      return;
-    }
 
-    if (password != confirmarPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("As palavras-passe não coincidem.")),
-      );
-      return;
-    }
+  void confirmarCampos(){
+  final username = usernameController.text.trim();
+  final password = passwordController.text;
+  final confirmarPassword = confirmarPasswordController.text;
 
-    final uri = await makeApiUri("/users/");
-
-    try {
-      final response = await http.post(
-        uri,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "username": username,
-          "password": password,
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Conta criada com sucesso!")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro ao criar conta: ${response.statusCode}")),
-        );
-      }
-    } 
-    catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Erro na requisição: $e")),
-      );
-    }
+  if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Preencha todos os campos.")),
+    );
+    return;
+  }
+  if (password != confirmarPassword) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("As palavras-passe não coincidem.")),
+    );
+    return;
+  }
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ScreenEndRegistar(
+        username: username,
+        password: password,
+      ),
+    ),
+  );
   }
 
   @override
@@ -73,7 +54,7 @@ Future<void> fazerRegisto() async {
       backgroundColor: const Color(0xFFA7C4E2),
       body: Stack(
         children: [
-  //Logo Dosewise
+          //Logo Dosewise
           Positioned(
             top: 50,
             right: 20,
@@ -101,7 +82,7 @@ Future<void> fazerRegisto() async {
                     ),
                   ),
                   const SizedBox(height: 32),
-//Campo de Registar Username
+                  //Campo de Registar Username
                   TextField(
                     controller: usernameController,
                     showCursor: false,
@@ -113,7 +94,7 @@ Future<void> fazerRegisto() async {
                     ),
                   ),
                   const SizedBox(height: 16),
-//Campo de Registar Password
+                  //Campo de Registar Password
                   TextField(
                     controller: passwordController,
                     showCursor: false,
@@ -127,7 +108,7 @@ Future<void> fazerRegisto() async {
                     ),
                   ),
                   const SizedBox(height: 16),
-//Campo de Registar Confirmar Password
+                  //Campo de Registar Confirmar Password
                   TextField(
                     controller: confirmarPasswordController,
                     showCursor: false,
@@ -141,18 +122,12 @@ Future<void> fazerRegisto() async {
                     ),
                   ),
                   const SizedBox(height: 32),
-//Botão Registar Utilizador
+                  //Botão Registar Utilizador
                   FloatingActionButton(
                     heroTag: "registar_utilizador_conta",
                     onPressed: () async {
-                      print("Registar Utilizador pressionado!");
-                      final uri = await makeApiUri('/utilizador/registar');
-                      //await fazerRegisto();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const ScreenEndRegistar()),
-                      );
-                      
+                      print("Botão Registar pressionado!");
+                      confirmarCampos();
                     },
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     child: const Icon(Icons.create),
@@ -165,11 +140,12 @@ Future<void> fazerRegisto() async {
       ),
     );    
   }
-@override
-void dispose() {
-  usernameController.dispose();
-  passwordController.dispose();
-  confirmarPasswordController.dispose();
-  super.dispose();
-}
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    confirmarPasswordController.dispose();
+    super.dispose();
+  }
 }
