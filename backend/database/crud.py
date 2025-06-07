@@ -14,7 +14,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         peso,
         genero,
         doencas
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s);
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
     """
     conn = get_connection()
     if conn:
