@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, HTTPException, Depends, Request
 from auth.auth_bearer import JWTBearer, get_user_id_from_token, is_admin_from_token
-from database.crud import insert_user, get_all_users, get_user_by_id, delete_user
+from database.crud import insert_user, get_all_users, get_user_by_id
 from models.user import UserCreate
 
 router = APIRouter()
@@ -14,9 +14,9 @@ def create_user(user: UserCreate):
         user.username,
         user.password,
         user.altura_cm,
-        user.ano_nascimento,
         user.peso,
         user.genero,
+        user.outras_doencas,
         user.doencas
     )
     return {"msg": "Utilizador criado com sucesso"}
@@ -37,12 +37,3 @@ async def get_me(request: Request):
         return {"utilizador": user}
     raise HTTPException(status_code=404, detail="Utilizador não encontrado")
 
-@router.delete("/{user_id}", dependencies=[Depends(JWTBearer())])
-async def delete_user_data(user_id: int, request: Request):
-    # Só admins podem apagar qualquer utilizador
-    if not await is_admin_from_token(request):
-        raise HTTPException(status_code=403, detail="Acesso apenas para administradores")
-    success = delete_user(user_id)
-    if success:
-        return {"msg": "Utilizador removido com sucesso"}
-    raise HTTPException(status_code=404, detail="Utilizador não encontrado")
