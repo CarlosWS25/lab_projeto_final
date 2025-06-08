@@ -7,8 +7,8 @@ def create_table():
         id SERIAL PRIMARY KEY,
         username VARCHAR(100) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        altura_cm INTEGER,
         ano_nascimento INTEGER,
+        altura_cm INTEGER,
         peso REAL,
         genero CHAR(1),
         doencas TEXT DEFAULT 'nenhuma'

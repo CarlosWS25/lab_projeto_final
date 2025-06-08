@@ -9,8 +9,8 @@ class UserCreate(BaseModel):
     is_admin: bool = False
     username: str
     password: str
-    altura_cm: int
     ano_nascimento: int
+    altura_cm: int
     peso: float
     genero: str = Field(..., pattern="^(M|F)$")
     doencas: str = "nenhuma"

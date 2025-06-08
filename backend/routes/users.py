@@ -13,8 +13,8 @@ def create_user(user: UserCreate):
         False,  
         user.username,
         user.password,
-        user.altura_cm,
         user.ano_nascimento,
+        user.altura_cm,
         user.peso,
         user.genero,
         user.doencas

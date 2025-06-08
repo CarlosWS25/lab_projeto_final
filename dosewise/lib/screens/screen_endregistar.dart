@@ -7,9 +7,11 @@ import "package:dosewise/screens/screen_profile.dart";
 import "package:dosewise/veri_device.dart";
 
 class ScreenEndRegistar extends StatefulWidget {
+  // Campos finais que armazenam os dados do utilizador
   final String username;
   final String password;
 
+  // Construtor da classe, com parâmetros obrigatórios
   const ScreenEndRegistar({
     super.key,
     required this.username,
@@ -21,41 +23,45 @@ class ScreenEndRegistar extends StatefulWidget {
 }
 
 class ScreenEndRegistarState extends State<ScreenEndRegistar> {
-  //Capturadores dos dados dos TextFields
-  final TextEditingController alturaController = TextEditingController();
+  //Controllers que capturam os dados dos TextFields  
   final TextEditingController anoController = TextEditingController();
+  final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
   final TextEditingController doencasController = TextEditingController();
 
 //Função que completa o registo do utilzador
 Future<void> finalizarRegisto() async {
+    final ano = anoController.text.trim();
     final altura = alturaController.text.trim();
     final peso = pesoController.text.trim();
-    final ano = anoController.text.trim();
-    final doencas = doencasController.text.trim();
     final genero = generoController.text.trim();
+    final doencas = doencasController.text.trim();
 
-    if (altura.isEmpty || peso.isEmpty || ano.isEmpty || doencas.isEmpty || genero.isEmpty) {
+
+    if (ano.isEmpty || altura.isEmpty || peso.isEmpty || genero.isEmpty || doencas.isEmpty ) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos.")),
       );
       return;
     }
 
-    final int? alturaInt = int.tryParse(altura);
-    final double? pesoDouble = double.tryParse(peso);
-    final int? anoNascimentoInt = int.tryParse(ano);
-
+  //Transforma o dados num formato compatível com a base de dados
     final Map<String, String> mapGenero = {
     "Masculino": "M",
     "Feminino": "F",
-};
+    };
+
+    final int? anoNascimentoInt = int.tryParse(ano);
+    final int? alturaInt = int.tryParse(altura);
+    final double? pesoDouble = double.tryParse(peso);
     final generoEnviado = mapGenero[genero] ?? genero;
+    
 
     final uri = await makeApiUri("/users/");
 
     try {
+      // Envia os dados do utilizador para a Base de Dados
       final response = await http.post(
         uri,
         headers: {"Content-Type": "application/json"},
@@ -69,7 +75,7 @@ Future<void> finalizarRegisto() async {
           "doencas": doencas,
         }),
       );
-
+  
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Conta criada com sucesso!")),
@@ -117,7 +123,7 @@ Future<void> finalizarRegisto() async {
   }
 
 
-  //Caixa de opções de doenças
+  
   List<String> opcoesDoencas = [];
   @override
   void initState() {
@@ -125,6 +131,7 @@ Future<void> finalizarRegisto() async {
     carregarDoencas();
   }
 
+  //Caixa de opções de doenças
   Future<void> carregarDoencas() async {
     final String listaDoencas = await rootBundle.loadString('assets/txt/doencas.txt');
     setState(() {
@@ -136,6 +143,7 @@ Future<void> finalizarRegisto() async {
     });
   }
 
+  //Frontend da caixa que escolher as doenças
   void escolherDoencas(BuildContext context, TextEditingController controller) {
     showDialog(
       context: context,
@@ -191,31 +199,16 @@ Future<void> finalizarRegisto() async {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 64),
+
+                  //Texto de Finalizar Registo
                   Text("Finalizar Registo",
-                    style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
-                      fontSize: 32,
-                      color:Color(0xFF1B3568),
-                    ),
+                  style: TextStyle(
+                    fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                    fontSize: 32,
+                    color:Color(0xFF1B3568),
+                  ),
                   ),
                   const SizedBox(height: 32),
-
-                  //Campo de Registar Altura
-                  TextField(
-                    controller: alturaController,
-                    showCursor: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(3)
-                    ],
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(),
-                      hintText: "Altura (cm)",
-                    ),
-                  ),
-                  const SizedBox(height: 16),
 
                   //Campo de Registar Ano de Nascimento
                   TextField(
@@ -230,6 +223,23 @@ Future<void> finalizarRegisto() async {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Ano de Nascimento",
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  //Campo de Registar Altura
+                  TextField(
+                    controller: alturaController,
+                    showCursor: false,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3)
+                    ],
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      hintText: "Altura (cm)",
                     ),
                   ),
                   const SizedBox(height: 16),

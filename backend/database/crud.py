@@ -63,8 +63,8 @@ def update_user(
     user_id,
     username=None,
     password=None,
-    altura_cm=None,
     ano_nascimento = None,
+    altura_cm=None,
     peso=None,
     genero=None,
     doencas=None,
@@ -82,12 +82,12 @@ def update_user(
             if password is not None:
                 updates.append("password = %s")
                 values.append(hash_password(password))
-            if altura_cm is not None:
-                updates.append("altura_cm = %s")
-                values.append(altura_cm)
             if ano_nascimento is not None:
                 updates.append("ano_nascimento = %s")
                 values.append(ano_nascimento)
+            if altura_cm is not None:
+                updates.append("altura_cm = %s")
+                values.append(altura_cm)
             if peso is not None:
                 updates.append("peso = %s")
                 values.append(peso)

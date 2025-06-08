@@ -22,8 +22,8 @@ class RegistarScreenState extends State<RegistarScreen> {
 
   void confirmarCampos(){
   final username = usernameController.text.trim();
-  final password = passwordController.text;
-  final confirmarPassword = confirmarPasswordController.text;
+  final password = passwordController.text.trim();
+  final confirmarPassword = confirmarPasswordController.text.trim();
 
   if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
