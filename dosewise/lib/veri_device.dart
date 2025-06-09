@@ -17,15 +17,15 @@ Future<String> _getAndroidHost() async {
   final fingerprint = androidInfo.fingerprint.toLowerCase();
   final model = androidInfo.model.toLowerCase();
 
-  if (fingerprint.contains('genymotion') || model.contains('vbox86p')) {
-    return '10.0.3.2';
+  if (fingerprint.contains("genymotion") || model.contains("vbox86p")) {
+    return "10.0.3.2";
   }
 
-  return '10.0.2.2';
+  return "10.0.2.2";
 }
 
 
 Future<Uri> makeApiUri(String path) async {
-  final host = Platform.isAndroid ? await _getAndroidHost() : 'localhost';
-  return Uri.http('$host:$porta_host', path);
+  final host = Platform.isAndroid ? await _getAndroidHost() : "localhost";
+  return Uri.http("$host:$porta_host", path);
 }

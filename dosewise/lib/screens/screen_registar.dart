@@ -1,9 +1,6 @@
-import "dart:convert";
-import "dart:io";
 import "package:flutter/material.dart";
-import "package:http/http.dart" as http;
 import "package:dosewise/screens/screen_endregistar.dart";
-import "package:dosewise/veri_device.dart";
+
 
 class RegistarScreen extends StatefulWidget {
   const RegistarScreen({super.key});
@@ -13,18 +10,19 @@ class RegistarScreen extends StatefulWidget {
 }
 
 class RegistarScreenState extends State<RegistarScreen> {
-  //Capturadores dos dados dos TextFields
+  //Controllers que capturam os dados dos TextFields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmarPasswordController = TextEditingController();
 
 
-
-  void confirmarCampos(){
+  //Função que inicia o registo do utilizador
+  void iniciarRegisto(){
   final username = usernameController.text.trim();
   final password = passwordController.text.trim();
   final confirmarPassword = confirmarPasswordController.text.trim();
 
+  //Validação dos campos
   if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Preencha todos os campos.")),
@@ -54,6 +52,7 @@ class RegistarScreenState extends State<RegistarScreen> {
       backgroundColor: const Color(0xFFA7C4E2),
       body: Stack(
         children: [
+
           //Logo Dosewise
           Positioned(
             top: 50,
@@ -74,7 +73,9 @@ class RegistarScreenState extends State<RegistarScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 32),
-                  Text("Registar",
+
+                  //Título Registar
+                  Text("Criar Conta",
                     style: TextStyle(
                       fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                       fontSize: 32,
@@ -82,6 +83,7 @@ class RegistarScreenState extends State<RegistarScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
+
                   //Campo de Registar Username
                   TextField(
                     controller: usernameController,
@@ -90,10 +92,13 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Username",
+                      hintText: "Nome de Utilizador",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
+
                   //Campo de Registar Password
                   TextField(
                     controller: passwordController,
@@ -104,10 +109,13 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Password",
+                      hintText: "Palavra-passe",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
+
                   //Campo de Registar Confirmar Password
                   TextField(
                     controller: confirmarPasswordController,
@@ -118,17 +126,21 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Confirmar Password",
+                      hintText: "Confirmar Palavra-passe",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 32),
+                  
                   //Botão Registar Utilizador
                   FloatingActionButton(
                     heroTag: "registar_utilizador_conta",
                     onPressed: () async {
                       print("Botão Registar pressionado!");
-                      confirmarCampos();
+                      iniciarRegisto();
                     },
+                    foregroundColor: const Color(0xFF1B3568),
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     child: const Icon(Icons.create),
                   )

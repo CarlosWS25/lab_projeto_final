@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   int IndexPages = 0;
 
+  // Lista de páginas 
   final List<Widget> pages = const [
     PageMainMenu(),
     PageProfile(),
@@ -28,6 +29,8 @@ class HomeScreenState extends State<HomeScreen> {
         index: IndexPages,
         children: pages,
       ),
+
+      // Barra de navegação inferior
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: const Color(0xFF1B3568),
@@ -39,10 +42,12 @@ class HomeScreenState extends State<HomeScreen> {
             IndexPages = index;
           });
         },
+
+        // Itens da barra de navegação
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
-            label: "Main Menu",
+            label: "Menu Principal",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

@@ -1,9 +1,9 @@
 import "dart:convert";
-import "dart:io";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/screens/home_screen.dart";
 import "package:dosewise/veri_device.dart";
+
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
@@ -87,7 +87,9 @@ class ScreenLoginState extends State<ScreenLogin> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Login",
+
+//Título da Tela de Login
+                  Text("Iniciar Sessao",
                     style: TextStyle(
                       fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
                       fontSize: 32,
@@ -95,41 +97,48 @@ class ScreenLoginState extends State<ScreenLogin> {
                     ),
                   ),
                   const SizedBox(height: 32),
+
 //Campo Username de Login
                   TextField(
-                    showCursor: false,
                     controller: usernameController,
+                    showCursor: false,
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Username",
+                      hintText: "Nome de Utilizador",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
+
 //Campo Password de Login
                   TextField(
-                    showCursor: false,
                     controller: passwordController,
+                    showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Password",
+                      hintText: "Palavra-passe",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 32),
+
 //Botão Entrar na Conta
                   FloatingActionButton(
                     heroTag: "botao_entrar_conta",
                     onPressed: () async {
                       print("Botão Entrar pressionado!");
-                      final uri = await makeApiUri('/utilizador/registar');
-                      await fazerLogin();
-                      
+                      final uri = await makeApiUri("/utilizador/registar");
+                      await fazerLogin(); 
                     },
+                    foregroundColor: const Color(0xFF1B3568),
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     child: const Icon(Icons.login),
                   )

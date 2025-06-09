@@ -9,6 +9,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
       backgroundColor: const Color(0xFFA7C4E2),
       body: Stack(
         children: [
+          
   //Logo Dosewise
           Positioned(
             top: 50,
@@ -21,6 +22,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
               ),
             ),
           ),
+          
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -28,6 +30,9 @@ class ScreenAlertaAmigo extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 64),
+
+//Título Adicionar Amigo
                   Text("Adicionar Amigo",
                     style: TextStyle(
                       fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
@@ -35,7 +40,8 @@ class ScreenAlertaAmigo extends StatelessWidget {
                       color:Color(0xFF1B3568),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 32),
+
 //Campo Nome do Amigo
                   TextField(
                     decoration: const InputDecoration(
@@ -46,6 +52,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+
 //Campo Número do Amigo
                   TextField(
                     decoration: const InputDecoration(
@@ -59,6 +66,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+
 //Botão Adicionar Amigo
                       FloatingActionButton(
                         heroTag: "botao_adicionar_amigo",
@@ -69,6 +77,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                         child: const Icon(Icons.person_add),
                       ),
                       const SizedBox(width: 235),
+
 //Botão Remover Amigo
                       FloatingActionButton(
                         heroTag: "botao_remover_amigo",
@@ -80,13 +89,14 @@ class ScreenAlertaAmigo extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 64),
+                  const SizedBox(height: 32),
                   Center(
                     child: SizedBox(
                       width: 125,
                       height: 125,
+
+//Botão Alertar Amigos
                     child:FloatingActionButton(
-                      
                         heroTag: "botao_alertar_amigos",
                         onPressed: () {
                           print("Botão Alertar Amigos pressionado!");

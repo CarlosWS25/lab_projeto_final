@@ -1,9 +1,8 @@
 import "dart:convert";
-import "dart:io";
 import "package:http/http.dart" as http;
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
-import "package:dosewise/screens/screen_profile.dart";
+import "package:dosewise/screens/screen_inicial.dart";
 import "package:dosewise/veri_device.dart";
 
 class ScreenEndRegistar extends StatefulWidget {
@@ -38,7 +37,7 @@ Future<void> finalizarRegisto() async {
     final genero = generoController.text.trim();
     final doencas = doencasController.text.trim();
 
-
+    //Validação dos campos
     if (ano.isEmpty || altura.isEmpty || peso.isEmpty || genero.isEmpty || doencas.isEmpty ) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos.")),
@@ -82,7 +81,7 @@ Future<void> finalizarRegisto() async {
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ScreenProfile()),
+          MaterialPageRoute(builder: (context) => const ScreenInicial()),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -104,7 +103,7 @@ Future<void> finalizarRegisto() async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Selecione o seu gênero'),
+          title: Text("Selecione o seu gênero"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: opcoesGenero.map((String genero) {
@@ -133,10 +132,10 @@ Future<void> finalizarRegisto() async {
 
   //Caixa de opções de doenças
   Future<void> carregarDoencas() async {
-    final String listaDoencas = await rootBundle.loadString('assets/txt/doencas.txt');
+    final String listaDoencas = await rootBundle.loadString("assets/txt/doencas.txt");
     setState(() {
       opcoesDoencas = listaDoencas
-          .split('\n')
+          .split("\n")
           .map((e) => e.trim())
           .where((e) => e.isNotEmpty)
           .toList();
@@ -149,7 +148,7 @@ Future<void> finalizarRegisto() async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Selecione a sua doença'),
+          title: Text("Selecione a sua doença"),
           content: SizedBox(
             height: 250,
             width: double.maxFinite,
@@ -174,11 +173,13 @@ Future<void> finalizarRegisto() async {
   }
 
   @override
+  //Frontend do ecrã de registo
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFA7C4E2),
       body: Stack(
         children: [
+
           //Logo Dosewise
           Positioned(
             top: 50,
@@ -200,7 +201,7 @@ Future<void> finalizarRegisto() async {
                 children: [
                   const SizedBox(height: 64),
 
-                  //Texto de Finalizar Registo
+                  //Título de Finalizar Registo
                   Text("Finalizar Registo",
                   style: TextStyle(
                     fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
@@ -223,7 +224,9 @@ Future<void> finalizarRegisto() async {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Ano de Nascimento",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
 
@@ -240,7 +243,9 @@ Future<void> finalizarRegisto() async {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Altura (cm)",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
 
@@ -249,14 +254,16 @@ Future<void> finalizarRegisto() async {
                     controller: pesoController,
                     showCursor: false,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r'^\d{0,3}(\.\d{0,2})?$'))
+                      FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
                     ],
                     decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Peso (kg)",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
 
@@ -271,7 +278,9 @@ Future<void> finalizarRegisto() async {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Género",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 16),
 
@@ -286,7 +295,9 @@ Future<void> finalizarRegisto() async {
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
                       hintText: "Doenças",
+                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
+                    style: TextStyle(color:Color(0xFF1B3568)),
                   ),
                   const SizedBox(height: 32),
 
@@ -297,6 +308,7 @@ Future<void> finalizarRegisto() async {
                       print("Finalizar Registo Utilizador pressionado!");
                       await finalizarRegisto();
                     },
+                    foregroundColor: const Color(0xFF1B3568),
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                     child: const Icon(Icons.create),
                   )
@@ -306,6 +318,17 @@ Future<void> finalizarRegisto() async {
           ),
         ],
       ),
-    );    
+    );
   }
-}
+  
+    @override
+    void dispose() {
+      anoController.dispose();
+      alturaController.dispose();
+      pesoController.dispose();
+      generoController.dispose();
+      doencasController.dispose();
+      super.dispose();
+    }   
+  }
+
