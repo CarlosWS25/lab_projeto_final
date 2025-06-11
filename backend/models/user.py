@@ -1,5 +1,6 @@
 
 from pydantic import BaseModel, Field
+from typing import Optional
 
 class UserLogin(BaseModel):
     username: str
@@ -14,4 +15,12 @@ class UserCreate(BaseModel):
     peso: float
     genero: str = Field(..., pattern="^(M|F)$")
     doencas: str = "nenhuma"
+
+class UserUpdate(BaseModel):
+    username: Optional[str]
+    ano_nascimento: Optional[int]
+    altura_cm: Optional[int]
+    peso: Optional[float]
+    genero: Optional[str]
+    doencas: Optional[str]
     

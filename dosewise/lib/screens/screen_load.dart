@@ -37,7 +37,7 @@ class SplashScreenState extends State<SplashScreen> {
             SizedBox(height: 1),
             const Text("dosewise",
               style: TextStyle(
-                fontFamily: "Fontspring-DEMO-clarikaprogeo-md",  
+                fontFamily: "Roboto-Regular",  
                 fontWeight: FontWeight.bold,
                 fontSize: 50,
                 letterSpacing: 8.0,
@@ -45,7 +45,7 @@ class SplashScreenState extends State<SplashScreen> {
             ), 
             const Text("OVERDOSE PREVENTION APP",
             style: TextStyle(
-                fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                fontFamily: "Roboto-Regular",
                 fontSize: 20,
                 color:Color(0xFF1B3568),)
             ),

@@ -17,7 +17,7 @@ class ScreenInicial extends StatelessWidget {
               right: 100,
               child: Text("Dosewise",
                 style: TextStyle(
-                  fontFamily: "Fontspring-DEMO-clarikaprogeo-md",  
+                  fontFamily: "Roboto-Regular",  
                   fontWeight: FontWeight.bold,
                   fontSize: 50,
                   color:Color(0xFF1B3568),)
@@ -54,9 +54,9 @@ class ScreenInicial extends StatelessWidget {
                 label: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Text("Iniciar Sessao",           
+                    Text("Sign in",           
                       style: TextStyle(
-                        fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                        fontFamily: "Roboto-Regular",
                         color: Color(0xFFA7C4E2),
                         fontSize: 20,
                       ),
@@ -87,9 +87,9 @@ class ScreenInicial extends StatelessWidget {
                   label: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
-                      Text("Criar Conta",
+                      Text("Create account",
                         style: TextStyle(
-                          fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                          fontFamily: "Roboto-Regular",
                           color: Color(0xFFA7C4E2),
                           fontSize: 20,
                         ),

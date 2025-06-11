@@ -1,8 +1,9 @@
 
 from fastapi import APIRouter, HTTPException, Depends, Request
 from auth.auth_bearer import JWTBearer, get_user_id_from_token, is_admin_from_token
-from database.crud import insert_user, get_all_users, get_user_by_id, delete_user
+from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user
 from models.user import UserCreate
+from models.user import UserUpdate
 
 router = APIRouter()
 
@@ -13,7 +14,7 @@ def create_user(user: UserCreate):
         False,  
         user.username,
         user.password,
-        user.ano_nascimento,
+        user.ano_nascimento, 
         user.altura_cm,
         user.peso,
         user.genero,
@@ -46,3 +47,19 @@ async def delete_user_data(user_id: int, request: Request):
     if success:
         return {"msg": "Utilizador removido com sucesso"}
     raise HTTPException(status_code=404, detail="Utilizador não encontrado")
+
+@router.put("/me", dependencies=[Depends(JWTBearer())])
+async def update_me(request: Request, user_update: UserUpdate):
+    user_id = await get_user_id_from_token(request)
+    success = update_user(
+        user_id,
+        username=user_update.username,
+        ano_nascimento=user_update.ano_nascimento,
+        altura_cm=user_update.altura_cm,
+        peso=user_update.peso,
+        genero=user_update.genero,
+        doencas=user_update.doencas,
+    )
+    if success:
+        return {"msg": "Dados atualizados com sucesso"}
+    raise HTTPException(status_code=400, detail="Falha ao atualizar dados")

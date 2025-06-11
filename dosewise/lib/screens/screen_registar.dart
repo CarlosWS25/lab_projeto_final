@@ -25,13 +25,13 @@ class RegistarScreenState extends State<RegistarScreen> {
   //Validação dos campos
   if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Preencha todos os campos.")),
+      const SnackBar(content: Text("Fill in all fields.")),
     );
     return;
   }
   if (password != confirmarPassword) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("As palavras-passe não coincidem.")),
+      const SnackBar(content: Text("The passwords don't match.")),
     );
     return;
   }
@@ -75,9 +75,9 @@ class RegistarScreenState extends State<RegistarScreen> {
                   const SizedBox(height: 32),
 
                   //Título Registar
-                  Text("Criar Conta",
+                  Text("Create account",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       fontSize: 32,
                       color:Color(0xFF1B3568),
                     ),
@@ -92,7 +92,7 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Nome de Utilizador",
+                      hintText: "Username",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -109,7 +109,7 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Palavra-passe",
+                      hintText: "Password",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -126,7 +126,7 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Confirmar Palavra-passe",
+                      hintText: "Confirm Password",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),

@@ -47,11 +47,11 @@ class HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
-            label: "Menu Principal",
+            label: "Main Menu",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: "Perfil",
+            label: "Profile",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -59,7 +59,7 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: "Defenições",
+            label: "Settings",
           ),
         ],
       ),

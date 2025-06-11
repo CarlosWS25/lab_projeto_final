@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/screens/home_screen.dart";
 import "package:dosewise/veri_device.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 
 class ScreenLogin extends StatefulWidget {
@@ -41,6 +42,13 @@ class ScreenLoginState extends State<ScreenLogin> {
       );
 
     if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      final token = body["access_token"];
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("token", token);  
+      print("Token guardado: $token");
+
       print("Login bem-sucedido!");
       ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Login bem-sucedido!")),
@@ -68,6 +76,7 @@ class ScreenLoginState extends State<ScreenLogin> {
       backgroundColor: const Color(0xFFA7C4E2),
       body: Stack(
         children: [
+
   //Logo Dosewise
           Positioned(
             top: 50,
@@ -89,9 +98,9 @@ class ScreenLoginState extends State<ScreenLogin> {
                 children: [
 
 //Título da Tela de Login
-                  Text("Iniciar Sessao",
+                  Text("Sign in",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       fontSize: 32,
                       color:Color(0xFF1B3568),
                     ),
@@ -106,7 +115,7 @@ class ScreenLoginState extends State<ScreenLogin> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Nome de Utilizador",
+                      hintText: "Username",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -123,7 +132,7 @@ class ScreenLoginState extends State<ScreenLogin> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Palavra-passe",
+                      hintText: "Password",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -135,7 +144,7 @@ class ScreenLoginState extends State<ScreenLogin> {
                     heroTag: "botao_entrar_conta",
                     onPressed: () async {
                       print("Botão Entrar pressionado!");
-                      final uri = await makeApiUri("/utilizador/registar");
+                      //final uri = await makeApiUri("/utilizador/registar");
                       await fazerLogin(); 
                     },
                     foregroundColor: const Color(0xFF1B3568),

@@ -47,8 +47,8 @@ Future<void> finalizarRegisto() async {
 
   //Transforma o dados num formato compatível com a base de dados
     final Map<String, String> mapGenero = {
-    "Masculino": "M",
-    "Feminino": "F",
+    "Male": "M",
+    "Female": "F",
     };
 
     final int? anoNascimentoInt = int.tryParse(ano);
@@ -97,13 +97,13 @@ Future<void> finalizarRegisto() async {
 
 
   //Caixa de opções de género
-  final List<String> opcoesGenero = ["Masculino", "Feminino"];
+  final List<String> opcoesGenero = ["Male", "Female"];
   void escolherGenero(BuildContext context, TextEditingController controller, List<String> opcoes) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Selecione o seu gênero"),
+          title: Text("Select your gender"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: opcoesGenero.map((String genero) {
@@ -148,7 +148,7 @@ Future<void> finalizarRegisto() async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Selecione a sua doença"),
+          title: Text("Select your disease"),
           content: SizedBox(
             height: 250,
             width: double.maxFinite,
@@ -202,9 +202,9 @@ Future<void> finalizarRegisto() async {
                   const SizedBox(height: 64),
 
                   //Título de Finalizar Registo
-                  Text("Finalizar Registo",
+                  Text("Finalize Registration",
                   style: TextStyle(
-                    fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                    fontFamily: "Roboto-Regular",
                     fontSize: 32,
                     color:Color(0xFF1B3568),
                   ),
@@ -223,7 +223,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Ano de Nascimento",
+                      hintText: "Year of Birth",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -242,7 +242,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Altura (cm)",
+                      hintText: "Height (cm)",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -260,7 +260,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Peso (kg)",
+                      hintText: "Weight (kg)",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -277,7 +277,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Género",
+                      hintText: "Gender",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -294,7 +294,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Doenças",
+                      hintText: "Diseases",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),

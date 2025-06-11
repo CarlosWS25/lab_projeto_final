@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_ajuda.dart";
 import "package:dosewise/screens/screen_ajudaconv.dart";
-import "package:dosewise/screens/screen_alarme.dart";
+import "package:dosewise/screens/screen_sos.dart";
 import "package:dosewise/screens/screen_alertaamigo.dart";
 
 
@@ -20,7 +20,7 @@ class PageMainMenu extends StatelessWidget {
           right: 85,
           child: Text("Main Menu",
             style: TextStyle(
-              fontFamily: "Fontspring-DEMO-clarikaprogeo-md",  
+              fontFamily: "Roboto-Regular",  
               fontWeight: FontWeight.bold,
               fontSize: 50,
               color:Color(0xFF1B3568),)
@@ -47,9 +47,9 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("Ajudar",
+                  Text("Help",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
                       fontSize: 20,
                     ),
@@ -80,9 +80,9 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("    Ajudar \n Convidado",
+                  Text(" Help Guest",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
                       fontSize: 20,
                     ),
@@ -101,9 +101,9 @@ class PageMainMenu extends StatelessWidget {
             width: 150,
             height: 100,
             child: FloatingActionButton.extended(
-              heroTag: "alarme",
+              heroTag: "sos",
               onPressed: () {
-                print("Botão Alarme pressionado!");
+                print("Botão SOS pressionado!");
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ScreenAlarme()),
@@ -113,9 +113,9 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("Alarme",
+                  Text("SOS",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
                       fontSize: 20,
                     ),
@@ -146,9 +146,9 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("Alerta Amigo",
+                  Text("Alert Friend",
                     style: TextStyle(
-                      fontFamily: "Fontspring-DEMO-clarikaprogeo-md",
+                      fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
                       fontSize: 20,
                   ),

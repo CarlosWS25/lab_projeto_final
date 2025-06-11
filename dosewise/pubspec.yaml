@@ -86,9 +86,9 @@ flutter:
   # example:
 
   fonts:
-  - family: Fontspring-DEMO-clarikaprogeo-md
+  - family: Roboto-Regular
     fonts:
-      - asset: assets/fonts/Fontspring-DEMO-clarikaprogeo-md.ttf
+      - asset: assets/fonts/Roboto-Regular.ttf
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

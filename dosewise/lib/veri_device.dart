@@ -27,5 +27,10 @@ Future<String> _getAndroidHost() async {
 
 Future<Uri> makeApiUri(String path) async {
   final host = Platform.isAndroid ? await _getAndroidHost() : "localhost";
-  return Uri.http("$host:$porta_host", path);
+  return Uri(
+    scheme: "http",
+    host: host,
+    port: porta_host,
+    path: path,
+  );
 }
