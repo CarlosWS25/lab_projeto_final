@@ -17,8 +17,8 @@ class PageMainMenu extends StatelessWidget {
       children: [
         Positioned(
           bottom: 575,
-          right: 85,
-          child: Text("Main Menu",
+          right: 40,
+          child: Text("Menu Principal",
             style: TextStyle(
               fontFamily: "Roboto-Regular",  
               fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("Help",
+                  Text("Ajudar",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
@@ -80,7 +80,7 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text(" Help Guest",
+                  Text("   Ajudar \nConvidado",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),
@@ -146,7 +146,7 @@ class PageMainMenu extends StatelessWidget {
               label: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: const [
-                  Text("Alert Friend",
+                  Text("Alertar Amigo",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       color: Color(0xFFA7C4E2),

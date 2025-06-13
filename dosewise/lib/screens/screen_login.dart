@@ -98,7 +98,7 @@ class ScreenLoginState extends State<ScreenLogin> {
                 children: [
 
 //Título da Tela de Login
-                  Text("Sign in",
+                  Text("Login",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: 32,

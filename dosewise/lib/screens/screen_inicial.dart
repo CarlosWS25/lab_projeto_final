@@ -54,7 +54,7 @@ class ScreenInicial extends StatelessWidget {
                 label: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const [
-                    Text("Sign in",           
+                    Text("Login",           
                       style: TextStyle(
                         fontFamily: "Roboto-Regular",
                         color: Color(0xFFA7C4E2),
@@ -87,7 +87,7 @@ class ScreenInicial extends StatelessWidget {
                   label: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
-                      Text("Create account",
+                      Text("Criar conta",
                         style: TextStyle(
                           fontFamily: "Roboto-Regular",
                           color: Color(0xFFA7C4E2),

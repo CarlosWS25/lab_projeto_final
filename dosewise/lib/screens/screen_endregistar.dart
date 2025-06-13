@@ -4,6 +4,7 @@ import "package:flutter/services.dart";
 import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_inicial.dart";
 import "package:dosewise/veri_device.dart";
+import "package:dosewise/opcoes_gd.dart";
 
 class ScreenEndRegistar extends StatefulWidget {
   // Campos finais que armazenam os dados do utilizador
@@ -44,12 +45,6 @@ Future<void> finalizarRegisto() async {
       );
       return;
     }
-
-  //Transforma o dados num formato compatível com a base de dados
-    final Map<String, String> mapGenero = {
-    "Male": "M",
-    "Female": "F",
-    };
 
     final int? anoNascimentoInt = int.tryParse(ano);
     final int? alturaInt = int.tryParse(altura);
@@ -95,82 +90,18 @@ Future<void> finalizarRegisto() async {
     }
   }
 
-
-  //Caixa de opções de género
-  final List<String> opcoesGenero = ["Male", "Female"];
-  void escolherGenero(BuildContext context, TextEditingController controller, List<String> opcoes) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Select your gender"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: opcoesGenero.map((String genero) {
-              return ListTile(
-                title: Text(genero),
-                onTap: () {
-                  generoController.text = genero;
-                  Navigator.pop(context);
-                },
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
-
-
   
-  List<String> opcoesDoencas = [];
+
   @override
   void initState() {
     super.initState();
-    carregarDoencas();
-  }
-
-  //Caixa de opções de doenças
-  Future<void> carregarDoencas() async {
-    final String listaDoencas = await rootBundle.loadString("assets/txt/doencas.txt");
+    carregarDoencas().then((value) {
     setState(() {
-      opcoesDoencas = listaDoencas
-          .split("\n")
-          .map((e) => e.trim())
-          .where((e) => e.isNotEmpty)
-          .toList();
+      opcoesDoenca = value;
     });
-  }
+  });
+}
 
-  //Frontend da caixa que escolher as doenças
-  void escolherDoencas(BuildContext context, TextEditingController controller) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Select your disease"),
-          content: SizedBox(
-            height: 250,
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: opcoesDoencas.map((String doenca) {
-                  return ListTile(
-                    title: Text(doenca),
-                    onTap: () {
-                      doencasController.text = doenca;
-                      Navigator.pop(context);
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   //Frontend do ecrã de registo
@@ -202,7 +133,7 @@ Future<void> finalizarRegisto() async {
                   const SizedBox(height: 64),
 
                   //Título de Finalizar Registo
-                  Text("Finalize Registration",
+                  Text("Finalizar Registo",
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
                     fontSize: 32,
@@ -223,7 +154,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Year of Birth",
+                      hintText: "Ano de Nascimento (YYYY)",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -242,7 +173,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Height (cm)",
+                      hintText: "Altura (cm)",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -260,7 +191,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Weight (kg)",
+                      hintText: "Peso (kg)",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -269,7 +200,7 @@ Future<void> finalizarRegisto() async {
 
                   //Campo de Registar Género
                   TextField(
-                    onTap: () => escolherGenero(context, generoController, opcoesGenero),
+                    onTap: () => escolherGenero(context:context, controller:generoController),
                     controller: generoController, 
                     showCursor: false,
                     readOnly: true,
@@ -277,7 +208,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Gender",
+                      hintText: "Género",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),
@@ -286,7 +217,7 @@ Future<void> finalizarRegisto() async {
 
                   //Campo de Registar Doenças
                   TextField(
-                    onTap: () => escolherDoencas(context, doencasController),
+                    onTap: () => escolherDoenca(context: context, controller: doencasController, opcoes: opcoesDoenca),
                     controller: doencasController,
                     showCursor: false,
                     readOnly: true,
@@ -294,7 +225,7 @@ Future<void> finalizarRegisto() async {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Diseases",
+                      hintText: "Doenças",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),

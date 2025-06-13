@@ -3,6 +3,9 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
+import "package:flutter/services.dart";
+import "package:dosewise/opcoes_gd.dart";
+
 
 class PageProfile extends StatefulWidget {
   const PageProfile({super.key});
@@ -27,11 +30,18 @@ class _PageProfileState extends State<PageProfile> {
   final TextEditingController generoController = TextEditingController();
   final TextEditingController doencasController = TextEditingController();
 
+ 
+
   @override
   void initState() {
     super.initState();
     fetchUserData();
-  }
+    carregarDoencas().then((value) {
+    setState(() {
+      opcoesDoenca = value;
+    });
+  });
+}
 
   Future<void> fetchUserData() async {
     //Vai buscar o token de autenticação
@@ -80,7 +90,9 @@ class _PageProfileState extends State<PageProfile> {
           anoController.text = "${list[3]}";
           alturaController.text = "${list[4]}";
           pesoController.text = "${list[5]}";
-          generoController.text = list[6];
+          generoController.text = mapGenero.entries
+              .firstWhere((entry) => entry.value == list[6], orElse: () => const MapEntry("", ""))
+              .key;
           doencasController.text = list[7];
 
           loadingMode = false;
@@ -109,7 +121,7 @@ class _PageProfileState extends State<PageProfile> {
       "ano_nascimento": int.tryParse(anoController.text),
       "altura_cm": int.tryParse(alturaController.text),
       "peso": double.tryParse(pesoController.text),
-      "genero": generoController.text,
+      "genero": mapGenero[generoController.text] ?? generoController.text,
       "doencas": doencasController.text,
     };
 
@@ -142,7 +154,7 @@ class _PageProfileState extends State<PageProfile> {
   }
 
   //Frontend dos campos de entrada de dados
-  Widget _buildField(String label, String value, TextEditingController controller) {
+  Widget _buildField(String label, String value, TextEditingController controller, {VoidCallback? onTap}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -151,6 +163,8 @@ class _PageProfileState extends State<PageProfile> {
 //Caixas de texto
             ? TextFormField(
                 controller: controller,
+                readOnly: onTap != null,
+                onTap: onTap,
                 decoration: InputDecoration(
                   labelText: label,
                   labelStyle: const TextStyle(
@@ -177,12 +191,15 @@ class _PageProfileState extends State<PageProfile> {
     );
   }
 
+  
+
   @override
 Widget build(BuildContext context) {
+  //Se os dados estiverem a carregar aparece uma tela de load
   if (loadingMode) {
     return const Center(child: CircularProgressIndicator());
   }
-
+  //Se os dados do utilizador não estiverem carregados, mostra uma mensagem de erro
   if (userData == null) {
     return const Center(child: Text("Erro ao carregar os dados do utilizador."));
   }
@@ -195,7 +212,7 @@ Widget build(BuildContext context) {
           padding: const EdgeInsets.all(16.0),
           child: ListView(
             children: [
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Center(
 
 //logo do DoseWise
@@ -209,14 +226,16 @@ Widget build(BuildContext context) {
               
 //Titulo da página
               const Text(
-                "    User Information",
+                "   Informações do Utilizador",
                 style: TextStyle(
                   fontFamily: "Roboto-Regular",
-                  fontSize: 36,
+                  fontSize: 28,
                   color: Color(0xFF1B3568),
                 ),
               ),
-              const SizedBox(height: 32),
+
+// ID do utilizador
+              const SizedBox(height: 40),
               Text("   ID: ${userData!["id"]}",
                 style: const TextStyle(
                 fontFamily: "Roboto-Regular",
@@ -225,12 +244,15 @@ Widget build(BuildContext context) {
               )),
               const SizedBox(height: 16),
 
-              _buildField("Username", userData!["username"], usernameController),
-              _buildField("Year of Birth", "${userData!["ano_nascimento"]}", anoController),
-              _buildField("Height (cm)", "${userData!["altura_cm"]}", alturaController),
-              _buildField("Weight (kg)", "${userData!["peso"]}", pesoController),
-              _buildField("Gender", userData!["genero"], generoController),
-              _buildField("Diseases", userData!["doencas"], doencasController),
+              _buildField("Username ", userData!["username"], usernameController),
+              _buildField("Ano de Nascimento (YYYY) ", "${userData!["ano_nascimento"]}", anoController),
+              _buildField("Altura (cm) ", "${userData!["altura_cm"]}", alturaController),
+              _buildField("Peso (kg) ", "${userData!["peso"]}", pesoController),
+              _buildField("Género ", userData!["genero"], generoController,
+                onTap: () => escolherGenero(context: context, controller: generoController)),
+              _buildField("Doenças ", userData!["doencas"], doencasController,
+                onTap: () => escolherDoenca(context: context, controller: doencasController, opcoes: opcoesDoenca)),
+
             ],
           ),
         ),

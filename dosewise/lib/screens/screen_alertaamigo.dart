@@ -33,7 +33,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                   const SizedBox(height: 64),
 
 //Título Adicionar Amigo
-                  Text("Add Friend",
+                  Text("Adicionar Amigo",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: 32,
@@ -48,7 +48,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Friend Name",
+                      hintText: "Nome do Amigo",
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -59,7 +59,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Friend's Number",
+                      hintText: "Número do Amigo",
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -102,7 +102,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                           print("Botão Alertar Amigos pressionado!");
                         },
                         backgroundColor:Color(0xFF1B3568),
-                        child: const Text("  Alert\n Friends",
+                        child: const Text(" Alertar\n Amigo",
                           style: TextStyle(
                             fontFamily: "Roboto-Regular",
                             fontSize: 25,

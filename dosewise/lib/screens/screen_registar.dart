@@ -126,7 +126,7 @@ class RegistarScreenState extends State<RegistarScreen> {
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(),
-                      hintText: "Confirm Password",
+                      hintText: "Confirmar Password",
                       hintStyle: TextStyle(color:Color(0xFF1B3568)),
                     ),
                     style: TextStyle(color:Color(0xFF1B3568)),

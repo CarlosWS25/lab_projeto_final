@@ -1,30 +1,30 @@
-Nenhuma
-Apneia do sono  
-Demência  
-Depressão  
-Depressão, Insuficiência renal  
-Desnutrição crônica  
-Diabetes  
-Doença cardiovascular  
-Doença cardíaca  
-Doença hepática  
-Doenças cardiovasculares  
-Edema cerebral  
-Epilepsia  
-Esquizofrenia  
-Gastrite / úlceras  
-Glaucoma de ângulo fechado  
-Hepatite ou cirrose  
-Hipertensão  
-Ideação suicida  
-Insuficiência hepática pré-existente  
-Pancreatite  
-Parkinson  
-Psicose  
-Síndrome neuroléptica maligna  
-Síndrome serotoninérgica  
-Taquicardia  
-Tolerância ou dependência prévia  
-Transtorno bipolar  
-Transtornos de ansiedade  
-Transtornos psiquiátricos  
+Nenhuma Reportada
+Abuso de Álcool
+Alzheimer / Demência
+Angina
+Asma
+Cancro
+Disritmia Cardíaca
+Acidente Vascular Cerebral (AVC)
+DPOC
+Doença Arterial Coronária
+Diabetes
+Abuso de Drogas
+Hemorragia Gastrointestinal
+Défice Auditivo
+VIH/SIDA
+Hipertensão
+Hipotensão
+Problema Mental/Psiquiátrico
+Enfarte Agudo do Miocárdio
+Obesidade
+Apneia Obstrutiva do Sono
+Ostomia
+Gravidez
+Embolia Pulmonar
+Insuficiência Renal
+Perturbação Convulsiva (Epilepsia)
+Síncope
+Tuberculose
+Défice Visual
+Outra
