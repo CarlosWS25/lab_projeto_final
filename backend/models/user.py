@@ -14,7 +14,6 @@ class UserCreate(BaseModel):
     altura_cm: int
     peso: float
     genero: str = Field(..., pattern="^(M|F)$")
-    doencas: str = "nenhuma"
 
 class UserUpdate(BaseModel):
     username: Optional[str]
@@ -22,5 +21,4 @@ class UserUpdate(BaseModel):
     altura_cm: Optional[int]
     peso: Optional[float]
     genero: Optional[str]
-    doencas: Optional[str]
     

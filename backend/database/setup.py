@@ -10,8 +10,7 @@ def create_table():
         ano_nascimento INTEGER,
         altura_cm INTEGER,
         peso REAL,
-        genero CHAR(1),
-        doencas TEXT DEFAULT 'nenhuma'
+        genero CHAR(1)
         
     );
     """

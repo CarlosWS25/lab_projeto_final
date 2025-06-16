@@ -17,8 +17,7 @@ def create_user(user: UserCreate):
         user.ano_nascimento, 
         user.altura_cm,
         user.peso,
-        user.genero,
-        user.doencas
+        user.genero
     )
     return {"msg": "Utilizador criado com sucesso"}
 
@@ -57,8 +56,7 @@ async def update_me(request: Request, user_update: UserUpdate):
         ano_nascimento=user_update.ano_nascimento,
         altura_cm=user_update.altura_cm,
         peso=user_update.peso,
-        genero=user_update.genero,
-        doencas=user_update.doencas,
+        genero=user_update.genero
     )
     if success:
         return {"msg": "Dados atualizados com sucesso"}

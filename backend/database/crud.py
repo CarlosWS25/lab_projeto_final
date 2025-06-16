@@ -2,7 +2,7 @@ from .connection import get_connection
 from utils.hash import hash_password
 
 # CREATE
-def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero, doencas="nenhuma"):
+def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero):
     hashed_pw = hash_password(password)
     query = """
     INSERT INTO users (
@@ -12,15 +12,14 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         ano_nascimento,
         altura_cm,
         peso,
-        genero,
-        doencas
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+        genero
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s);
     """
     conn = get_connection()
     if conn:
         try:
             with conn.cursor() as cur:
-                cur.execute(query, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero, doencas))
+                cur.execute(query, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero))
                 conn.commit()
                 print("✅ Utilizador inserido com sucesso.")
         except Exception as e:
@@ -30,7 +29,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
 
 # READ all
 def get_all_users():
-    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero, doencas FROM users ORDER BY id;"
+    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero FROM users ORDER BY id;"
     conn = get_connection()
     if conn:
         try:
@@ -45,7 +44,7 @@ def get_all_users():
 
 # READ by id
 def get_user_by_id(user_id):
-    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero, doencas FROM users WHERE id = %s;"
+    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero FROM users WHERE id = %s;"
     conn = get_connection()
     if conn:
         try:
@@ -67,7 +66,6 @@ def update_user(
     altura_cm=None,
     peso=None,
     genero=None,
-    doencas=None,
     is_admin=None
 ):
     conn = get_connection()
@@ -94,9 +92,6 @@ def update_user(
             if genero is not None:
                 updates.append("genero = %s")
                 values.append(genero)
-            if doencas is not None:
-                updates.append("doencas = %s")
-                values.append(doencas)
             if is_admin is not None:
                 updates.append("is_admin = %s")
                 values.append(is_admin)

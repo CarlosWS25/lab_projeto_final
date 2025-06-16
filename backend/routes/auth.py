@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, HTTPException
 from auth.jwt_handler import create_access_token
 from models.user import UserLogin
