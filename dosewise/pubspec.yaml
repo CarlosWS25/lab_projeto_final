@@ -34,6 +34,8 @@ dependencies:
   device_info_plus: ^9.1.0
   shared_preferences: ^2.2.2
   provider: ^6.0.0
+  url_launcher: ^6.2.5 
+  permission_handler: ^11.3.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -50,6 +52,7 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -66,6 +69,8 @@ flutter:
   uses-material-design: true
   assets: 
     - assets/images/logo_dosewise.png
+    - assets/images/button_off.png
+    - assets/images/button_on.png
     - assets/txt/doencas.txt
 
   # To add assets to your application, add an assets section, like this:

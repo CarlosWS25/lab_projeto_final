@@ -34,7 +34,8 @@ class SplashScreenState extends State<SplashScreen> {
               width: 90,
               height: 90,
               fit: BoxFit.contain),
-            SizedBox(height: 1),
+            const SizedBox(height: 1),
+            
             const Text("dosewise",
               style: TextStyle(
                 fontFamily: "Roboto-Regular",  
