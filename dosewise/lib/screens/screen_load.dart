@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "screen_inicial.dart";
+import "screen_warn.dart";
 
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class SplashScreenState extends State<SplashScreen> {
       Future.delayed(Duration(seconds: 5), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ScreenInicial()),
+          MaterialPageRoute(builder: (context) => const WarnScreen()),
         );
       });
     });

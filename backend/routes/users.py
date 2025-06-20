@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, HTTPException, Depends, Request
 from auth.auth_bearer import JWTBearer, get_user_id_from_token, is_admin_from_token
-from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user
+from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user, get_user_by_username
 from models.user import UserCreate
 from models.user import UserUpdate
 
@@ -9,6 +9,9 @@ router = APIRouter()
 
 @router.post("/")
 def create_user(user: UserCreate):
+    # Verifica se o nome de utilizador já existe
+    if get_user_by_username(user.username):
+        raise HTTPException(status_code=409, detail="Username já existe.")
     # Ignora user.is_admin — força sempre False
     insert_user(
         False,  

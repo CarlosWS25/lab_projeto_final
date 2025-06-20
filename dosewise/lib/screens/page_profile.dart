@@ -28,7 +28,6 @@ class _PageProfileState extends State<PageProfile> {
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
-  final TextEditingController doencasController = TextEditingController();
 
  
 
@@ -36,11 +35,6 @@ class _PageProfileState extends State<PageProfile> {
   void initState() {
     super.initState();
     fetchUserData();
-    carregarDoencas().then((value) {
-    setState(() {
-      opcoesDoenca = value;
-    });
-  });
 }
 
   Future<void> fetchUserData() async {
@@ -82,7 +76,6 @@ class _PageProfileState extends State<PageProfile> {
             "altura_cm": list[4],
             "peso": list[5],
             "genero": list[6],
-            "doencas": list[7],
           };
 
           // Preencher os campos com os novos dados
@@ -93,7 +86,6 @@ class _PageProfileState extends State<PageProfile> {
           generoController.text = mapGenero.entries
               .firstWhere((entry) => entry.value == list[6], orElse: () => const MapEntry("", ""))
               .key;
-          doencasController.text = list[7];
 
           loadingMode = false;
         });
@@ -122,7 +114,6 @@ class _PageProfileState extends State<PageProfile> {
       "altura_cm": int.tryParse(alturaController.text),
       "peso": double.tryParse(pesoController.text),
       "genero": mapGenero[generoController.text] ?? generoController.text,
-      "doencas": doencasController.text,
     };
 
 
@@ -250,9 +241,7 @@ Widget build(BuildContext context) {
               _buildField("Peso (kg) ", "${userData!["peso"]}", pesoController),
               _buildField("Género ", userData!["genero"], generoController,
                 onTap: () => escolherGenero(context: context, controller: generoController)),
-              _buildField("Doenças ", userData!["doencas"], doencasController,
-                onTap: () => escolherDoenca(context: context, controller: doencasController, opcoes: opcoesDoenca)),
-
+                
             ],
           ),
         ),

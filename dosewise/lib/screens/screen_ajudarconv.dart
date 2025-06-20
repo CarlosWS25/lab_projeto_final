@@ -6,23 +6,19 @@ import "package:dosewise/screens/screen_inicial.dart";
 import "package:dosewise/veri_device.dart";
 import "package:dosewise/opcoes_gd.dart";
 
-class ScreenEndRegistar extends StatefulWidget {
-  // Campos finais que armazenam os dados do utilizador
-  final String username;
-  final String password;
+class ScreenAjudarConv extends StatefulWidget {
+
 
   // Construtor da classe, com parâmetros obrigatórios
-  const ScreenEndRegistar({
+  const ScreenAjudarConv({
     super.key,
-    required this.username,
-    required this.password,
   });
 
   @override
-  State<ScreenEndRegistar> createState() => ScreenEndRegistarState();
+  State<ScreenAjudarConv> createState() => ScreenAjudarConvState();
 }
 
-class ScreenEndRegistarState extends State<ScreenEndRegistar> {
+class ScreenAjudarConvState extends State<ScreenAjudarConv> {
   //Controllers que capturam os dados dos TextFields  
   final TextEditingController anoController = TextEditingController();
   final TextEditingController alturaController = TextEditingController();
@@ -30,7 +26,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
   final TextEditingController generoController = TextEditingController();
 
 //Função que completa o registo do utilzador
-Future<void> finalizarRegisto() async {
+/*Future<void> finalizarRegisto() async {
     final ano = anoController.text.trim();
     final altura = alturaController.text.trim();
     final peso = pesoController.text.trim();
@@ -58,8 +54,6 @@ Future<void> finalizarRegisto() async {
         uri,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "username": widget.username,
-          "password": widget.password,
           "ano_nascimento": anoNascimentoInt,
           "altura_cm": alturaInt,
           "peso": pesoDouble,
@@ -89,7 +83,7 @@ Future<void> finalizarRegisto() async {
         SnackBar(content: Text("Erro na requisição: $e")),
       );
     }
-  }
+  }*/
 
   
 
@@ -128,11 +122,11 @@ Future<void> finalizarRegisto() async {
                 children: [
                   const SizedBox(height: 64),
 
-                  //Título de Finalizar Registo
-                  Text("Finalizar Registo",
+                  //Título de Preencha os dados
+                  Text("Preencha com os dados \ndo convidado",
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
-                    fontSize: 32,
+                    fontSize: 28,
                     color:Color(0xFF1B3568),
                   ),
                   ),
@@ -216,7 +210,7 @@ Future<void> finalizarRegisto() async {
                     heroTag: "finalizar_registo_conta",
                     onPressed: () async {
                       print("Finalizar Registo Utilizador pressionado!");
-                      await finalizarRegisto();
+                      //await finalizarRegisto();
                     },
                     foregroundColor: const Color(0xFF1B3568),
                     backgroundColor: const Color.fromARGB(255, 255, 255, 255),
@@ -240,4 +234,5 @@ Future<void> finalizarRegisto() async {
       super.dispose();
     }   
   }
+
 
