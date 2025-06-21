@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from auth.jwt_handler import create_access_token
-from models.user import UserLogin
-from database.crud import get_user_by_username
+from models.user import UserLogin, RecoveryPasswordRequest
+from database.crud import get_user_by_username, recuperar_password
 from utils.hash import verify_password
 
 router = APIRouter()
@@ -27,3 +27,11 @@ async def login(user: UserLogin):
         "is_admin": db_is_admin
     })
     return {"access_token": token}
+
+
+@router.post("/recover-password")
+def recover_password(data: RecoveryPasswordRequest):
+    sucesso = recuperar_password(data.username, data.recovery_key, data.new_password)
+    if not sucesso:
+        raise HTTPException(status_code=403, detail="Username ou chave de recuperação inválida.")
+    return {"message": "Password atualizada com sucesso."}

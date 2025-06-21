@@ -64,3 +64,4 @@ async def update_me(request: Request, user_update: UserUpdate):
     if success:
         return {"msg": "Dados atualizados com sucesso"}
     raise HTTPException(status_code=400, detail="Falha ao atualizar dados")
+

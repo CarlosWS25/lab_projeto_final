@@ -21,4 +21,9 @@ class UserUpdate(BaseModel):
     altura_cm: Optional[int]
     peso: Optional[float]
     genero: Optional[str]
-    
+
+class RecoveryPasswordRequest(BaseModel):
+    username: str
+    recovery_key: str
+    new_password: str
+

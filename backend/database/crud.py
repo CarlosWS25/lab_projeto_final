@@ -1,10 +1,20 @@
 from .connection import get_connection
-from utils.hash import hash_password
+from utils.hash import hash_password, verify_password
+import datetime
+import random
+import string
 
-# CREATE
+
+def gen_recovery_key(size=6):
+    caracteres = string.ascii_letters + string.digits 
+    return ''.join(random.choices(caracteres, k=size))
+
 def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero):
     hashed_pw = hash_password(password)
-    query = """
+    recovery_key = gen_recovery_key()
+    hashed_chave = hash_password(recovery_key)
+
+    query_user = """
     INSERT INTO users (
         is_admin,
         username,
@@ -12,20 +22,40 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         ano_nascimento,
         altura_cm,
         peso,
-        genero
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s);
+        genero,
+        recovery_key
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
     """
+
+    query_saude = """
+    INSERT INTO saude (
+        id,
+        idade_atual,
+        peso,
+        altura_cm,
+        genero
+    ) VALUES (%s, %s, %s, %s, %s);
+    """
+
+    ano_atual = datetime.datetime.now().year
+
     conn = get_connection()
     if conn:
         try:
             with conn.cursor() as cur:
-                cur.execute(query, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero))
+                cur.execute(query_user, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero, hashed_chave))
+                user_id = cur.fetchone()[0]
+
+                idade_atual = ano_atual - ano_nascimento
+
+                cur.execute(query_saude, (user_id, idade_atual, peso, altura_cm, genero))
                 conn.commit()
-                print("✅ Utilizador inserido com sucesso.")
+                print("✅ Utilizador e informações de saúde inseridos com sucesso.")
         except Exception as e:
             print("❌ Erro ao inserir:", e)
         finally:
             conn.close()
+
 
 # READ all
 def get_all_users():
@@ -77,9 +107,6 @@ def update_user(
             if username is not None:
                 updates.append("username = %s")
                 values.append(username)
-            if password is not None:
-                updates.append("password = %s")
-                values.append(hash_password(password))
             if ano_nascimento is not None:
                 updates.append("ano_nascimento = %s")
                 values.append(ano_nascimento)
@@ -95,7 +122,6 @@ def update_user(
             if is_admin is not None:
                 updates.append("is_admin = %s")
                 values.append(is_admin)
-
             if not updates:
                 return False
 
@@ -127,7 +153,7 @@ def delete_user(user_id):
             conn.close()
     return False
 
-# Lookup for login
+
 def get_user_by_username(username):
     query = "SELECT is_admin, id, username, password FROM users WHERE username = %s;"
     conn = get_connection()
@@ -141,3 +167,113 @@ def get_user_by_username(username):
         finally:
             conn.close()
     return None
+
+
+def wipe_table_saude():
+    query = """
+    DELETE FROM saude;
+    """
+
+    conn = get_connection()
+    if conn:
+        try:
+            with conn.cursor() as cur:
+                cur.execute(query)
+                conn.commit()
+                print("✅ Todos os registos da tabela 'saude' foram eliminados com sucesso.")
+        except Exception as e:
+            print("❌ Erro ao eliminar registos:", e)
+        finally:
+            conn.close()
+
+def insert_info_saude(saude):
+    conn = get_connection()
+    query = """
+    INSERT INTO saude (id, idade_atual, peso, altura_cm, genero, doencas, sintomas, droga_usada, quantidade)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, (
+                saude.id,
+                saude.idade_atual,
+                saude.peso,
+                saude.altura_cm,
+                saude.genero,
+                saude.doencas,
+                saude.sintomas,
+                saude.droga_usada,
+                saude.quantidade
+            ))
+            conn.commit()
+    finally:
+        conn.close()
+
+def update_info_saude(id, dados):
+    conn = get_connection()
+    campos = []
+    valores = []
+
+    for campo, valor in dados.dict(exclude_unset=True).items():
+        campos.append(f"{campo} = %s")
+        valores.append(valor)
+
+    if not campos:
+        return
+
+    query = f"UPDATE saude SET {', '.join(campos)} WHERE id = %s"
+    valores.append(id)
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, valores)
+            conn.commit()
+    finally:
+        conn.close()
+
+
+def verificar_recovery_key(user_id: int, recovery_key: str) -> bool:
+    conn = get_connection()
+    if not conn:
+        return False
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT recovery_key FROM users WHERE id = %s;", (user_id,))
+            resultado = cur.fetchone()
+            if not resultado:
+                return False
+
+            recovery_key_db = resultado[0]
+            return verify_password(recovery_key, recovery_key_db)
+    except Exception as e:
+        print(f"❌ Erro ao verificar recovery_key: {e}")
+        return False
+    finally:
+        conn.close()
+
+def recuperar_password(username: str, recovery_key: str, nova_password: str) -> bool:
+    conn = get_connection()
+    if not conn:
+        return False
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT id, recovery_key FROM users WHERE username = %s;", (username,))
+            row = cur.fetchone()
+            if not row:
+                return False
+
+            user_id, recovery_hash = row
+            if not verify_password(recovery_key, recovery_hash):
+                return False
+
+            nova_hash = hash_password(nova_password)
+            cur.execute("UPDATE users SET password = %s WHERE id = %s;", (nova_hash, user_id))
+            conn.commit()
+            return True
+    except Exception as e:
+        print("❌ Erro ao recuperar password:", e)
+        return False
+    finally:
+        conn.close()
