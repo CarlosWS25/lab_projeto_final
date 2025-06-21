@@ -8,8 +8,9 @@ class ScreenInicial extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor:Color(0xFFA7C4E2),
+      backgroundColor:colorScheme.onPrimary,
         body: Stack( 
           children: [
             Positioned(
@@ -20,7 +21,7 @@ class ScreenInicial extends StatelessWidget {
                   fontFamily: "Roboto-Regular",  
                   fontWeight: FontWeight.bold,
                   fontSize: 50,
-                  color:Color(0xFF1B3568),)
+                  color:colorScheme.primary,)
               ),
             ),
 
@@ -28,7 +29,10 @@ class ScreenInicial extends StatelessWidget {
             Positioned(
               bottom: 520,
               right: 130,
-              child: Image.asset("assets/images/logo_dosewise.png",
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain),
@@ -50,14 +54,14 @@ class ScreenInicial extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const ScreenLogin()),
                     );
                   },
-                backgroundColor: const Color(0xFF1B3568),
+                backgroundColor: colorScheme.primary,
                 label: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Text("Login",           
                       style: TextStyle(
                         fontFamily: "Roboto-Regular",
-                        color: Color(0xFFA7C4E2),
+                        color: colorScheme.onPrimary,
                         fontSize: 20,
                       ),
                     )
@@ -83,14 +87,14 @@ class ScreenInicial extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const RegistarScreen()),
                     );
                   },
-                  backgroundColor: const Color(0xFF1B3568),
+                  backgroundColor: colorScheme.primary,
                   label: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text("Criar conta",
                         style: TextStyle(
                           fontFamily: "Roboto-Regular",
-                          color: Color(0xFFA7C4E2),
+                          color: colorScheme.onPrimary,
                           fontSize: 20,
                         ),
                       )

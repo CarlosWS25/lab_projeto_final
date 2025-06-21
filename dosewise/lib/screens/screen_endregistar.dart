@@ -102,8 +102,9 @@ Future<void> finalizarRegisto() async {
   @override
   //Frontend do ecrã de registo
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFA7C4E2),
+      backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
 
@@ -113,7 +114,10 @@ Future<void> finalizarRegisto() async {
             right: 20,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image.asset("assets/images/logo_dosewise.png",
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                 width: 125,
                 height: 125,
               ),
@@ -133,7 +137,7 @@ Future<void> finalizarRegisto() async {
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
                     fontSize: 32,
-                    color:Color(0xFF1B3568),
+                    color:colorScheme.primary,
                   ),
                   ),
                   const SizedBox(height: 32),
@@ -146,14 +150,14 @@ Future<void> finalizarRegisto() async {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(4)
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Ano de Nascimento (YYYY)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -165,14 +169,14 @@ Future<void> finalizarRegisto() async {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(3)
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Altura (cm)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -183,14 +187,14 @@ Future<void> finalizarRegisto() async {
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Peso (kg)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -200,14 +204,14 @@ Future<void> finalizarRegisto() async {
                     controller: generoController, 
                     showCursor: false,
                     readOnly: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Género",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),                  
                   const SizedBox(height: 32),
 
@@ -218,9 +222,9 @@ Future<void> finalizarRegisto() async {
                       print("Finalizar Registo Utilizador pressionado!");
                       await finalizarRegisto();
                     },
-                    foregroundColor: const Color(0xFF1B3568),
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    child: const Icon(Icons.create),
+                    foregroundColor: colorScheme.primary,
+                    backgroundColor: colorScheme.secondary,
+                    child: const Icon(Icons.create_outlined),
                   )
                 ],
               ),

@@ -1,9 +1,5 @@
-import "dart:convert";
-import "package:http/http.dart" as http;
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
-import "package:dosewise/screens/screen_inicial.dart";
-import "package:dosewise/veri_device.dart";
 import "package:dosewise/opcoes_gd.dart";
 
 class ScreenAjudarConv extends StatefulWidget {
@@ -96,8 +92,9 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
   @override
   //Frontend do ecrã de registo
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme; 
     return Scaffold(
-      backgroundColor: const Color(0xFFA7C4E2),
+      backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
 
@@ -107,7 +104,10 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
             right: 20,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image.asset("assets/images/logo_dosewise.png",
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                 width: 125,
                 height: 125,
               ),
@@ -127,7 +127,7 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
                     fontSize: 28,
-                    color:Color(0xFF1B3568),
+                    color:colorScheme.primary,
                   ),
                   ),
                   const SizedBox(height: 32),
@@ -140,14 +140,14 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(4)
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Ano de Nascimento (YYYY)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -159,14 +159,14 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(3)
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Altura (cm)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -177,14 +177,14 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
                     ],
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Peso (kg)",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -194,14 +194,14 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                     controller: generoController, 
                     showCursor: false,
                     readOnly: true,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Género",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),                  
                   const SizedBox(height: 32),
 
@@ -212,9 +212,9 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                       print("Finalizar Registo Utilizador pressionado!");
                       //await finalizarRegisto();
                     },
-                    foregroundColor: const Color(0xFF1B3568),
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                    child: const Icon(Icons.create),
+                    foregroundColor: colorScheme.primary,
+                    backgroundColor: colorScheme.secondary,
+                    child: const Icon(Icons.create_outlined),
                   )
                 ],
               ),

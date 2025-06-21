@@ -24,22 +24,23 @@ class WarnAjudarConvState extends State<WarnAjudarConv> {
 
   @override
 Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
   return Scaffold(
-    backgroundColor: const Color(0xFFA7C4E2),
+    backgroundColor: colorScheme.onPrimary,
     body: Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               """ ainda n sei o texto""",
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 height: 1.5,
-                color: Color(0xFF1B3568),
+                color: colorScheme.primary,
               ),
               textAlign: TextAlign.justify,
             ),

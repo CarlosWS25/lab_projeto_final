@@ -72,8 +72,9 @@ class ScreenLoginState extends State<ScreenLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFA7C4E2),
+      backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
 
@@ -83,7 +84,10 @@ class ScreenLoginState extends State<ScreenLogin> {
             right: 20,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image.asset("assets/images/logo_dosewise.png",
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                 width: 125,
                 height: 125,
               ),
@@ -102,7 +106,7 @@ class ScreenLoginState extends State<ScreenLogin> {
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: 32,
-                      color:Color(0xFF1B3568),
+                      color:colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -111,14 +115,14 @@ class ScreenLoginState extends State<ScreenLogin> {
                   TextField(
                     controller: usernameController,
                     showCursor: false,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Username",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 16),
 
@@ -128,14 +132,14 @@ class ScreenLoginState extends State<ScreenLogin> {
                     showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Password",
-                      hintStyle: TextStyle(color:Color(0xFF1B3568)),
+                      hintStyle: TextStyle(color:colorScheme.primary,),
                     ),
-                    style: TextStyle(color:Color(0xFF1B3568)),
+                    style: TextStyle(color:colorScheme.primary,),
                   ),
                   const SizedBox(height: 32),
 
@@ -147,8 +151,8 @@ class ScreenLoginState extends State<ScreenLogin> {
                       //final uri = await makeApiUri("/utilizador/registar");
                       await fazerLogin(); 
                     },
-                    foregroundColor: const Color(0xFF1B3568),
-                    backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    foregroundColor: colorScheme.primary,
+                    backgroundColor: colorScheme.secondary,
                     child: const Icon(Icons.login),
                   )
                 ],

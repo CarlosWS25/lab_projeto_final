@@ -5,8 +5,9 @@ class ScreenAjuda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme; 
     return Scaffold(
-    backgroundColor: const Color(0xFFA7C4E2),
+    backgroundColor: colorScheme.onPrimary,
       body: Center(
         child: Text(
           "Ajuda aqui!",

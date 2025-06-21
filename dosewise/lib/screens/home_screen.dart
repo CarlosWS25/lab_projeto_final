@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "page_settings.dart";
 import "page_profile.dart";
-import "page_random.dart";
+import "page_guia.dart";
 import "page_mainmenu.dart";
 
 class HomeScreen extends StatefulWidget {
@@ -17,14 +17,15 @@ class HomeScreenState extends State<HomeScreen> {
   final List<Widget> pages = const [
     PageMainMenu(),
     PageProfile(),
-    PageRandom(),
+    PageGuia(),
     PageSettings(),
   ];
 
   @override
   Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme; 
     return Scaffold(
-      backgroundColor: const Color(0xFFA7C4E2),
+      backgroundColor: colorScheme.onPrimary,
       body: IndexedStack(
         index: IndexPages,
         children: pages,
@@ -33,9 +34,9 @@ class HomeScreenState extends State<HomeScreen> {
       // Barra de navegação inferior
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xFF1B3568),
-        unselectedItemColor: const Color(0xFFA7C4E2),
-        selectedItemColor: Colors.white,
+        backgroundColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onPrimary,
+        selectedItemColor: colorScheme.secondary,
         currentIndex: IndexPages,
         onTap: (int index) {
           setState(() {
@@ -54,8 +55,8 @@ class HomeScreenState extends State<HomeScreen> {
             label: "Perfil",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: "???",
+            icon: Icon(Icons.book),
+            label: "Guia",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),

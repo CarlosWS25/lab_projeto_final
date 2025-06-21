@@ -24,15 +24,16 @@ class WarnScreenState extends State<WarnScreen> {
 
   @override
 Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
   return Scaffold(
-    backgroundColor: const Color(0xFFA7C4E2),
+    backgroundColor: colorScheme.onPrimary,
     body: Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               """Esta aplicação tem fins exclusivamente informativos e educativos. Não substitui, em nenhuma circunstância, a avaliação, o diagnóstico ou o tratamento prestado por profissionais de saúde qualificados.
 
 Em caso de emergência médica, contacta imediatamente os serviços de emergência (112) ou procura assistência médica profissional.
@@ -43,7 +44,7 @@ As recomendações fornecidas pela aplicação são baseadas em dados e critéri
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
                 height: 1.5,
-                color: Color(0xFF1B3568),
+                color: colorScheme.primary,
               ),
               textAlign: TextAlign.justify,
             ),

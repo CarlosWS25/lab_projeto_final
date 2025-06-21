@@ -3,7 +3,6 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
-import "package:flutter/services.dart";
 import "package:dosewise/opcoes_gd.dart";
 
 
@@ -146,6 +145,7 @@ class _PageProfileState extends State<PageProfile> {
 
   //Frontend dos campos de entrada de dados
   Widget _buildField(String label, String value, TextEditingController controller, {VoidCallback? onTap}) {
+    final colorScheme = Theme.of(context).colorScheme; 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -158,25 +158,23 @@ class _PageProfileState extends State<PageProfile> {
                 onTap: onTap,
                 decoration: InputDecoration(
                   labelText: label,
-                  labelStyle: const TextStyle(
+                  labelStyle:TextStyle(
                     fontFamily: "Roboto-Regular",
                     fontSize: 16,
-                    color: Color(0xFF1B3568),
-                  ),
+                    color: colorScheme.primary),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: colorScheme.secondary,
                 ),
               )
 
 //Texto que mostra os dados do utilizador
             : Text(
                 "   $label: $value",
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: "Roboto-Regular",
                   fontSize: 16,
-                  color: Color(0xFF1B3568),
-                ),
-              ),
+                  color: colorScheme.primary,
+    )),
         const SizedBox(height: 20),
       ],
     );
@@ -186,6 +184,7 @@ class _PageProfileState extends State<PageProfile> {
 
   @override
 Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme; 
   //Se os dados estiverem a carregar aparece uma tela de load
   if (loadingMode) {
     return const Center(child: CircularProgressIndicator());
@@ -196,7 +195,7 @@ Widget build(BuildContext context) {
   }
 
   return Scaffold(
-    backgroundColor: const Color(0xFFA7C4E2),
+    backgroundColor: colorScheme.onPrimary,
     body: Stack(
       children: [
         Padding(
@@ -208,7 +207,9 @@ Widget build(BuildContext context) {
 
 //logo do DoseWise
                 child: Image.asset(
-                  "assets/images/logo_dosewise.png",
+                  Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                   width: 100,
                   height: 100,
                 ),
@@ -216,22 +217,22 @@ Widget build(BuildContext context) {
               const SizedBox(height: 16),
               
 //Titulo da página
-              const Text(
+              Text(
                 "   Informações do Utilizador",
                 style: TextStyle(
                   fontFamily: "Roboto-Regular",
                   fontSize: 28,
-                  color: Color(0xFF1B3568),
-                ),
-              ),
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.primary,
+          )),
 
 // ID do utilizador
               const SizedBox(height: 40),
               Text("   ID: ${userData!["id"]}",
-                style: const TextStyle(
+                style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 fontSize: 16,
-                color: Color(0xFF1B3568),
+                color: colorScheme.primary,
               )),
               const SizedBox(height: 16),
 
@@ -250,7 +251,7 @@ Widget build(BuildContext context) {
           right: 30,
           child: FloatingActionButton(
             mini: true,
-            backgroundColor: Color(0xFF1B3568),
+            backgroundColor: colorScheme.primary,
             onPressed: () async {
               if (editMode) {
                 await updateUserData();
@@ -259,7 +260,7 @@ Widget build(BuildContext context) {
                 editMode = !editMode;
               });
             },
-            child: Icon(editMode ? Icons.save : Icons.edit, color: Color(0xFFA7C4E2)),
+            child: Icon(editMode ? Icons.save : Icons.edit, color: colorScheme.onPrimary,),
           ),
         ),
       ],

@@ -5,8 +5,9 @@ class ScreenAlertaAmigo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color(0xFFA7C4E2),
+      backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
           
@@ -16,7 +17,10 @@ class ScreenAlertaAmigo extends StatelessWidget {
             right: 20,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image.asset("assets/images/logo_dosewise.png",
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
                 width: 125,
                 height: 125,
               ),
@@ -37,16 +41,16 @@ class ScreenAlertaAmigo extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: 32,
-                      color:Color(0xFF1B3568),
+                      color:colorScheme.primary,
                     ),
                   ),
                   const SizedBox(height: 32),
 
 //Campo Nome do Amigo
                   TextField(
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Nome do Amigo",
                     ),
@@ -55,9 +59,9 @@ class ScreenAlertaAmigo extends StatelessWidget {
 
 //Campo Número do Amigo
                   TextField(
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Número do Amigo",
                     ),
@@ -73,7 +77,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                         onPressed: () {
                           print("Botão Adicionar Amigo pressionado!");
                         },
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: colorScheme.primary,
                         child: const Icon(Icons.person_add),
                       ),
                       const SizedBox(width: 235),
@@ -84,7 +88,7 @@ class ScreenAlertaAmigo extends StatelessWidget {
                         onPressed: () {
                           print("Botão Remover Amigo pressionado!");
                         },
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        backgroundColor: colorScheme.primary,
                         child: const Icon(Icons.person_remove),
                       ),
                     ],
@@ -101,12 +105,12 @@ class ScreenAlertaAmigo extends StatelessWidget {
                         onPressed: () {
                           print("Botão Alertar Amigos pressionado!");
                         },
-                        backgroundColor:Color(0xFF1B3568),
-                        child: const Text(" Alertar\n Amigo",
+                        backgroundColor: colorScheme.primary,
+                        child: Text("Alertar\nAmigo",
                           style: TextStyle(
                             fontFamily: "Roboto-Regular",
                             fontSize: 25,
-                            color: Colors.white,
+                            color: colorScheme.onPrimary,
                           ),
                         ),
                     ),

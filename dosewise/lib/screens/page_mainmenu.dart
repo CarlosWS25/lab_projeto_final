@@ -1,12 +1,8 @@
 import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_ajuda.dart";
-import "package:dosewise/screens/screen_ajudarconv.dart";
 import "package:dosewise/screens/screen_sos.dart";
 import "package:dosewise/screens/screen_alertaamigo.dart";
 import "package:dosewise/screens/screen_warnconv.dart";
-
-
-
 
 class PageMainMenu extends StatelessWidget {
   const PageMainMenu({super.key});
@@ -14,6 +10,8 @@ class PageMainMenu extends StatelessWidget {
   //Frontend da página do menu principal
   @override
   Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;  
+
     return Stack(
       children: [
         Positioned(
@@ -24,7 +22,8 @@ class PageMainMenu extends StatelessWidget {
               fontFamily: "Roboto-Regular",  
               fontWeight: FontWeight.bold,
               fontSize: 50,
-              color:Color(0xFF1B3568),)
+              color: colorScheme.primary,
+            )
           ),
         ),
         
@@ -44,14 +43,14 @@ class PageMainMenu extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const ScreenAjuda()),
                 );
               },
-              backgroundColor: const Color(0xFF1B3568),
+              backgroundColor: colorScheme.primary,
               label: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text("Ajudar",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      color: Color(0xFFA7C4E2),
+                      color: colorScheme.onPrimary,
                       fontSize: 20,
                     ),
                   )
@@ -77,14 +76,14 @@ class PageMainMenu extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const WarnAjudarConv()),
                 );
               },
-              backgroundColor: const Color(0xFF1B3568),
+              backgroundColor: colorScheme.primary,
               label: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text("   Ajudar \nConvidado",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      color: Color(0xFFA7C4E2),
+                      color: colorScheme.onPrimary,
                       fontSize: 20,
                     ),
                   )
@@ -110,14 +109,14 @@ class PageMainMenu extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const ScreenAlarme()),
                 );
               },
-              backgroundColor: const Color(0xFF1B3568),
+              backgroundColor: colorScheme.primary,
               label: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text("SOS",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      color: Color(0xFFA7C4E2),
+                      color: colorScheme.onPrimary,
                       fontSize: 20,
                     ),
                   )
@@ -143,14 +142,14 @@ class PageMainMenu extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const ScreenAlertaAmigo()),
                 );
               },
-              backgroundColor: const Color(0xFF1B3568),
+              backgroundColor: colorScheme.primary,
               label: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text("Alertar Amigo",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      color: Color(0xFFA7C4E2),
+                      color: colorScheme.onPrimary,
                       fontSize: 20,
                   ),
                   )
