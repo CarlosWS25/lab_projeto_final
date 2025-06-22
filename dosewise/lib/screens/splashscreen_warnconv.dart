@@ -2,13 +2,13 @@ import "package:dosewise/screens/screen_ajudarconv.dart";
 import "package:flutter/material.dart";
 
 
-class WarnAjudarConv extends StatefulWidget {
-  const WarnAjudarConv({super.key});
+class ScreenWarnAjudarConv extends StatefulWidget {
+  const ScreenWarnAjudarConv({super.key});
   @override
-  WarnAjudarConvState createState() => WarnAjudarConvState();
+  ScreenWarnAjudarConvState createState() => ScreenWarnAjudarConvState();
 }
 
-class WarnAjudarConvState extends State<WarnAjudarConv> {
+class ScreenWarnAjudarConvState extends State<ScreenWarnAjudarConv> {
   @override
   void initState() {
     super.initState();

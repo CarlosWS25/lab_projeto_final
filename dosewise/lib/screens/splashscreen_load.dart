@@ -1,26 +1,27 @@
 import "package:flutter/material.dart";
-import "screen_warn.dart";
+import "splashscreen_warn.dart";
+import 'dart:async';
 
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class ScreenLoad extends StatefulWidget {
+  const ScreenLoad({super.key});
   @override
-  SplashScreenState createState() => SplashScreenState();
+  ScreenLoadState createState() => ScreenLoadState();
 }
 
-class SplashScreenState extends State<SplashScreen> {
+class ScreenLoadState extends State<ScreenLoad> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(seconds: 5), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const WarnScreen()),
-        );
-      });
+    Timer(const Duration(seconds: 10), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ScreenWarn()
+        ),
+      );
     });
-  }
+    }
+
 
   @override
   Widget build(BuildContext context) {

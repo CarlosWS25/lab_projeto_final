@@ -1,4 +1,5 @@
 import "dart:convert";
+import "package:dosewise/screens/screen_recuperar.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/screens/home_screen.dart";
@@ -51,7 +52,7 @@ class ScreenLoginState extends State<ScreenLogin> {
 
       print("Login bem-sucedido!");
       ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Login bem-sucedido!")),
+        const SnackBar(content: Text("Login bem-sucedido!")),
       );
       Navigator.pushReplacement(
         context,
@@ -143,17 +144,38 @@ class ScreenLoginState extends State<ScreenLogin> {
                   ),
                   const SizedBox(height: 32),
 
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                  
 //Botão Entrar na Conta
-                  FloatingActionButton(
-                    heroTag: "botao_entrar_conta",
-                    onPressed: () async {
-                      print("Botão Entrar pressionado!");
-                      //final uri = await makeApiUri("/utilizador/registar");
-                      await fazerLogin(); 
-                    },
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: const Icon(Icons.login),
+                      FloatingActionButton(
+                        heroTag: "botao_entrar_conta",
+                        onPressed: () async {
+                          print("Botão Entrar pressionado!");
+                          await fazerLogin(); 
+                        },
+                        foregroundColor: colorScheme.primary,
+                        backgroundColor: colorScheme.secondary,
+                        child: const Icon(Icons.login)
+                      ),
+                      const SizedBox(width: 235),
+
+//Botão Recuperar Password
+                      FloatingActionButton(
+                        heroTag: "botao_recuperar_password",
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => ScreenRecuperar())
+                          );
+                        },
+                        foregroundColor: colorScheme.primary,
+                        backgroundColor: colorScheme.secondary,
+                        child: const Icon(Icons.key)
+                      )
+                    ]
                   )
                 ],
               ),

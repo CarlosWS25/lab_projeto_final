@@ -105,7 +105,7 @@ class _ScreenAlarmeState extends State<ScreenAlarme> {
                 color:colorScheme.primary)
             ),
             const SizedBox(height: 32),
-        ]
+          ]
       ),
       )
     );

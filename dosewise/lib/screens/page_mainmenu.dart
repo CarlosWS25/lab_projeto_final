@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_ajuda.dart";
 import "package:dosewise/screens/screen_sos.dart";
 import "package:dosewise/screens/screen_alertaamigo.dart";
-import "package:dosewise/screens/screen_warnconv.dart";
+import "package:dosewise/screens/splashscreen_warnconv.dart";
 
 class PageMainMenu extends StatelessWidget {
   const PageMainMenu({super.key});
@@ -73,7 +73,7 @@ class PageMainMenu extends StatelessWidget {
                 print("Botão Ajudar Convidado pressionado!");
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const WarnAjudarConv()),
+                  MaterialPageRoute(builder: (context) => const ScreenWarnAjudarConv()),
                 );
               },
               backgroundColor: colorScheme.primary,

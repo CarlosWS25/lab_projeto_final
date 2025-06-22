@@ -50,11 +50,13 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
 
                 cur.execute(query_saude, (user_id, idade_atual, peso, altura_cm, genero))
                 conn.commit()
-                print("✅ Utilizador e informações de saúde inseridos com sucesso.")
+                print("Utilizador e informações de saúde inseridos com sucesso.")
+                return recovery_key  
         except Exception as e:
-            print("❌ Erro ao inserir:", e)
+            print(" Erro ao inserir:", e)
         finally:
             conn.close()
+    return None 
 
 
 # READ all
@@ -231,26 +233,6 @@ def update_info_saude(id, dados):
     finally:
         conn.close()
 
-
-def verificar_recovery_key(user_id: int, recovery_key: str) -> bool:
-    conn = get_connection()
-    if not conn:
-        return False
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute("SELECT recovery_key FROM users WHERE id = %s;", (user_id,))
-            resultado = cur.fetchone()
-            if not resultado:
-                return False
-
-            recovery_key_db = resultado[0]
-            return verify_password(recovery_key, recovery_key_db)
-    except Exception as e:
-        print(f"❌ Erro ao verificar recovery_key: {e}")
-        return False
-    finally:
-        conn.close()
 
 def recuperar_password(username: str, recovery_key: str, nova_password: str) -> bool:
     conn = get_connection()

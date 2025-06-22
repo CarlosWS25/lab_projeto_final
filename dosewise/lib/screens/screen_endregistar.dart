@@ -2,14 +2,16 @@ import "dart:convert";
 import "package:http/http.dart" as http;
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
-import "package:dosewise/screens/screen_inicial.dart";
 import "package:dosewise/veri_device.dart";
 import "package:dosewise/opcoes_gd.dart";
+import "package:dosewise/screens/splashscreen_recoverypass.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenEndRegistar extends StatefulWidget {
   // Campos finais que armazenam os dados do utilizador
   final String username;
   final String password;
+  
 
   // Construtor da classe, com parâmetros obrigatórios
   const ScreenEndRegistar({
@@ -28,6 +30,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
+  final TextEditingController recoveryController = TextEditingController();
 
 //Função que completa o registo do utilzador
 Future<void> finalizarRegisto() async {
@@ -48,6 +51,7 @@ Future<void> finalizarRegisto() async {
     final int? alturaInt = int.tryParse(altura);
     final double? pesoDouble = double.tryParse(peso);
     final generoEnviado = mapGenero[genero] ?? genero;
+
     
 
     final uri = await makeApiUri("/users/");
@@ -71,9 +75,16 @@ Future<void> finalizarRegisto() async {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Conta criada com sucesso!")),
         );
+        final data = jsonDecode(response.body);
+        final recoveryKey = data["recovery_key"];
+        print("Recovery key recebida: $recoveryKey");
+
+        // Guardar localmente
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("recovery_key", recoveryKey);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const ScreenInicial()),
+          MaterialPageRoute(builder: (context) => ScreenRecovery(recoveryKey: recoveryKey)),
         );
         } else if (response.statusCode == 409) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -90,8 +101,6 @@ Future<void> finalizarRegisto() async {
       );
     }
   }
-
-  
 
   @override
   void initState() {

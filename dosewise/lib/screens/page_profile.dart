@@ -60,7 +60,6 @@ class _PageProfileState extends State<PageProfile> {
           "Content-Type": "application/json",
         },
       );
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> list = data["utilizador"];

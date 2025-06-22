@@ -1,20 +1,20 @@
-
 from fastapi import APIRouter, HTTPException, Depends, Request
 from auth.auth_bearer import JWTBearer, get_user_id_from_token, is_admin_from_token
-from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user, get_user_by_username
+from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user, get_user_by_username, recuperar_password
 from models.user import UserCreate
 from models.user import UserUpdate
+from models.user import RecoveryPasswordRequest
+
 
 router = APIRouter()
 
 @router.post("/")
 def create_user(user: UserCreate):
-    # Verifica se o nome de utilizador já existe
     if get_user_by_username(user.username):
         raise HTTPException(status_code=409, detail="Username já existe.")
-    # Ignora user.is_admin — força sempre False
-    insert_user(
-        False,  
+
+    recovery_key = insert_user(
+        False,
         user.username,
         user.password,
         user.ano_nascimento, 
@@ -22,7 +22,14 @@ def create_user(user: UserCreate):
         user.peso,
         user.genero
     )
-    return {"msg": "Utilizador criado com sucesso"}
+
+    if not recovery_key:
+        raise HTTPException(status_code=500, detail="Erro ao criar utilizador.")
+
+    return {
+        "message": "Utilizador criado com sucesso.",
+        "recovery_key": recovery_key 
+    }
 
 
 @router.get("/", dependencies=[Depends(JWTBearer())])
@@ -64,4 +71,5 @@ async def update_me(request: Request, user_update: UserUpdate):
     if success:
         return {"msg": "Dados atualizados com sucesso"}
     raise HTTPException(status_code=400, detail="Falha ao atualizar dados")
+
 

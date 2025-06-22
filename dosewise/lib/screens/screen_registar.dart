@@ -2,14 +2,14 @@ import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_endregistar.dart";
 
 
-class RegistarScreen extends StatefulWidget {
-  const RegistarScreen({super.key});
+class ScreenRegistar extends StatefulWidget {
+  const ScreenRegistar({super.key});
 
   @override
-  State<RegistarScreen> createState() => RegistarScreenState();
+  State<ScreenRegistar> createState() => ScreenRegistarState();
 }
 
-class RegistarScreenState extends State<RegistarScreen> {
+class ScreenRegistarState extends State<ScreenRegistar> {
   //Controllers que capturam os dados dos TextFields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();

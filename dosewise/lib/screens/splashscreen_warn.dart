@@ -2,13 +2,13 @@ import "package:dosewise/screens/screen_inicial.dart";
 import "package:flutter/material.dart";
 
 
-class WarnScreen extends StatefulWidget {
-  const WarnScreen({super.key});
+class ScreenWarn extends StatefulWidget {
+  const ScreenWarn({super.key});
   @override
-  WarnScreenState createState() => WarnScreenState();
+  ScreenWarnState createState() => ScreenWarnState();
 }
 
-class WarnScreenState extends State<WarnScreen> {
+class ScreenWarnState extends State<ScreenWarn> {
   @override
   void initState() {
     super.initState();

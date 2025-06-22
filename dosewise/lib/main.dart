@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 import "package:dosewise/controlador_tema.dart";
-import "screens/screen_load.dart";
+import "screens/splashscreen_load.dart";
 
 void main() {
   runApp(
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               onError: Color.fromARGB(255, 34, 34, 34),
             ),
           ),
-        home: SplashScreen(),
+        home: ScreenLoad(),
         );
       },
     );
