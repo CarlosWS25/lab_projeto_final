@@ -3,7 +3,7 @@ import "package:http/http.dart" as http;
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
 import "package:dosewise/veri_device.dart";
-import "package:dosewise/opcoes_gd.dart";
+import "package:dosewise/opcoes_gdd.dart";
 import "package:dosewise/screens/splashscreen_recoverypass.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 

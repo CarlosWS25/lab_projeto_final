@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
-import "package:dosewise/controlador_tema.dart"; // onde está o ThemeProvider
+import "package:dosewise/controlador_tema.dart";
 
 class PageSettings extends StatelessWidget {
   const PageSettings({super.key});

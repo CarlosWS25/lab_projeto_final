@@ -57,7 +57,6 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
       );
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
         
         print("Password alterada com sucesso!");
         ScaffoldMessenger.of(context).showSnackBar(

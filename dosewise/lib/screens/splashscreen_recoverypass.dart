@@ -1,4 +1,4 @@
-import 'package:dosewise/screens/home_screen.dart';
+import 'package:dosewise/screens/screen_inicial.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -18,7 +18,7 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
     Timer(const Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen(),
+        MaterialPageRoute(builder: (context) => const ScreenInicial(),
         ),
       );
     });

@@ -18,32 +18,32 @@ class ScreenRegistarState extends State<ScreenRegistar> {
 
   //Função que inicia o registo do utilizador
   void iniciarRegisto(){
-  final username = usernameController.text.trim();
-  final password = passwordController.text.trim();
-  final confirmarPassword = confirmarPasswordController.text.trim();
+    final username = usernameController.text.trim();
+    final password = passwordController.text.trim();
+    final confirmarPassword = confirmarPasswordController.text.trim();
 
-  //Validação dos campos
-  if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Preencha todos os campos")),
-    );
-    return;
-  }
-  if (password != confirmarPassword) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("A password não coincide")),
-    );
-    return;
-  }
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ScreenEndRegistar(
-        username: username,
-        password: password,
+    //Validação dos campos
+    if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Preencha todos os campos")),
+      );
+      return;
+    }
+    if (password != confirmarPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("A password não coincide")),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScreenEndRegistar(
+          username: username,
+          password: password,
+        ),
       ),
-    ),
-  );
+    );
   }
 
   @override
