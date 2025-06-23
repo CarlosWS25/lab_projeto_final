@@ -27,36 +27,20 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
     """
 
-    query_saude = """
-    INSERT INTO saude (
-        id,
-        idade_atual,
-        peso,
-        altura_cm,
-        genero
-    ) VALUES (%s, %s, %s, %s, %s);
-    """
-
-    ano_atual = datetime.datetime.now().year
-
     conn = get_connection()
     if conn:
         try:
             with conn.cursor() as cur:
                 cur.execute(query_user, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero, hashed_chave))
                 user_id = cur.fetchone()[0]
-
-                idade_atual = ano_atual - ano_nascimento
-
-                cur.execute(query_saude, (user_id, idade_atual, peso, altura_cm, genero))
                 conn.commit()
-                print("Utilizador e informações de saúde inseridos com sucesso.")
-                return recovery_key  
+                print("Utilizador inserido com sucesso.")
+                return recovery_key  # Devolve a chave original gerada
         except Exception as e:
-            print(" Erro ao inserir:", e)
+            print("Erro ao inserir:", e)
         finally:
             conn.close()
-    return None 
+    return None
 
 
 # READ all
@@ -93,12 +77,10 @@ def get_user_by_id(user_id):
 def update_user(
     user_id,
     username=None,
-    password=None,
     ano_nascimento = None,
     altura_cm=None,
     peso=None,
     genero=None,
-    is_admin=None
 ):
     conn = get_connection()
     if conn:
@@ -121,9 +103,6 @@ def update_user(
             if genero is not None:
                 updates.append("genero = %s")
                 values.append(genero)
-            if is_admin is not None:
-                updates.append("is_admin = %s")
-                values.append(is_admin)
             if not updates:
                 return False
 
@@ -138,7 +117,6 @@ def update_user(
         finally:
             conn.close()
     return False
-
 # DELETE
 def delete_user(user_id):
     query = "DELETE FROM users WHERE id = %s;"
@@ -170,68 +148,6 @@ def get_user_by_username(username):
             conn.close()
     return None
 
-
-def wipe_table_saude():
-    query = """
-    DELETE FROM saude;
-    """
-
-    conn = get_connection()
-    if conn:
-        try:
-            with conn.cursor() as cur:
-                cur.execute(query)
-                conn.commit()
-                print("✅ Todos os registos da tabela 'saude' foram eliminados com sucesso.")
-        except Exception as e:
-            print("❌ Erro ao eliminar registos:", e)
-        finally:
-            conn.close()
-
-def insert_info_saude(saude):
-    conn = get_connection()
-    query = """
-    INSERT INTO saude (id, idade_atual, peso, altura_cm, genero, doencas, sintomas, droga_usada, quantidade)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """
-    try:
-        with conn.cursor() as cur:
-            cur.execute(query, (
-                saude.id,
-                saude.idade_atual,
-                saude.peso,
-                saude.altura_cm,
-                saude.genero,
-                saude.doencas,
-                saude.sintomas,
-                saude.droga_usada,
-                saude.quantidade
-            ))
-            conn.commit()
-    finally:
-        conn.close()
-
-def update_info_saude(id, dados):
-    conn = get_connection()
-    campos = []
-    valores = []
-
-    for campo, valor in dados.dict(exclude_unset=True).items():
-        campos.append(f"{campo} = %s")
-        valores.append(valor)
-
-    if not campos:
-        return
-
-    query = f"UPDATE saude SET {', '.join(campos)} WHERE id = %s"
-    valores.append(id)
-
-    try:
-        with conn.cursor() as cur:
-            cur.execute(query, valores)
-            conn.commit()
-    finally:
-        conn.close()
 
 
 def recuperar_password(username: str, recovery_key: str, nova_password: str) -> bool:

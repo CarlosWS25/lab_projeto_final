@@ -32,6 +32,7 @@ async def get_user_id_from_token(request: Request) -> int:
         raise HTTPException(status_code=403, detail="Token inválido")
     return payload["user_id"]
 
+
 async def is_admin_from_token(request: Request) -> bool:
     auth_header = request.headers.get("Authorization")
     if not auth_header:
