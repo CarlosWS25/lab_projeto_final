@@ -1,26 +1,34 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:dosewise/opcoes_gdd.dart";
-import "package:dosewise/screens/screen_ajuda2.dart";
+import "package:dosewise/screens/screen_endajuda.dart";
 
 
-class ScreenAjuda extends StatefulWidget {
-  const ScreenAjuda({super.key});
+class ScreenAjuda2 extends StatefulWidget {
+  final String uso;
+  final String dose;
+
+  const ScreenAjuda2({
+    super.key,
+    required this.uso,
+    required this.dose,
+  });
+
 
   @override
-  State<ScreenAjuda> createState() => ScreenAjudaState();
+  State<ScreenAjuda2> createState() => ScreenAjuda2State();
 }
 
-class ScreenAjudaState extends State<ScreenAjuda> {
-  final TextEditingController usoController = TextEditingController();
-  final TextEditingController doseController = TextEditingController();
+class ScreenAjuda2State extends State<ScreenAjuda2> {
+  final TextEditingController doencasController = TextEditingController();
+  final TextEditingController sintomasController = TextEditingController();
 
 
-  void iniciarAjuda(){
-    final uso = usoController.text.trim();
-    final dose = doseController.text.trim();
+  Future<void> continuarAjuda() async {
+    final doencas = doencasController.text.trim();
+    final sintomas = sintomasController.text.trim();
 
-    if(uso.isEmpty || dose.isEmpty){
+    if(doencas.isEmpty || sintomas.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos")),
       );
@@ -30,28 +38,29 @@ class ScreenAjudaState extends State<ScreenAjuda> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ScreenAjuda2(
-          uso: uso,
-          dose: dose,
+        builder: (context) => ScreenEndAjuda(
+          uso: widget.uso,
+          dose: widget.dose,
+          doencas: doencas,
+          sintomas: sintomas,
         ),
       ),
     );
   }
 
+
   @override
-  void initState() {
-    super.initState();
-    carregarUso().then((value) {
-      setState(() {
-        opcoesUso = value;
+    void initState() {
+      super.initState();
+      carregarDoencas().then((value) {
+        setState(() {
+          opcoesDoenca = value;
+        });
       });
-    });
-  }
-    
+    }
 
 
-
-  @override
+@override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
@@ -93,35 +102,32 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                   ),
                   const SizedBox(height: 32),
 
-//Campo de Drogas
+//Campo de Doencas
                   TextField(
-                    onTap: () => escolherUso(context: context, controller: usoController, opcoes: opcoesUso),
-                    controller: usoController,
+                    onTap: () => escolherDoenca(context: context, controller: doencasController, opcoes: opcoesDoenca),
+                    controller: doencasController,
                     showCursor: false,
                     readOnly: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
-                      hintText: "Drogas usadas",
+                      hintText: "Doenças prévias",
                       hintStyle: TextStyle(color:colorScheme.primary),
                     ),
                     style: TextStyle(color:colorScheme.primary),
                   ),
                   const SizedBox(height: 16),
 
-//Campo de Dose em Gramas
+//Campo de sintomas
                   TextField(
-                    controller: doseController,
+                    controller: sintomasController,
                     showCursor: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,1})?$"))
-                    ],
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
-                      hintText: "Dose (g)",
+                      hintText: "Sintomas",
                       hintStyle: TextStyle(color:colorScheme.primary),
                     ),
                     style: TextStyle(color:colorScheme.primary),
@@ -130,10 +136,10 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                   
 //Botão Começar Ajuda
                   FloatingActionButton(
-                    heroTag: "ajudar_utilizador",
+                    heroTag: "finalizar_ajuda_utilizador",
                     onPressed: () async {
-                      print("Botão Ajudar utilizador pressionado!");
-                      iniciarAjuda();
+                      print("Botão Finalizar Ajudar pressionado!");
+                      continuarAjuda();
                     },
                     foregroundColor: colorScheme.primary,
                     backgroundColor: colorScheme.secondary,
@@ -150,8 +156,8 @@ class ScreenAjudaState extends State<ScreenAjuda> {
 
   @override
   void dispose() {
-    usoController.dispose();
-    doseController.dispose();
+    doencasController.dispose();
+    sintomasController.dispose();
     super.dispose();
   }
 }

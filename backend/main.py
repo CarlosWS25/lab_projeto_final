@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from database.setup import create_table_users, create_table_saude
+from database.setup import create_table_users
 from routes import users, auth, predict
 
 @asynccontextmanager

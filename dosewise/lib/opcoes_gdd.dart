@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 const List<String> opcoesGenero = ["Masculino", "Feminino"];
 //Lista de Doenças
 List<String> opcoesDoenca = [];
-List<String> opcoesDrogas = [];
+List<String> opcoesUso = [];
 
 
 //Transforma o género num formato compatível com a base de dados
@@ -52,9 +52,9 @@ Future<List<String>> carregarDoencas() async {
       .toList();
 }
 //Carregar drogas de ficheiro .txt
-Future<List<String>> carregarDrogas() async {
-  final String listaDrogas = await rootBundle.loadString("assets/txt/drogas.txt");
-  return listaDrogas
+Future<List<String>> carregarUso() async {
+  final String listaUso = await rootBundle.loadString("assets/txt/drogas.txt");
+  return listaUso
       .split("\n")
       .map((e) => e.trim())
       .where((e) => e.isNotEmpty)
@@ -96,8 +96,8 @@ void escolherDoenca({
   );
 }
 
-// Caixa de texto que escolhe as drogas
-void escolherDrogas({
+// Caixa de texto que escolhe as uso
+void escolherUso({
   required BuildContext context,
   required TextEditingController controller,
   required List<String> opcoes,
@@ -113,11 +113,11 @@ void escolherDrogas({
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: opcoes.map((String drogas) {
+              children: opcoes.map((String uso) {
                 return ListTile(
-                  title: Text(drogas),
+                  title: Text(uso),
                   onTap: () {
-                    controller.text = drogas;
+                    controller.text = uso;
                     Navigator.pop(context);
                   },
                 );
