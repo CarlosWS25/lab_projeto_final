@@ -53,7 +53,7 @@ def get_all_users():
                 cur.execute(query)
                 return cur.fetchall()
         except Exception as e:
-            print("❌ Erro ao ler utilizadores:", e)
+            print("Erro ao ler utilizadores:", e)
         finally:
             conn.close()
     return []
@@ -68,7 +68,7 @@ def get_user_by_id(user_id):
                 cur.execute(query, (user_id,))
                 return cur.fetchone()
         except Exception as e:
-            print("❌ Erro ao obter utilizador:", e)
+            print("Erro ao obter utilizador:", e)
         finally:
             conn.close()
     return None
@@ -113,7 +113,7 @@ def update_user(
                 conn.commit()
                 return True
         except Exception as e:
-            print("❌ Erro ao atualizar utilizador:", e)
+            print("Erro ao atualizar utilizador:", e)
         finally:
             conn.close()
     return False
@@ -128,7 +128,7 @@ def delete_user(user_id):
                 conn.commit()
                 return True
         except Exception as e:
-            print("❌ Erro ao apagar utilizador:", e)
+            print("Erro ao apagar utilizador:", e)
         finally:
             conn.close()
     return False
@@ -143,7 +143,7 @@ def get_user_by_username(username):
                 cur.execute(query, (username,))
                 return cur.fetchone()
         except Exception as e:
-            print("❌ Erro ao buscar utilizador:", e)
+            print("Erro ao buscar utilizador:", e)
         finally:
             conn.close()
     return None
@@ -171,7 +171,7 @@ def recuperar_password(username: str, recovery_key: str, nova_password: str) -> 
             conn.commit()
             return True
     except Exception as e:
-        print("❌ Erro ao recuperar password:", e)
+        print("Erro ao recuperar password:", e)
         return False
     finally:
         conn.close()

@@ -22,7 +22,7 @@ class _ScreenAlarmeState extends State<ScreenAlarme> {
       timeNow = DateTime.now();
       fiveSecPressed = Timer(const Duration(seconds: 5), () {
         callNumber("+351966650501");
-        print("✅ Botão pressionado por 5 segundos!");
+        print("Botão pressionado por 5 segundos!");
       }
       );
     }
@@ -52,10 +52,10 @@ class _ScreenAlarmeState extends State<ScreenAlarme> {
     if (await canLaunchUrl(phoneUri)) {
       await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
     } else {
-      print("❌ Não foi possível lançar o marcador");
+      print("Não foi possível lançar o marcador");
     }
   } else {
-    print("❌ Permissão de chamada telefónica negada");
+    print("Permissão de chamada telefónica negada");
   }
 }
 

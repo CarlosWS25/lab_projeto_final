@@ -1,39 +1,24 @@
-import "dart:convert";
-import "package:dosewise/screens/home_screen.dart";
-import "package:http/http.dart" as http;
-import "package:flutter/services.dart";
-import "package:flutter/material.dart";
-import "package:dosewise/veri_device.dart";
-
-class ScreenEndAjuda extends StatefulWidget{
-  final String uso;
-  final String dose;
-  final String sintomas;
-  final String doencas;
-
-  const ScreenEndAjuda({
-    super.key,
-    required this.uso,
-    required this.dose,
-    required this.doencas,
-    required this.sintomas,
-  });
+class ScreenEndAjudaState extends State<ScreenEndAjuda> {
+  final BleManager bleManager = BleManager(); // <- se ainda não adicionaste
 
   @override
-  State<ScreenEndAjuda> createState() => ScreenEndAjudaState();
-}
+  void initState() {
+    super.initState();
+    requestPermissions();
+    bleManager.startScanAndConnect(); // começa a procurar o medidor
+  }
 
-  class ScreenEndAjudaState extends State<ScreenEndAjuda>{
+  Future<void> requestPermissions() async {
+    await Permission.bluetoothScan.request();
+    await Permission.bluetoothConnect.request();
+    await Permission.location.request();
+  }
 
   Future<void> finalizarAjuda() async {
-
-    final double? doseDouble = double.tryParse(widget.dose); 
-
+    final double? doseDouble = double.tryParse(widget.dose);
     final uri = await makeApiUri("/predict_overdose");
 
-
     try {
-      // Envia os dados do utilizador para a Base de Dados
       final response = await http.post(
         uri,
         headers: {"Content-Type": "application/json"},
@@ -45,16 +30,15 @@ class ScreenEndAjuda extends StatefulWidget{
         }),
       );
 
-    if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Dados adicionados com sucesso!")),
         );
-        //final data = jsonDecode(response.body);
-         Navigator.pushReplacement(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
-        }else {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Erro ao adicionar os seus dados: ${response.statusCode}")),
         );
@@ -67,18 +51,31 @@ class ScreenEndAjuda extends StatefulWidget{
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Finalizar Ajuda"),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: const Text("Finalizar Ajuda")),
+    body: Center(
+      child: StreamBuilder<double>(
+        stream: bleManager.glucoseStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Text(
+              "Glicemia: ${snapshot.data!.toStringAsFixed(1)} mg/dL",
+              style: const TextStyle(fontSize: 24),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text("À espera da leitura da glicemia..."),
+              ],
+            );
+          }
+        },
       ),
-      body: Center(
-        /*child: ElevatedButton(
-          onPressed: finalizarAjuda(),
-          child: const Text("Finalizar"),
-        ),*/
-      ),
-    );
-  }
-  }
-
+    ),
+  );
+}
+}
