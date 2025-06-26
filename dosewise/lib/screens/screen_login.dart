@@ -6,7 +6,6 @@ import "package:dosewise/screens/home_screen.dart";
 import "package:dosewise/veri_device.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
-
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({super.key});
 
@@ -15,7 +14,6 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class ScreenLoginState extends State<ScreenLogin> {
-  //Capturadores dos dados dos TextFields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -37,97 +35,91 @@ class ScreenLoginState extends State<ScreenLogin> {
         uri,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
-          "username": usernameController.text,
-          "password": passwordController.text,
+          "username": username,
+          "password": password,
         }),
       );
 
-    if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
-      final token = body["access_token"];
+      if (response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        final token = body["access_token"];
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString("token", token);  
-      print("Token guardado: $token");
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("token", token);
+        print("Token guardado: $token");
 
-      print("Login bem-sucedido!");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Login bem-sucedido!")),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Login bem-sucedido!")),
         );
-    } else {
-      print("Falha no login: ${response.statusCode}");
-      ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Falha no login: ${response.statusCode}")),
-      );
-    }
-    } 
-      catch (e) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Falha no login: ${response.statusCode}")),
+        );
+      }
+    } catch (e) {
       print("Erro na requisição: $e");
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-
-  //Logo Dosewise
+          // Logo
           Positioned(
-            top: 50,
-            right: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Image.asset(
-                Theme.of(context).brightness == Brightness.light
+            top: size.height * 0.05,
+            right: size.width * 0.05,
+            child: Image.asset(
+              Theme.of(context).brightness == Brightness.light
                   ? "assets/images/logo_dosewise.png"
                   : "assets/images/logo_dosewise_dark.png",
-                width: 125,
-                height: 125,
-              ),
+              width: size.width * 0.3,
+              height: size.width * 0.3,
             ),
           ),
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-//Título da Tela de Login
-                  Text("Login",
+                  // Título
+                  Text(
+                    "Login",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      fontSize: 32,
-                      color:colorScheme.primary,
+                      fontSize: size.width * 0.08,
+                      color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: size.height * 0.04),
 
-//Campo Username de Login
+                  // Campo Username
                   TextField(
                     controller: usernameController,
                     showCursor: false,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Username",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color:colorScheme.primary,),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: size.height * 0.02),
 
-//Campo Password de Login
+                  // Campo Password
                   TextField(
                     controller: passwordController,
                     showCursor: false,
@@ -136,46 +128,49 @@ class ScreenLoginState extends State<ScreenLogin> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Password",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color:colorScheme.primary,),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: size.height * 0.04),
 
-
+                  // Linha com os dois botões
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                  
-//Botão Entrar na Conta
-                      FloatingActionButton(
-                        heroTag: "botao_entrar_conta",
-                        onPressed: () async {
-                          print("Botão Entrar pressionado!");
-                          await fazerLogin(); 
-                        },
-                        foregroundColor: colorScheme.primary,
-                        backgroundColor: colorScheme.secondary,
-                        child: const Icon(Icons.login)
+                      SizedBox(
+                        width: size.width * 0.2,
+                        height: size.height * 0.07,
+                        child: FloatingActionButton(
+                          heroTag: "botao_entrar_conta",
+                          onPressed: () async {
+                            print("Botão Entrar pressionado!");
+                            await fazerLogin();
+                          },
+                          foregroundColor: colorScheme.primary,
+                          backgroundColor: colorScheme.secondary,
+                          child: const Icon(Icons.login),
+                        ),
                       ),
-                      const SizedBox(width: 235),
-
-//Botão Recuperar Password
-                      FloatingActionButton(
-                        heroTag: "botao_recuperar_password",
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => ScreenRecuperar())
-                          );
-                        },
-                        foregroundColor: colorScheme.primary,
-                        backgroundColor: colorScheme.secondary,
-                        child: const Icon(Icons.key)
-                      )
-                    ]
+                      SizedBox(
+                        width: size.width * 0.2,
+                        height: size.height * 0.07,
+                        child: FloatingActionButton(
+                          heroTag: "botao_recuperar_password",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ScreenRecuperar()),
+                            );
+                          },
+                          foregroundColor: colorScheme.primary,
+                          backgroundColor: colorScheme.secondary,
+                          child: const Icon(Icons.key),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),
@@ -185,14 +180,12 @@ class ScreenLoginState extends State<ScreenLogin> {
       ),
     );
   }
-//Garante que o controlador será removido da memória 
-//quando a tela for fechada, evitando vazamentos de memória
 
-@override
-void dispose() {
-  usernameController.dispose();
-  passwordController.dispose();
-  super.dispose();
-}
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 }
 

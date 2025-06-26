@@ -109,148 +109,173 @@ Future<void> finalizarRegisto() async {
 
 
   @override
-  //Frontend do ecrã de registo
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: colorScheme.onPrimary,
-      body: Stack(
-        children: [
+Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
+  final size = MediaQuery.of(context).size;
 
-          //Logo Dosewise
-          Positioned(
-            top: 50,
-            right: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Image.asset(
-                Theme.of(context).brightness == Brightness.light
+  return Scaffold(
+    backgroundColor: colorScheme.onPrimary,
+    body: Stack(
+      children: [
+        // Logo Dosewise
+        Positioned(
+          top: size.height * 0.05,
+          right: size.width * 0.05,
+          child: Padding(
+            padding: EdgeInsets.all(size.width * 0.02),
+            child: Image.asset(
+              Theme.of(context).brightness == Brightness.light
                   ? "assets/images/logo_dosewise.png"
                   : "assets/images/logo_dosewise_dark.png",
-                width: 125,
-                height: 125,
-              ),
+              width: size.width * 0.25,
+              height: size.width * 0.25,
             ),
           ),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 64),
+        ),
 
-                  //Título de Finalizar Registo
-                  Text("Finalizar Registo",
+        Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: size.height * 0.08),
+
+                // Título de Finalizar Registo
+                Text(
+                  "Finalizar Registo",
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
-                    fontSize: 32,
-                    color:colorScheme.primary,
+                    fontSize: size.width * 0.08,
+                    color: colorScheme.primary,
                   ),
-                  ),
-                  const SizedBox(height: 32),
+                ),
+                SizedBox(height: size.height * 0.05),
 
-                  //Campo de Registar Ano de Nascimento
-                  TextField(
-                    controller: anoController,
-                    showCursor: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(4)
-                    ],
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      hintText: "Ano de Nascimento (YYYY)",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
+                // Campo Ano Nascimento
+                TextField(
+                  controller: anoController,
+                  showCursor: false,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(4)
+                  ],
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: colorScheme.secondary,
+                    border: const OutlineInputBorder(),
+                    hintText: "Ano de Nascimento (YYYY)",
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
                     ),
-                    style: TextStyle(color:colorScheme.primary,),
+                    contentPadding: EdgeInsets.all(size.width * 0.04),
                   ),
-                  const SizedBox(height: 16),
-
-                  //Campo de Registar Altura
-                  TextField(
-                    controller: alturaController,
-                    showCursor: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(3)
-                    ],
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      hintText: "Altura (cm)",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
-                    ),
-                    style: TextStyle(color:colorScheme.primary,),
+                  style: TextStyle(
+                    color: colorScheme.primary,
+                    fontSize: size.width * 0.045,
                   ),
-                  const SizedBox(height: 16),
+                ),
+                SizedBox(height: size.height * 0.025),
 
-                  //Campo de Registar Peso
-                  TextField(
-                    controller: pesoController,
-                    showCursor: false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
-                    ],
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      hintText: "Peso (kg)",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
+                // Campo Altura
+                TextField(
+                  controller: alturaController,
+                  showCursor: false,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(3)
+                  ],
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: colorScheme.secondary,
+                    border: const OutlineInputBorder(),
+                    hintText: "Altura (cm)",
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
                     ),
-                    style: TextStyle(color:colorScheme.primary,),
+                    contentPadding: EdgeInsets.all(size.width * 0.04),
                   ),
-                  const SizedBox(height: 16),
+                  style: TextStyle(
+                    color: colorScheme.primary,
+                    fontSize: size.width * 0.045,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.025),
 
-                  //Campo de Registar Género
-                  TextField(
-                    onTap: () => escolherGenero(context:context, controller:generoController),
-                    controller: generoController, 
-                    showCursor: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      hintText: "Género",
-                      hintStyle: TextStyle(color:colorScheme.primary,),
+                // Campo Peso
+                TextField(
+                  controller: pesoController,
+                  showCursor: false,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
+                  ],
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: colorScheme.secondary,
+                    border: const OutlineInputBorder(),
+                    hintText: "Peso (kg)",
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
                     ),
-                    style: TextStyle(color:colorScheme.primary,),
-                  ),                  
-                  const SizedBox(height: 32),
+                    contentPadding: EdgeInsets.all(size.width * 0.04),
+                  ),
+                  style: TextStyle(
+                    color: colorScheme.primary,
+                    fontSize: size.width * 0.045,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.025),
 
-                  //Botão Finalizar Registo Utilizador
-                  FloatingActionButton(
-                    heroTag: "finalizar_registo_conta",
-                    onPressed: () async {
-                      print("Finalizar Registo Utilizador pressionado!");
-                      await finalizarRegisto();
-                    },
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: const Icon(Icons.create_outlined),
-                  )
-                ],
-              ),
+                // Campo Género
+                TextField(
+                  onTap: () => escolherGenero(
+                    context: context,
+                    controller: generoController,
+                  ),
+                  controller: generoController,
+                  showCursor: false,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: colorScheme.secondary,
+                    border: const OutlineInputBorder(),
+                    hintText: "Género",
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                    contentPadding: EdgeInsets.all(size.width * 0.04),
+                  ),
+                  style: TextStyle(
+                    color: colorScheme.primary,
+                    fontSize: size.width * 0.045,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.05),
+
+                // Botão Finalizar Registo Utilizador
+                FloatingActionButton(
+                  heroTag: "finalizar_registo_conta",
+                  onPressed: () async {
+                    print("Finalizar Registo Utilizador pressionado!");
+                    await finalizarRegisto();
+                  },
+                  foregroundColor: colorScheme.primary,
+                  backgroundColor: colorScheme.secondary,
+                  child: const Icon(Icons.create_outlined),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-  
-    @override
-    void dispose() {
-      anoController.dispose();
-      alturaController.dispose();
-      pesoController.dispose();
-      generoController.dispose();
-      super.dispose();
-    }   
+        ),
+      ],
+    ),
+  );
+}
+
   }
 

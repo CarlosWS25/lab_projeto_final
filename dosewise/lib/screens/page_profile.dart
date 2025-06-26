@@ -143,52 +143,56 @@ class _PageProfileState extends State<PageProfile> {
   }
 
   //Frontend dos campos de entrada de dados
-  Widget _buildField(String label, String value, TextEditingController controller, {VoidCallback? onTap}) {
-    final colorScheme = Theme.of(context).colorScheme; 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        editMode
-
-//Caixas de texto
-            ? TextFormField(
-                controller: controller,
-                readOnly: onTap != null,
-                onTap: onTap,
-                decoration: InputDecoration(
-                  labelText: label,
-                  labelStyle:TextStyle(
-                    fontFamily: "Roboto-Regular",
-                    fontSize: 16,
-                    color: colorScheme.primary),
-                  filled: true,
-                  fillColor: colorScheme.secondary,
-                ),
-              )
-
-//Texto que mostra os dados do utilizador
-            : Text(
-                "   $label: $value",
-                style: TextStyle(
+  Widget _buildField(
+  String label,
+  String value,
+  TextEditingController controller, {
+  VoidCallback? onTap,
+  double fontSize = 16,
+}) {
+  final colorScheme = Theme.of(context).colorScheme; 
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      editMode
+          ? TextFormField(
+              controller: controller,
+              readOnly: onTap != null,
+              onTap: onTap,
+              decoration: InputDecoration(
+                labelText: label,
+                labelStyle: TextStyle(
                   fontFamily: "Roboto-Regular",
-                  fontSize: 16,
+                  fontSize: fontSize,
                   color: colorScheme.primary,
-    )),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
+                ),
+                filled: true,
+                fillColor: colorScheme.secondary,
+              ),
+            )
+          : Text(
+              "   $label: $value",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                fontSize: fontSize,
+                color: colorScheme.primary,
+              ),
+            ),
+      SizedBox(height: fontSize * 1.25),
+    ],
+  );
+}
 
   
 
   @override
 Widget build(BuildContext context) {
+  final size = MediaQuery.of(context).size;
   final colorScheme = Theme.of(context).colorScheme; 
-  //Se os dados estiverem a carregar aparece uma tela de load
+
   if (loadingMode) {
     return const Center(child: CircularProgressIndicator());
   }
-  //Se os dados do utilizador não estiverem carregados, mostra uma mensagem de erro
   if (userData == null) {
     return const Center(child: Text("Erro ao carregar os dados do utilizador."));
   }
@@ -198,56 +202,90 @@ Widget build(BuildContext context) {
     body: Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.05,
+            vertical: size.height * 0.02,
+          ),
           child: ListView(
             children: [
-              const SizedBox(height: 24),
-              Center(
+              SizedBox(height: size.height * 0.03),
 
-//logo do DoseWise
+              Center(
                 child: Image.asset(
                   Theme.of(context).brightness == Brightness.light
-                  ? "assets/images/logo_dosewise.png"
-                  : "assets/images/logo_dosewise_dark.png",
-                  width: 100,
-                  height: 100,
+                      ? "assets/images/logo_dosewise.png"
+                      : "assets/images/logo_dosewise_dark.png",
+                  width: size.width * 0.25,
+                  height: size.width * 0.25,
                 ),
               ),
-              const SizedBox(height: 16),
-              
-//Titulo da página
+
+              SizedBox(height: size.height * 0.02),
+
               Text(
                 "   Informações do Utilizador",
                 style: TextStyle(
                   fontFamily: "Roboto-Regular",
-                  fontSize: 28,
+                  fontSize: size.width * 0.07,
                   fontWeight: FontWeight.bold,
                   color: colorScheme.primary,
-          )),
+                ),
+              ),
 
-// ID do utilizador
-              const SizedBox(height: 40),
-              Text("   ID: ${userData!["id"]}",
+              SizedBox(height: size.height * 0.04),
+
+              Text(
+                "   ID: ${userData!["id"]}",
                 style: TextStyle(
-                fontFamily: "Roboto-Regular",
-                fontSize: 16,
-                color: colorScheme.primary,
-              )),
-              const SizedBox(height: 16),
+                  fontFamily: "Roboto-Regular",
+                  fontSize: size.width * 0.045,
+                  color: colorScheme.primary,
+                ),
+              ),
 
-              _buildField("Username ", userData!["username"], usernameController),
-              _buildField("Ano de Nascimento (YYYY) ", "${userData!["ano_nascimento"]}", anoController),
-              _buildField("Altura (cm) ", "${userData!["altura_cm"]}", alturaController),
-              _buildField("Peso (kg) ", "${userData!["peso"]}", pesoController),
-              _buildField("Género ", userData!["genero"], generoController,
-                onTap: () => escolherGenero(context: context, controller: generoController)),
-                
+              SizedBox(height: size.height * 0.03),
+
+              _buildField(
+                "Username",
+                userData!["username"],
+                usernameController,
+                fontSize: size.width * 0.045,
+              ),
+              _buildField(
+                "Ano de Nascimento (YYYY)",
+                "${userData!["ano_nascimento"]}",
+                anoController,
+                fontSize: size.width * 0.045,
+              ),
+              _buildField(
+                "Altura (cm)",
+                "${userData!["altura_cm"]}",
+                alturaController,
+                fontSize: size.width * 0.045,
+              ),
+              _buildField(
+                "Peso (kg)",
+                "${userData!["peso"]}",
+                pesoController,
+                fontSize: size.width * 0.045,
+              ),
+              _buildField(
+                "Género",
+                userData!["genero"],
+                generoController,
+                fontSize: size.width * 0.045,
+                onTap: () => escolherGenero(
+                  context: context,
+                  controller: generoController,
+                ),
+              ),
             ],
           ),
         ),
+
         Positioned(
-          top: 780,
-          right: 30,
+          bottom: size.height * 0.04,
+          right: size.width * 0.05,
           child: FloatingActionButton(
             mini: true,
             backgroundColor: colorScheme.primary,
@@ -259,11 +297,16 @@ Widget build(BuildContext context) {
                 editMode = !editMode;
               });
             },
-            child: Icon(editMode ? Icons.save : Icons.edit, color: colorScheme.onPrimary,),
+            child: Icon(
+              editMode ? Icons.save : Icons.edit,
+              color: colorScheme.onPrimary,
+              size: size.width * 0.07,
+            ),
           ),
         ),
       ],
     ),
   );
 }
+
 }

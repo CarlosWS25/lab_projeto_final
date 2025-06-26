@@ -9,31 +9,41 @@ class PageSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
-    final colorScheme = Theme.of(context).colorScheme; 
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.05,
+          vertical: size.height * 0.03,
+        ),
         child: ListView(
           children: [
-            const SizedBox(height: 32),
+            SizedBox(height: size.height * 0.04),
 
-            Text("  Definições",
-            style: TextStyle(
-                fontFamily: "Roboto-Regular",
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: colorScheme.primary),
-              ),
-            const SizedBox(height: 32),
-
-            ListTile(
-              title: Text("Modo Escuro",
+            Text(
+              "Definições",
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
-                fontSize: 16,
-                color: colorScheme.primary),
+                fontSize: size.width * 0.07, // fonte proporcional à largura da tela
+                fontWeight: FontWeight.bold,
+                color: colorScheme.primary,
+              ),
+            ),
+
+            SizedBox(height: size.height * 0.04),
+
+            ListTile(
+              title: Text(
+                "Modo Escuro",
+                style: TextStyle(
+                  fontFamily: "Roboto-Regular",
+                  fontSize: size.width * 0.045, // fonte proporcional
+                  color: colorScheme.primary,
+                ),
               ),
               trailing: Switch(
                 value: isDarkMode,
@@ -48,4 +58,3 @@ class PageSettings extends StatelessWidget {
     );
   }
 }
-

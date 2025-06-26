@@ -3,7 +3,6 @@ import "dart:async";
 import "package:url_launcher/url_launcher.dart";
 import "package:permission_handler/permission_handler.dart";
 
-
 class ScreenAlarme extends StatefulWidget {
   const ScreenAlarme({super.key});
 
@@ -23,91 +22,95 @@ class _ScreenAlarmeState extends State<ScreenAlarme> {
       fiveSecPressed = Timer(const Duration(seconds: 5), () {
         callNumber("+351966650501");
         print("Botão pressionado por 5 segundos!");
-      }
-      );
-    }
-    );
+      });
+    });
   }
+
   void pressOFF(TapUpDetails details) {
     setState(() {
       isPressed = false;
-    }
-    );
+    });
     fiveSecPressed?.cancel();
   }
-  
+
   void noMove() {
-  setState(() {
-    isPressed = false;
-  }
-  );
-  fiveSecPressed?.cancel();
+    setState(() {
+      isPressed = false;
+    });
+    fiveSecPressed?.cancel();
   }
 
   Future<void> callNumber(String number) async {
-  PermissionStatus status = await Permission.phone.request();
+    PermissionStatus status = await Permission.phone.request();
 
-  if (status.isGranted) {
-    final Uri phoneUri = Uri(scheme: "tel", path: number);
-    if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
+    if (status.isGranted) {
+      final Uri phoneUri = Uri(scheme: "tel", path: number);
+      if (await canLaunchUrl(phoneUri)) {
+        await launchUrl(phoneUri, mode: LaunchMode.externalApplication);
+      } else {
+        print("Não foi possível lançar o marcador");
+      }
     } else {
-      print("Não foi possível lançar o marcador");
+      print("Permissão de chamada telefónica negada");
     }
-  } else {
-    print("Permissão de chamada telefónica negada");
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
-      body: Center( 
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-//Texto de SOS
-            Text("CHAMAR 112",
+            // Texto de SOS
+            Text(
+              "CHAMAR 112",
               style: TextStyle(
-                fontFamily: "Roboto-Regular",  
+                fontFamily: "Roboto-Regular",
                 fontWeight: FontWeight.bold,
-                fontSize: 56,
-                color:colorScheme.primary),
+                fontSize: size.width * 0.14, // fonte relativa à largura
+                color: colorScheme.primary,
+              ),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: size.height * 0.04),
 
-//Botão SOS
+            // Botão SOS
             GestureDetector(
-          onTapDown: pressON,
-          onTapUp: pressOFF,
-          onTapCancel: noMove,
-          child: Image.asset(
-            isPressed
-                ? "assets/images/button_on.png"
-                : "assets/images/button_off.png",
-            width: 300,
-            height: 300,
-            fit: BoxFit.contain,
-          ),
-        ),
-        const SizedBox(height: 32),
-
-//Texto de informativo SOS
-            Text("Pressione o botão durante cerca de\n   5 segundos para chamar o 112",
-              style: TextStyle(
-                fontFamily: "Roboto-Regular",  
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color:colorScheme.primary)
+              onTapDown: pressON,
+              onTapUp: pressOFF,
+              onTapCancel: noMove,
+              child: Image.asset(
+                isPressed
+                    ? "assets/images/button_on.png"
+                    : "assets/images/button_off.png",
+                width: size.width * 0.6,   // largura responsiva
+                height: size.width * 0.6,  // mantém quadrado proporcional
+                fit: BoxFit.contain,
+              ),
             ),
-            const SizedBox(height: 32),
-          ]
+            SizedBox(height: size.height * 0.04),
+
+            // Texto informativo SOS
+            Text(
+              "Pressione o botão durante cerca de\n   5 segundos para chamar o 112",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                fontWeight: FontWeight.bold,
+                fontSize: size.width * 0.04, // fonte proporcional
+                color: colorScheme.primary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            SizedBox(height: size.height * 0.04),
+          ],
+        ),
       ),
-      )
     );
   }
 }
+

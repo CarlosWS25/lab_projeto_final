@@ -2,7 +2,7 @@ import "dart:io";
 import "package:device_info_plus/device_info_plus.dart";
 
 
-const String enderecoIP_host = "192.168.1.42";
+const String enderecoIP_host = "192.168.1.74";
 const int porta_host = 8000;
 
 
@@ -26,7 +26,7 @@ Future<String> _getAndroidHost() async {
 
 
 Future<Uri> makeApiUri(String path) async {
-  final host = Platform.isAndroid ? await _getAndroidHost() : "localhost";
+  final host = Platform.isAndroid ? await _getAndroidHost() : "192.168.1.74";
   return Uri(
     scheme: "http",
     host: host,

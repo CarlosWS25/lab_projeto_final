@@ -1,164 +1,153 @@
-import "package:flutter/material.dart";
-import "package:dosewise/screens/screen_ajuda.dart";
-import "package:dosewise/screens/screen_sos.dart";
-import "package:dosewise/screens/screen_alertaamigo.dart";
-import "package:dosewise/screens/splashscreen_warnconv.dart";
+import 'package:flutter/material.dart';
+import 'package:dosewise/screens/screen_ajuda.dart';
+import 'package:dosewise/screens/screen_sos.dart';
+import 'package:dosewise/screens/screen_alertaamigo.dart';
+import 'package:dosewise/screens/splashscreen_warnconv.dart';
 
 class PageMainMenu extends StatelessWidget {
   const PageMainMenu({super.key});
 
-  //Frontend da página do menu principal
   @override
   Widget build(BuildContext context) {
-  final colorScheme = Theme.of(context).colorScheme;  
+    final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
 
-    return Stack(
-      children: [
-        Positioned(
-          bottom: 575,
-          right: 40,
-          child: Text("Menu Principal",
-            style: TextStyle(
-              fontFamily: "Roboto-Regular",  
-              fontWeight: FontWeight.bold,
-              fontSize: 50,
-              color: colorScheme.primary,
-            )
-          ),
-        ),
-        
-// Botão Ajudar
-        Positioned(
-          bottom: 400,
-          right: 225,
-          child: SizedBox(
-            width: 150,
-            height: 100,
-            child: FloatingActionButton.extended(
-              heroTag: "ajudar",
-              onPressed: () {
-                print("Botão Ajudar pressionado!");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScreenAjuda()),
-                );
-              },
-              backgroundColor: colorScheme.primary,
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Ajudar",
-                    style: TextStyle(
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                      fontSize: 20,
-                    ),
-                  )
-                ],
+    return Scaffold(
+      backgroundColor: colorScheme.onPrimary,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center, // Centraliza na vertical
+          children: [
+            SizedBox(height: size.height * 0.15),
+
+            // Título - agora centrado horizontalmente
+            Text(
+              "Menu Principal",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                fontWeight: FontWeight.bold,
+                fontSize: size.width * 0.1,
+                color: colorScheme.primary,
               ),
+              textAlign: TextAlign.center, // Alinhamento do texto
             ),
-          ),
-        ),
 
-// Botão Ajudar Convidado
-        Positioned(
-          bottom: 400,
-          right: 50,
-          child: SizedBox(
-            width: 150,
-            height: 100,
-            child: FloatingActionButton.extended(
-              heroTag: "ajudar_convidado",
-              onPressed: () {
-                print("Botão Ajudar Convidado pressionado!");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScreenWarnAjudarConv()),
-                );
-              },
-              backgroundColor: colorScheme.primary,
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("   Ajudar \nConvidado",
-                    style: TextStyle(
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                      fontSize: 20,
+            SizedBox(height: size.height * 0.1),
+
+            // Primeira linha de botões (Ajudar e Ajudar Convidado)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Centraliza horizontalmente
+              children: [
+                SizedBox(
+                  width: size.width * 0.35,
+                  height: size.height * 0.12,
+                  child: FloatingActionButton.extended(
+                    heroTag: "ajudar",
+                    onPressed: () {
+                      print("Botão Ajudar pressionado!");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScreenAjuda()),
+                      );
+                    },
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "Ajudar",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
+                      ),
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-
-// Botão Alarme
-        Positioned(
-          bottom: 250,
-          right: 225,
-          child: SizedBox(
-            width: 150,
-            height: 100,
-            child: FloatingActionButton.extended(
-              heroTag: "sos",
-              onPressed: () {
-                print("Botão SOS pressionado!");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScreenAlarme()),
-                );
-              },
-              backgroundColor: colorScheme.primary,
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("SOS",
-                    style: TextStyle(
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                      fontSize: 20,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-
-// Botão Alerta Amigo
-        Positioned(
-          bottom: 250,
-          right: 50,
-          child: SizedBox(
-            width: 150,
-            height: 100,
-            child: FloatingActionButton.extended(
-              heroTag: "alerta_amigo",
-              onPressed: () {
-                print("Botão Alerta Amigo pressionado!");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ScreenAlertaAmigo()),
-                );
-              },
-              backgroundColor: colorScheme.primary,
-              label: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Alertar Amigo",
-                    style: TextStyle(
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                      fontSize: 20,
                   ),
-                  )
-                ],
-              ),
+                ),
+                SizedBox(width: size.width * 0.05),
+                SizedBox(
+                  width: size.width * 0.35,
+                  height: size.height * 0.12,
+                  child: FloatingActionButton.extended(
+                    heroTag: "ajudar_convidado",
+                    onPressed: () {
+                      print("Botão Ajudar Convidado pressionado!");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScreenWarnAjudarConv()),
+                      );
+                    },
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "Ajudar\nConvidado",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+
+            SizedBox(height: size.height * 0.1),
+
+            // Segunda linha de botões (SOS e Alerta Amigo)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Centraliza horizontalmente
+              children: [
+                SizedBox(
+                  width: size.width * 0.35,
+                  height: size.height * 0.12,
+                  child: FloatingActionButton.extended(
+                    heroTag: "sos",
+                    onPressed: () {
+                      print("Botão SOS pressionado!");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScreenAlarme()),
+                      );
+                    },
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "SOS",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: size.width * 0.05),
+                SizedBox(
+                  width: size.width * 0.35,
+                  height: size.height * 0.12,
+                  child: FloatingActionButton.extended(
+                    heroTag: "alerta_amigo",
+                    onPressed: () {
+                      print("Botão Alerta Amigo pressionado!");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ScreenAlertaAmigo()),
+                      );
+                    },
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "Alertar Amigo",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

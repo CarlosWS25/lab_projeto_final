@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:dosewise/screens/screen_endregistar.dart";
 
-
 class ScreenRegistar extends StatefulWidget {
   const ScreenRegistar({super.key});
 
@@ -10,19 +9,15 @@ class ScreenRegistar extends StatefulWidget {
 }
 
 class ScreenRegistarState extends State<ScreenRegistar> {
-  //Controllers que capturam os dados dos TextFields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmarPasswordController = TextEditingController();
 
-
-  //Função que inicia o registo do utilizador
   void iniciarRegisto(){
     final username = usernameController.text.trim();
     final password = passwordController.text.trim();
     final confirmarPassword = confirmarPasswordController.text.trim();
 
-    //Validação dos campos
     if (username.isEmpty || password.isEmpty || confirmarPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos")),
@@ -49,46 +44,47 @@ class ScreenRegistarState extends State<ScreenRegistar> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-
-          //Logo Dosewise
+          // Logo Dosewise com tamanho proporcional
           Positioned(
-            top: 50,
-            right: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Image.asset(
-                Theme.of(context).brightness == Brightness.light
-                  ? "assets/images/logo_dosewise.png"
-                  : "assets/images/logo_dosewise_dark.png",
-                width: 125,
-                height: 125,
-              ),
+            top: size.height * 0.06,
+            right: size.width * 0.05,
+            child: Image.asset(
+              Theme.of(context).brightness == Brightness.light
+                ? "assets/images/logo_dosewise.png"
+                : "assets/images/logo_dosewise_dark.png",
+              width: size.width * 0.3,
+              height: size.width * 0.3,
             ),
           ),
+
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 32),
+                  SizedBox(height: size.height * 0.04),
 
-                  //Título Registar
-                  Text("Create account",
+                  // Título Registar
+                  Text(
+                    "Create account",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      fontSize: 32,
-                      color:colorScheme.primary,
+                      fontSize: size.width * 0.08,
+                      color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 32),
 
-                  //Campo de Registar Username
+                  SizedBox(height: size.height * 0.04),
+
+                  // Campo Username
                   TextField(
                     controller: usernameController,
                     showCursor: false,
@@ -97,13 +93,14 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Username",
-                      hintStyle: TextStyle(color:colorScheme.primary),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color:colorScheme.primary),
+                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
                   ),
-                  const SizedBox(height: 16),
 
-                  //Campo de Registar Password
+                  SizedBox(height: size.height * 0.02),
+
+                  // Campo Password
                   TextField(
                     controller: passwordController,
                     showCursor: false,
@@ -114,47 +111,53 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Password",
-                      hintStyle: TextStyle(color:colorScheme.primary),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color:colorScheme.primary),
+                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
                   ),
-                  const SizedBox(height: 16),
 
-                  //Campo de Registar Confirmar Password
+                  SizedBox(height: size.height * 0.02),
+
+                  // Campo Confirmar Password
                   TextField(
                     controller: confirmarPasswordController,
                     showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
-                    decoration:InputDecoration(
+                    decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Confirmar Password",
-                      hintStyle: TextStyle(color:colorScheme.primary),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color:colorScheme.primary),
+                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
                   ),
-                  const SizedBox(height: 32),
-                  
-                  //Botão Registar Utilizador
-                  FloatingActionButton(
-                    heroTag: "registar_utilizador_conta",
-                    onPressed: () async {
-                      print("Botão Registar pressionado!");
-                      iniciarRegisto();
-                    },
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: const Icon(Icons.create_outlined),
-                  )
+
+                  SizedBox(height: size.height * 0.04),
+
+                  // Botão Registar Utilizador com tamanho proporcional
+                  SizedBox(
+                    width: size.width * 0.15,
+                    height: size.width * 0.15,
+                    child: FloatingActionButton(
+                      heroTag: "registar_utilizador_conta",
+                      onPressed: () {
+                        print("Botão Registar pressionado!");
+                        iniciarRegisto();
+                      },
+                      foregroundColor: colorScheme.primary,
+                      backgroundColor: colorScheme.secondary,
+                      child: Icon(Icons.create_outlined, size: size.width * 0.08),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
         ],
       ),
-    );    
+    );
   }
 
   @override

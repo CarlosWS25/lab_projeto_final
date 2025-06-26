@@ -57,14 +57,12 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
       );
 
       if (response.statusCode == 200) {
-        
-        print("Password alterada com sucesso!");
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Password alterada com sucesso!")),
         );
         Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ScreenInicial()),
+          context,
+          MaterialPageRoute(builder: (context) => const ScreenInicial()),
         );
       } else {
         final data = jsonDecode(response.body);
@@ -95,30 +93,29 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-          // Logo Dosewise
           Positioned(
-            top: 50,
-            right: 20,
+            top: size.height * 0.05,
+            right: size.width * 0.05,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(size.width * 0.04),
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.light
                     ? "assets/images/logo_dosewise.png"
                     : "assets/images/logo_dosewise_dark.png",
-                width: 125,
-                height: 125,
+                width: size.width * 0.25,
+                height: size.width * 0.25,
               ),
             ),
           ),
-
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: ListView(
                 shrinkWrap: true,
                 children: [
@@ -126,71 +123,73 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     "Recuperar Palavra-Passe",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      fontSize: 32,
+                      fontSize: size.width * 0.08,
                       color: colorScheme.primary,
                     ),
                   ),
-                  const SizedBox(height: 32),
-
-                  // Username
+                  SizedBox(height: size.height * 0.04),
                   TextField(
                     controller: usernameController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Username",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-
-                  // Recovery key
+                  SizedBox(height: size.height * 0.02),
                   TextField(
                     controller: recoveryKeyController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Código de recuperação",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-
-                  // Nova password
+                  SizedBox(height: size.height * 0.02),
                   TextField(
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Nova password",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-
-                  // Confirmar nova password
+                  SizedBox(height: size.height * 0.02),
                   TextField(
                     controller: confirmarPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Confirmar nova password",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
                   ),
-                  const SizedBox(height: 32),
-
-                  // Botão para recuperar password
+                  SizedBox(height: size.height * 0.04),
                   FloatingActionButton(
                     heroTag: "botao_recuperar_password",
                     onPressed: _loading ? null : recuperarPassword,

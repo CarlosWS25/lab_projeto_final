@@ -18,14 +18,18 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
     Timer(const Duration(seconds: 10), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ScreenInicial(),
+        MaterialPageRoute(
+          builder: (context) => const ScreenInicial(),
         ),
       );
     });
   }
-@override
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size; // pega o tamanho da tela
+
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Center(
@@ -37,27 +41,34 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 fontWeight: FontWeight.bold,
-                fontSize: 30,
+                fontSize: size.width * 0.08, // fonte relativa à largura
                 color: colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 32),
+
+            SizedBox(height: size.height * 0.04),
+
             Text(
               widget.recoveryKey,
               style: TextStyle(
-                fontSize: 24,
+                fontSize: size.width * 0.07,
                 fontWeight: FontWeight.bold,
                 color: colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 32),
-            Text(
-              "Guarde este número de recuperação\n para caso perca a sua password.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Roboto-Regular",
-                fontSize: 16,
-                color: colorScheme.primary,
+
+            SizedBox(height: size.height * 0.04),
+
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
+              child: Text(
+                "Guarde este número de recuperação\n para caso perca a sua password.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Roboto-Regular",
+                  fontSize: size.width * 0.045,
+                  color: colorScheme.primary,
+                ),
               ),
             ),
           ],

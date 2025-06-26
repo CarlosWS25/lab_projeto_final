@@ -11,9 +11,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  int IndexPages = 0;
+  int indexPages = 0;
 
-  // Lista de páginas 
+  // Lista de páginas
   final List<Widget> pages = const [
     PageMainMenu(),
     PageProfile(),
@@ -23,12 +23,17 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-  final colorScheme = Theme.of(context).colorScheme; 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
-      body: IndexedStack(
-        index: IndexPages,
-        children: pages,
+
+      // Conteúdo principal
+      body: SafeArea(
+        child: IndexedStack(
+          index: indexPages,
+          children: pages,
+        ),
       ),
 
       // Barra de navegação inferior
@@ -37,14 +42,13 @@ class HomeScreenState extends State<HomeScreen> {
         backgroundColor: colorScheme.primary,
         unselectedItemColor: colorScheme.onPrimary,
         selectedItemColor: colorScheme.secondary,
-        currentIndex: IndexPages,
+        currentIndex: indexPages,
         onTap: (int index) {
           setState(() {
-            IndexPages = index;
+            indexPages = index;
           });
         },
 
-        // Itens da barra de navegação
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.house),
