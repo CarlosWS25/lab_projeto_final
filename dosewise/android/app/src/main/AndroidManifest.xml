@@ -1,21 +1,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dosewise">
 
-    <!-- 📡 Permissões Bluetooth universais -->
+    <!-- Permissões Bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    
-    <!-- 📡 Android 12+ (API 31+) -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
-    <!-- 📍 Obrigatória para scan BLE em Android <12 -->
+    <!-- Permissões Localização -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    
-    <!-- Exemplo: já tinhas -->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <!-- 🔎 Permissões para queries Bluetooth (Android 11+) -->
+    <!-- Permissões Telefone -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- Permissões SMS -->
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- Permissão para serviços em foreground (opcional mas recomendado) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- Queries necessárias para Bluetooth -->
     <queries>
         <intent>
             <action android:name="android.bluetooth.adapter.action.REQUEST_ENABLE" />
@@ -48,14 +56,24 @@
                 android:resource="@style/NormalTheme" />
 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Receiver do plugin telephony -->
+        <receiver
+            android:name="com.shounakmulay.telephony.sms.SmsBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_SENT" />
+                <action android:name="android.provider.Telephony.SMS_DELIVERED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>
-
