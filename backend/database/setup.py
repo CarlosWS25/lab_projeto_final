@@ -11,7 +11,25 @@ def create_table_users():
         altura_cm INTEGER,
         peso REAL,
         genero CHAR(1),
+        doenca_pre_existente VARCHAR(255),
         recovery_key VARCHAR(255)
+    );
+    """
+    conn = get_connection()
+    if conn:
+        with conn.cursor() as cur:
+            cur.execute(query)
+            conn.commit()
+            print("Tabela 'users' atualizada.")
+        conn.close()
+
+
+def create_table_friends():
+    query = """
+    CREATE TABLE IF NOT EXISTS friends (
+        user_id user_id INTEGER NOT NULL,
+        nome_do_amigo VARCHAR(100) NOT NULL,
+        numero_amigo VARCHAR(20) NOT NULL
     );
     """
 
@@ -20,5 +38,5 @@ def create_table_users():
         with conn.cursor() as cur:
             cur.execute(query)
             conn.commit()
-            print("Tabela 'users' atualizada.")
+            print("Tabela 'friends' atualizada.")
         conn.close()

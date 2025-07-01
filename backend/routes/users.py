@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
 from auth.auth_bearer import JWTBearer, get_user_id_from_token, is_admin_from_token
-from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user, get_user_by_username, recuperar_password
-from models.user import UserCreate
-from models.user import UserUpdate
+from database.crud import insert_user, get_all_users, get_user_by_id, delete_user, update_user, get_user_by_username, insert_friend
+from models.user import UserCreate, UserUpdate
 from models.user import RecoveryPasswordRequest
-
+from models.friend import FriendCreate
 
 router = APIRouter()
 
@@ -73,3 +72,16 @@ async def update_me(request: Request, user_update: UserUpdate):
     raise HTTPException(status_code=400, detail="Falha ao atualizar dados")
 
 
+@router.post("/amigos", dependencies=[Depends(JWTBearer())])
+async def adicionar_amigo(request: Request, friend: FriendCreate):
+    user_id = await get_user_id_from_token(request)
+
+    success = insert_friend(
+        user_id=user_id,
+        nome_do_amigo=friend.nome_do_amigo,
+        numero_amigo=friend.numero_amigo
+    )
+
+    if success:
+        return {"msg": "Amigo adicionado com sucesso"}
+    raise HTTPException(status_code=400, detail="Erro ao adicionar amigo")

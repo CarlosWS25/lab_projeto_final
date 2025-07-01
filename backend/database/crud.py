@@ -9,7 +9,7 @@ def gen_recovery_key(size=6):
     caracteres = string.ascii_letters + string.digits 
     return ''.join(random.choices(caracteres, k=size))
 
-def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero):
+def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero, doenca_pre_existentes):
     hashed_pw = hash_password(password)
     recovery_key = gen_recovery_key()
     hashed_chave = hash_password(recovery_key)
@@ -23,15 +23,26 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         altura_cm,
         peso,
         genero,
+        doenca_pre_existentes,
         recovery_key
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
     """
 
     conn = get_connection()
     if conn:
         try:
             with conn.cursor() as cur:
-                cur.execute(query_user, (is_admin, username, hashed_pw, ano_nascimento, altura_cm, peso, genero, hashed_chave))
+                cur.execute(query_user, (
+                    is_admin,
+                    username,
+                    hashed_pw,
+                    ano_nascimento,
+                    altura_cm,
+                    peso,
+                    genero,
+                    doenca_pre_existentes,
+                    hashed_chave
+                ))
                 user_id = cur.fetchone()[0]
                 conn.commit()
                 print("Utilizador inserido com sucesso.")
@@ -41,6 +52,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         finally:
             conn.close()
     return None
+
 
 
 # READ all
@@ -77,10 +89,11 @@ def get_user_by_id(user_id):
 def update_user(
     user_id,
     username=None,
-    ano_nascimento = None,
+    ano_nascimento=None,
     altura_cm=None,
     peso=None,
     genero=None,
+    doenca_pre_existentes=None
 ):
     conn = get_connection()
     if conn:
@@ -103,6 +116,9 @@ def update_user(
             if genero is not None:
                 updates.append("genero = %s")
                 values.append(genero)
+            if doenca_pre_existentes is not None:
+                updates.append("doenca_pre_existentes = %s")
+                values.append(doenca_pre_existentes)
             if not updates:
                 return False
 
@@ -117,6 +133,7 @@ def update_user(
         finally:
             conn.close()
     return False
+
 # DELETE
 def delete_user(user_id):
     query = "DELETE FROM users WHERE id = %s;"
@@ -175,3 +192,28 @@ def recuperar_password(username: str, recovery_key: str, nova_password: str) -> 
         return False
     finally:
         conn.close()
+
+
+def insert_friend(user_id: int, nome_do_amigo: str, numero_amigo: str) -> bool:
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cur:
+            cur.execute("SELECT COUNT(*) FROM friends WHERE user_id = %s", (user_id,))
+            total_amigos = cur.fetchone()[0]
+
+            if total_amigos >= 3:
+                print("⚠️ Limite de 3 amigos atingido para este utilizador.")
+                return False
+
+            query = """
+            INSERT INTO friends (user_id, nome_do_amigo, numero_amigo)
+            VALUES (%s, %s, %s)
+            """
+            cur.execute(query, (user_id, nome_do_amigo, numero_amigo))
+            conn.commit()
+            return True
+
+    except Exception as e:
+        print(f"❌ Erro ao adicionar amigo: {e}")
+        return False
