@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return FutureBuilder(
-      future: themeProvider.init(), // Espera carregar SharedPreferences
+      future: themeProvider.init(),
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const MaterialApp(

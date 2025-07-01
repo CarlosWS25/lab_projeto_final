@@ -16,11 +16,11 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- Permissões SMS -->
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
-    <!-- Permissão para serviços em foreground (opcional mas recomendado) -->
+    <!-- Serviço em foreground (opcional mas recomendado) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Queries necessárias para Bluetooth -->

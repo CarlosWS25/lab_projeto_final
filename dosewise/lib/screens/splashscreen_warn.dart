@@ -1,6 +1,7 @@
 import "package:dosewise/screens/screen_inicial.dart";
 import "package:flutter/material.dart";
 
+
 class ScreenWarn extends StatefulWidget {
   const ScreenWarn({super.key});
   @override

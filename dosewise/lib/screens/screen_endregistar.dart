@@ -82,9 +82,13 @@ Future<void> finalizarRegisto() async {
         // Guardar localmente
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("recovery_key", recoveryKey);
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ScreenRecovery(recoveryKey: recoveryKey)),
+          MaterialPageRoute(
+            builder: (context) => ScreenRecovery(
+              recoveryKey: recoveryKey
+            )
+          ),
         );
         } else if (response.statusCode == 409) {
             ScaffoldMessenger.of(context).showSnackBar(

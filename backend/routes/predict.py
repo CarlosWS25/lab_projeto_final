@@ -9,7 +9,16 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+api_key = os.getenv("OPENAI_API_KEY")
+
+print(f"\n\n🔑 API KEY CARREGADA: {api_key}\n\n")
+
+if api_key is None:
+    raise Exception("API Key da OpenAI não encontrada. Verifica o ficheiro .env ou a variável de ambiente.")
+
+openai.api_key = api_key
+
 router = APIRouter()
 
 @router.post("/predict_overdose")
@@ -46,11 +55,13 @@ Avalia o risco de overdose numa escala de 0 a 10 e responde apenas no formato:
 """
 
     try:
+        
+        
         resposta = openai.ChatCompletion.create(
             model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.4,
-            max_tokens=50,
+            max_tokens=200,
         )
 
         texto = resposta.choices[0].message["content"]
