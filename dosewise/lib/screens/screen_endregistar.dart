@@ -1,19 +1,16 @@
 import "dart:convert";
-import "package:http/http.dart" as http;
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
+import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
 import "package:dosewise/opcoes_gdd.dart";
 import "package:dosewise/screens/splashscreen_recoverypass.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScreenEndRegistar extends StatefulWidget {
-  // Campos finais que armazenam os dados do utilizador
   final String username;
   final String password;
-  
 
-  // Construtor da classe, com parâmetros obrigatórios
   const ScreenEndRegistar({
     super.key,
     required this.username,
@@ -25,22 +22,35 @@ class ScreenEndRegistar extends StatefulWidget {
 }
 
 class ScreenEndRegistarState extends State<ScreenEndRegistar> {
-  //Controllers que capturam os dados dos TextFields  
   final TextEditingController anoController = TextEditingController();
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
-  final TextEditingController recoveryController = TextEditingController();
+  final TextEditingController doencasController = TextEditingController();
 
-//Função que completa o registo do utilzador
-Future<void> finalizarRegisto() async {
+  List<String> opcoesDoenca = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Carrega lista de doenças prévias
+    carregarDoencas().then((value) {
+      setState(() => opcoesDoenca = value);
+    });
+  }
+
+  Future<void> finalizarRegisto() async {
     final ano = anoController.text.trim();
     final altura = alturaController.text.trim();
     final peso = pesoController.text.trim();
     final genero = generoController.text.trim();
+    final doencas = doencasController.text.trim(); // string
 
-    //Validação dos campos
-    if (ano.isEmpty || altura.isEmpty || peso.isEmpty || genero.isEmpty ) {
+    if (ano.isEmpty ||
+        altura.isEmpty ||
+        peso.isEmpty ||
+        genero.isEmpty ||
+        doencas.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos.")),
       );
@@ -52,12 +62,9 @@ Future<void> finalizarRegisto() async {
     final double? pesoDouble = double.tryParse(peso);
     final generoEnviado = mapGenero[genero] ?? genero;
 
-    
-
     final uri = await makeApiUri("/users/");
 
     try {
-      // Envia os dados do utilizador para a Base de Dados
       final response = await http.post(
         uri,
         headers: {"Content-Type": "application/json"},
@@ -68,36 +75,48 @@ Future<void> finalizarRegisto() async {
           "altura_cm": alturaInt,
           "peso": pesoDouble,
           "genero": generoEnviado,
+          // enviar como string
+          "doenca_pre_existente": doencas,
         }),
       );
-  
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Conta criada com sucesso!")),
-        );
-        final data = jsonDecode(response.body);
-        final recoveryKey = data["recovery_key"];
-        print("Recovery key recebida: $recoveryKey");
 
-        // Guardar localmente
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString("recovery_key", recoveryKey);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ScreenRecovery(
-              recoveryKey: recoveryKey
-            )
-          ),
-        );
-        } else if (response.statusCode == 409) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("❌ Esse nome de utilizador já existe.")),
-            );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro ao criar conta: ${response.statusCode}")),
-        );
+      switch (response.statusCode) {
+        case 200:
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Conta criada com sucesso!")),
+          );
+          final data = jsonDecode(response.body);
+          final recoveryKey = data["recovery_key"];
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString("recovery_key", recoveryKey);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ScreenRecovery(recoveryKey: recoveryKey),
+            ),
+          );
+          break;
+        case 409:
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("❌ Esse nome de utilizador já existe.")),
+          );
+          break;
+        case 422:
+          final errors = jsonDecode(response.body);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Validação falhou: ${errors['detail']}")),
+          );
+          break;
+        case 500:
+          debugPrint("SERVER ERROR 500: ${response.body}");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Erro interno do servidor. Veja o log.")),
+          );
+          break;
+        default:
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Erro ao criar conta: ${response.statusCode}")),
+          );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -107,179 +126,203 @@ Future<void> finalizarRegisto() async {
   }
 
   @override
-  void initState() {
-    super.initState();
-}
-
-
-  @override
-Widget build(BuildContext context) {
-  final colorScheme = Theme.of(context).colorScheme;
-  final size = MediaQuery.of(context).size;
-
-  return Scaffold(
-    backgroundColor: colorScheme.onPrimary,
-    body: Stack(
-      children: [
-        // Logo Dosewise
-        Positioned(
-          top: size.height * 0.05,
-          right: size.width * 0.05,
-          child: Padding(
-            padding: EdgeInsets.all(size.width * 0.02),
-            child: Image.asset(
-              Theme.of(context).brightness == Brightness.light
-                  ? "assets/images/logo_dosewise.png"
-                  : "assets/images/logo_dosewise_dark.png",
-              width: size.width * 0.25,
-              height: size.width * 0.25,
-            ),
-          ),
-        ),
-
-        Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: size.height * 0.08),
-
-                // Título de Finalizar Registo
-                Text(
-                  "Finalizar Registo",
-                  style: TextStyle(
-                    fontFamily: "Roboto-Regular",
-                    fontSize: size.width * 0.08,
-                    color: colorScheme.primary,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.05),
-
-                // Campo Ano Nascimento
-                TextField(
-                  controller: anoController,
-                  showCursor: false,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(4)
-                  ],
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colorScheme.secondary,
-                    border: const OutlineInputBorder(),
-                    hintText: "Ano de Nascimento (YYYY)",
-                    hintStyle: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                    contentPadding: EdgeInsets.all(size.width * 0.04),
-                  ),
-                  style: TextStyle(
-                    color: colorScheme.primary,
-                    fontSize: size.width * 0.045,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.025),
-
-                // Campo Altura
-                TextField(
-                  controller: alturaController,
-                  showCursor: false,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(3)
-                  ],
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colorScheme.secondary,
-                    border: const OutlineInputBorder(),
-                    hintText: "Altura (cm)",
-                    hintStyle: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                    contentPadding: EdgeInsets.all(size.width * 0.04),
-                  ),
-                  style: TextStyle(
-                    color: colorScheme.primary,
-                    fontSize: size.width * 0.045,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.025),
-
-                // Campo Peso
-                TextField(
-                  controller: pesoController,
-                  showCursor: false,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
-                  ],
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colorScheme.secondary,
-                    border: const OutlineInputBorder(),
-                    hintText: "Peso (kg)",
-                    hintStyle: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                    contentPadding: EdgeInsets.all(size.width * 0.04),
-                  ),
-                  style: TextStyle(
-                    color: colorScheme.primary,
-                    fontSize: size.width * 0.045,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.025),
-
-                // Campo Género
-                TextField(
-                  onTap: () => escolherGenero(
-                    context: context,
-                    controller: generoController,
-                  ),
-                  controller: generoController,
-                  showCursor: false,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: colorScheme.secondary,
-                    border: const OutlineInputBorder(),
-                    hintText: "Género",
-                    hintStyle: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                    contentPadding: EdgeInsets.all(size.width * 0.04),
-                  ),
-                  style: TextStyle(
-                    color: colorScheme.primary,
-                    fontSize: size.width * 0.045,
-                  ),
-                ),
-                SizedBox(height: size.height * 0.05),
-
-                // Botão Finalizar Registo Utilizador
-                FloatingActionButton(
-                  heroTag: "finalizar_registo_conta",
-                  onPressed: () async {
-                    print("Finalizar Registo Utilizador pressionado!");
-                    await finalizarRegisto();
-                  },
-                  foregroundColor: colorScheme.primary,
-                  backgroundColor: colorScheme.secondary,
-                  child: const Icon(Icons.create_outlined),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
+  void dispose() {
+    anoController.dispose();
+    alturaController.dispose();
+    pesoController.dispose();
+    generoController.dispose();
+    doencasController.dispose();
+    super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      backgroundColor: colorScheme.onPrimary,
+      body: Stack(
+        children: [
+          // Logo
+          Positioned(
+            top: size.height * 0.05,
+            right: size.width * 0.05,
+            child: Padding(
+              padding: EdgeInsets.all(size.width * 0.02),
+              child: Image.asset(
+                Theme.of(context).brightness == Brightness.light
+                    ? "assets/images/logo_dosewise.png"
+                    : "assets/images/logo_dosewise_dark.png",
+                width: size.width * 0.25,
+                height: size.width * 0.25,
+              ),
+            ),
+          ),
+
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size.height * 0.08),
+
+                  // Título
+                  Text(
+                    "Finalizar Registo",
+                    style: TextStyle(
+                      fontFamily: "Roboto-Regular",
+                      fontSize: size.width * 0.08,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.05),
+
+                  // Ano de Nascimento
+                  TextField(
+                    controller: anoController,
+                    showCursor: false,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(4),
+                    ],
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Ano de Nascimento (YYYY)",
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: size.width * 0.045,
+                      ),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.025),
+
+                  // Altura (cm)
+                  TextField(
+                    controller: alturaController,
+                    showCursor: false,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(3),
+                    ],
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Altura (cm)",
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: size.width * 0.045,
+                      ),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.025),
+
+                  // Peso (kg)
+                  TextField(
+                    controller: pesoController,
+                    showCursor: false,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$")),
+                    ],
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Peso (kg)",
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: size.width * 0.045,
+                      ),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.025),
+
+                  // Género
+                  TextField(
+                    onTap: () => escolherGenero(
+                      context: context,
+                      controller: generoController,
+                    ),
+                    controller: generoController,
+                    showCursor: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Género",
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontSize: size.width * 0.045,
+                      ),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.025),
+
+                  // Doenças prévias
+                  TextField(
+                    onTap: () => escolherDoenca(
+                      context: context,
+                      controller: doencasController,
+                      opcoes: opcoesDoenca,
+                    ),
+                    controller: doencasController,
+                    showCursor: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Doenças prévias",
+                      hintStyle: TextStyle(color: colorScheme.primary),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.05),
+
+                  // Botão Finalizar
+                  FloatingActionButton(
+                    heroTag: "finalizar_registo_conta",
+                    onPressed: finalizarRegisto,
+                    foregroundColor: colorScheme.primary,
+                    backgroundColor: colorScheme.secondary,
+                    child: const Icon(Icons.create_outlined),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],  
+      ),
+    );
+  }
+}

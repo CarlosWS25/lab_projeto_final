@@ -9,7 +9,7 @@ def gen_recovery_key(size=6):
     caracteres = string.ascii_letters + string.digits 
     return ''.join(random.choices(caracteres, k=size))
 
-def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero, doenca_pre_existentes):
+def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, genero, doenca_pre_existente):
     hashed_pw = hash_password(password)
     recovery_key = gen_recovery_key()
     hashed_chave = hash_password(recovery_key)
@@ -23,7 +23,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
         altura_cm,
         peso,
         genero,
-        doenca_pre_existentes,
+        doenca_pre_existente,
         recovery_key
     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
     """
@@ -40,7 +40,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
                     altura_cm,
                     peso,
                     genero,
-                    doenca_pre_existentes,
+                    doenca_pre_existente,
                     hashed_chave
                 ))
                 user_id = cur.fetchone()[0]
@@ -93,7 +93,7 @@ def update_user(
     altura_cm=None,
     peso=None,
     genero=None,
-    doenca_pre_existentes=None
+    doenca_pre_existente=None
 ):
     conn = get_connection()
     if conn:
@@ -116,9 +116,9 @@ def update_user(
             if genero is not None:
                 updates.append("genero = %s")
                 values.append(genero)
-            if doenca_pre_existentes is not None:
-                updates.append("doenca_pre_existentes = %s")
-                values.append(doenca_pre_existentes)
+            if doenca_pre_existente is not None:
+                updates.append("doenca_pre_existente = %s")
+                values.append(doenca_pre_existente)
             if not updates:
                 return False
 

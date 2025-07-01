@@ -13,7 +13,7 @@ class UserCreate(BaseModel):
     altura_cm: int
     peso: float
     genero: str = Field(..., pattern="^(M|F)$")
-    doenca_pre_existentes: str
+    doenca_pre_existente: str
     
 class UserUpdate(BaseModel):
     username: Optional[str]
@@ -21,7 +21,7 @@ class UserUpdate(BaseModel):
     altura_cm: Optional[int]
     peso: Optional[float]
     genero: Optional[str]
-    doenca_pre_existentes: Optional[str]
+    doenca_pre_existente: Optional[str]
 
 
 class RecoveryPasswordRequest(BaseModel):

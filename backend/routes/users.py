@@ -19,7 +19,8 @@ def create_user(user: UserCreate):
         user.ano_nascimento, 
         user.altura_cm,
         user.peso,
-        user.genero
+        user.genero,
+        user.doenca_pre_existente,
     )
 
     if not recovery_key:

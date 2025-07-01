@@ -27,7 +27,7 @@ def create_table_users():
 def create_table_friends():
     query = """
     CREATE TABLE IF NOT EXISTS friends (
-        user_id user_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
         nome_do_amigo VARCHAR(100) NOT NULL,
         numero_amigo VARCHAR(20) NOT NULL
     );

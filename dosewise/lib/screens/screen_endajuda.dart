@@ -11,14 +11,12 @@ import "package:dosewise/screens/screen_resposta.dart";
 class ScreenEndAjuda extends StatefulWidget {
   final String uso;
   final String dose;
-  final String doencas;
   final String sintomas;
 
   const ScreenEndAjuda({
     super.key,
     required this.uso,
     required this.dose,
-    required this.doencas,
     required this.sintomas,
   });
 
@@ -101,7 +99,6 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
     final Map<String, dynamic> payload = {
       "uso_suspeito": widget.uso,
       "dose_g": doseDouble,
-      "doencas": [widget.doencas],
       "sintomas": [widget.sintomas],
       "glicemia": _lastMeasurement?.concentration,
     };

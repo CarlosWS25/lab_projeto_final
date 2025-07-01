@@ -46,7 +46,7 @@ async def predict_overdose(data: OverdoseInput, request: Request):
 - Uso suspeito: {uso}
 - Quantidade em gramas: {data.dose_g}
 
-Avalia o risco de overdose numa escala de 0 a 10 e responde apenas no formato:
+Avalia o risco de overdose numa escala de 0 a 10 e responde apenas nem português de portugal no formato:
 {{
   "risk_score": [valor entre 0 e 10],
   "substância_antagonista": "nome da substância, caso necessário",

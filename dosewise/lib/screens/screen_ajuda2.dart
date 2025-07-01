@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dosewise/opcoes_gdd.dart';
 import 'package:dosewise/screens/screen_endajuda.dart';
 
 class ScreenAjuda2 extends StatefulWidget {
@@ -17,16 +16,14 @@ class ScreenAjuda2 extends StatefulWidget {
 }
 
 class ScreenAjuda2State extends State<ScreenAjuda2> {
-  final TextEditingController doencasController = TextEditingController();
   final TextEditingController sintomasController = TextEditingController();
 
   Future<void> continuarAjuda() async {
-    final doencas = doencasController.text.trim();
     final sintomas = sintomasController.text.trim();
 
-    if (doencas.isEmpty || sintomas.isEmpty) {
+    if (sintomas.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Preencha todos os campos")),
+        const SnackBar(content: Text("Preencha o campo de sintomas.")),
       );
       return;
     }
@@ -37,7 +34,6 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
         builder: (context) => ScreenEndAjuda(
           uso: widget.uso,
           dose: widget.dose,
-          doencas: doencas,
           sintomas: sintomas,
         ),
       ),
@@ -45,13 +41,9 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    carregarDoencas().then((value) {
-      setState(() {
-        opcoesDoenca = value;
-      });
-    });
+  void dispose() {
+    sintomasController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,7 +55,7 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-          // Logo Dosewise com tamanho relativo
+          // Logo
           Positioned(
             top: size.height * 0.06,
             right: size.width * 0.05,
@@ -71,8 +63,8 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
               Theme.of(context).brightness == Brightness.light
                   ? "assets/images/logo_dosewise.png"
                   : "assets/images/logo_dosewise_dark.png",
-              width: size.width * 0.3,
-              height: size.width * 0.3,
+              width: size.width * 0.30,
+              height: size.width * 0.30,
             ),
           ),
 
@@ -85,46 +77,16 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
                 children: [
                   SizedBox(height: size.height * 0.04),
 
-                  // Título responsivo
+                  // Título
                   Text(
-                    "Preencha os seguintes campos",
+                    "Preencha o sintoma",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: size.width * 0.07,
                       color: colorScheme.primary,
                     ),
                   ),
-
                   SizedBox(height: size.height * 0.04),
-
-                  // Campo Doenças
-                  TextField(
-                    onTap: () => escolherDoenca(
-                      context: context,
-                      controller: doencasController,
-                      opcoes: opcoesDoenca,
-                    ),
-                    controller: doencasController,
-                    showCursor: false,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
-                      hintText: "Doenças prévias",
-                      hintStyle: TextStyle(color: colorScheme.primary),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.02,
-                        horizontal: size.width * 0.04,
-                      ),
-                    ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                  ),
-
-                  SizedBox(height: size.height * 0.025),
 
                   // Campo Sintomas
                   TextField(
@@ -132,7 +94,7 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       hintText: "Sintomas",
                       hintStyle: TextStyle(color: colorScheme.primary),
                       contentPadding: EdgeInsets.symmetric(
@@ -145,27 +107,19 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
                       fontSize: size.width * 0.045,
                     ),
                   ),
-
                   SizedBox(height: size.height * 0.05),
 
-                  // Botão flutuante maior e posicionado para direita
+                  // Botão avançar
                   Align(
                     alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: size.width * 0.18,
-                      height: size.width * 0.18,
-                      child: FloatingActionButton(
-                        heroTag: "finalizar_ajuda_utilizador",
-                        onPressed: () async {
-                          print("Botão Finalizar Ajudar pressionado!");
-                          continuarAjuda();
-                        },
-                        foregroundColor: colorScheme.primary,
-                        backgroundColor: colorScheme.secondary,
-                        child: Icon(
-                          Icons.create_outlined,
-                          size: size.width * 0.09,
-                        ),
+                    child: FloatingActionButton(
+                      heroTag: "continuar_ajuda",
+                      onPressed: continuarAjuda,
+                      foregroundColor: colorScheme.primary,
+                      backgroundColor: colorScheme.secondary,
+                      child: Icon(
+                        Icons.arrow_forward,
+                        size: size.width * 0.09,
                       ),
                     ),
                   ),
@@ -177,12 +131,4 @@ class ScreenAjuda2State extends State<ScreenAjuda2> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    doencasController.dispose();
-    sintomasController.dispose();
-    super.dispose();
-  }
 }
-

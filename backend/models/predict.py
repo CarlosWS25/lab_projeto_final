@@ -5,4 +5,3 @@ class OverdoseInput(BaseModel):
     sintomas: list
     uso_suspeito: str
     dose_g: float
-    doencas: list
