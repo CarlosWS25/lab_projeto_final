@@ -26,15 +26,14 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
-  final TextEditingController doencasController = TextEditingController();
+  final TextEditingController doencaController = TextEditingController();
 
   List<String> opcoesDoenca = [];
 
   @override
   void initState() {
     super.initState();
-    // Carrega lista de doenças prévias
-    carregarDoencas().then((value) {
+    carregarDoenca().then((value) {
       setState(() => opcoesDoenca = value);
     });
   }
@@ -44,13 +43,9 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
     final altura = alturaController.text.trim();
     final peso = pesoController.text.trim();
     final genero = generoController.text.trim();
-    final doencas = doencasController.text.trim(); // string
+    final doenca = doencaController.text.trim();
 
-    if (ano.isEmpty ||
-        altura.isEmpty ||
-        peso.isEmpty ||
-        genero.isEmpty ||
-        doencas.isEmpty) {
+    if (ano.isEmpty || altura.isEmpty || peso.isEmpty || genero.isEmpty || doenca.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos.")),
       );
@@ -75,8 +70,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
           "altura_cm": alturaInt,
           "peso": pesoDouble,
           "genero": generoEnviado,
-          // enviar como string
-          "doenca_pre_existente": doencas,
+          "doenca_pre_existente": doenca,
         }),
       );
 
@@ -131,7 +125,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
     alturaController.dispose();
     pesoController.dispose();
     generoController.dispose();
-    doencasController.dispose();
+    doencaController.dispose();
     super.dispose();
   }
 
@@ -286,12 +280,8 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
 
                   // Doenças prévias
                   TextField(
-                    onTap: () => escolherDoenca(
-                      context: context,
-                      controller: doencasController,
-                      opcoes: opcoesDoenca,
-                    ),
-                    controller: doencasController,
+                    onTap: () => escolherDoenca(context: context, controller: doencaController, opcoes: opcoesDoenca),
+                    controller: doencaController,
                     showCursor: false,
                     readOnly: true,
                     decoration: InputDecoration(

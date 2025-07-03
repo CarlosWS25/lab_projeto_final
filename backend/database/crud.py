@@ -3,6 +3,7 @@ from utils.hash import hash_password, verify_password
 import datetime
 import random
 import string
+from typing import List
 
 
 def gen_recovery_key(size=6):
@@ -57,7 +58,7 @@ def insert_user(is_admin, username, password, ano_nascimento, altura_cm, peso, g
 
 # READ all
 def get_all_users():
-    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero FROM users ORDER BY id;"
+    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero, doenca_pre_existente FROM users ORDER BY id;"
     conn = get_connection()
     if conn:
         try:
@@ -72,7 +73,7 @@ def get_all_users():
 
 # READ by id
 def get_user_by_id(user_id):
-    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero FROM users WHERE id = %s;"
+    query = "SELECT is_admin, id, username, ano_nascimento, altura_cm, peso, genero, doenca_pre_existente FROM users WHERE id = %s;"
     conn = get_connection()
     if conn:
         try:
@@ -236,3 +237,23 @@ def delete_friend(user_id, nome_do_amigo, numero_amigo):
         finally:
             conn.close()
     return False
+
+def get_friends_for_user(user_id: int) -> List[dict]:
+    query = """
+    SELECT nome_do_amigo, numero_amigo
+    FROM friends 
+    WHERE user_id = %s;
+    """
+    conn = get_connection()
+    if not conn:
+        return []
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, (user_id,))
+            rows = cur.fetchall()
+            return [
+                {"nome_do_amigo": nome, "numero_amigo": numero}
+                for nome, numero in rows
+            ]
+    finally:
+        conn.close()

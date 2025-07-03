@@ -66,7 +66,8 @@ async def update_me(request: Request, user_update: UserUpdate):
         ano_nascimento=user_update.ano_nascimento,
         altura_cm=user_update.altura_cm,
         peso=user_update.peso,
-        genero=user_update.genero
+        genero=user_update.genero,
+        doenca_pre_existente=user_update.doenca_pre_existente
     )
     if success:
         return {"msg": "Dados atualizados com sucesso"}

@@ -43,7 +43,7 @@ void escolherGenero({
 }
 
 // Carrega doenças de ficheiro .txt
-Future<List<String>> carregarDoencas() async {
+Future<List<String>> carregarDoenca() async {
   final String listaDoencas = await rootBundle.loadString("assets/txt/doencas.txt");
   return listaDoencas
       .split("\n")

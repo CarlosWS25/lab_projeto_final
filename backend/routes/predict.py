@@ -29,7 +29,7 @@ async def predict_overdose(data: OverdoseInput, request: Request):
     if not user_data:
         raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
 
-    _, _, _, ano_nasc, altura_cm, peso, genero = user_data
+    _, _, _, ano_nasc, altura_cm, peso, genero, doenca_pre_existente = user_data
     idade = datetime.now().year - ano_nasc
 
     sintomas = ", ".join(data.sintomas) if isinstance(data.sintomas, list) else data.sintomas
@@ -45,6 +45,7 @@ async def predict_overdose(data: OverdoseInput, request: Request):
 - Sintomas: {sintomas}
 - Uso suspeito: {uso}
 - Quantidade em gramas: {data.dose_g}
+- Doença pré-existente: {doenca_pre_existente}
 
 Avalia o risco de overdose numa escala de 0 a 10 e responde apenas nem português de portugal no formato:
 {{

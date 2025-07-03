@@ -1,6 +1,7 @@
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
 import "package:dosewise/opcoes_gdd.dart";
+import "package:dosewise/screens/screen_ajudarconv2.dart";
 
 class ScreenAjudarConv extends StatefulWidget {
   const ScreenAjudarConv({super.key});
@@ -14,10 +15,43 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
+  final TextEditingController doenca_pre_existenteController = TextEditingController();
+
+List<String> opcoesdoenca_pre_existente = [];
 
   @override
   void initState() {
     super.initState();
+    carregarDoenca().then((value) {
+      setState(() => opcoesdoenca_pre_existente = value);
+    });
+  }
+
+  void iniciarRegistoConvidado(){
+    final ano = anoController.text.trim();
+    final altura = alturaController.text.trim();
+    final peso = pesoController.text.trim();
+    final genero = generoController.text.trim();
+    final doenca_pre_existente = doenca_pre_existenteController.text.trim();
+
+    if (ano.isEmpty || altura.isEmpty || peso.isEmpty || genero.isEmpty || doenca_pre_existente.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Preencha todos os campos")),
+      );
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ScreenAjudarConv2(
+          ano: ano,
+          altura: altura,
+          peso: peso,
+          genero: genero,
+          doenca_pre_existente: doenca_pre_existente,
+        ),
+      ),
+    );
   }
 
   @override
@@ -52,7 +86,7 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: size.height * 0.08),
+                  SizedBox(height: size.height * 0.15),
 
                   Text(
                     "Preencha com os dados \ndo convidado",
@@ -150,12 +184,34 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
                       fontSize: size.width * 0.045,
                     ),
                   ),
-                  SizedBox(height: size.height * 0.04),
+                  SizedBox(height: size.height * 0.025),
+
+                  // Doenças prévias
+                  TextField(
+                    onTap: () => escolherDoenca(context: context, controller: doenca_pre_existenteController, opcoes: opcoesdoenca_pre_existente),
+                    controller: doenca_pre_existenteController,
+                    showCursor: false,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Doenças prévias",
+                      hintStyle: TextStyle(color: colorScheme.primary),
+                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.05),
 
                   // Botão Finalizar
                   FloatingActionButton(
                     heroTag: "finalizar_registo_conta",
                     onPressed: () async {
+                      iniciarRegistoConvidado();
                       print("Finalizar Registo Utilizador pressionado!");
                     },
                     foregroundColor: colorScheme.primary,
@@ -180,6 +236,7 @@ class ScreenAjudarConvState extends State<ScreenAjudarConv> {
     alturaController.dispose();
     pesoController.dispose();
     generoController.dispose();
+    doenca_pre_existenteController.dispose();
     super.dispose();
   }
 }

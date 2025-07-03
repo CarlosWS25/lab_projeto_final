@@ -1,10 +1,18 @@
 from fastapi import APIRouter, HTTPException, Depends, Request
+from typing import List
 from auth.auth_bearer import JWTBearer, get_user_id_from_token
-from database.crud import insert_friend, delete_friend
-from models.friend import FriendCreate
+from database.crud import insert_friend, delete_friend, get_friends_for_user
+from models.friend import FriendCreate, FriendOut
 
 
 router = APIRouter()
+
+@router.get("/amigos", response_model=List[FriendOut], dependencies=[Depends(JWTBearer())])
+async def listar_amigos(request: Request):
+    user_id = await get_user_id_from_token(request)
+    amigos = get_friends_for_user(user_id)
+    return amigos
+
 @router.post("/amigos", dependencies=[Depends(JWTBearer())])
 async def adicionar_amigo(request: Request, friend: FriendCreate):
     user_id = await get_user_id_from_token(request)

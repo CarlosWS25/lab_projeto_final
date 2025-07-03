@@ -14,11 +14,8 @@ class PageProfile extends StatefulWidget {
 }
 
 class _PageProfileState extends State<PageProfile> {
-  // Variáveis para armazenar os dados do utilizador
   Map<String, dynamic>? userData;
-  //Indica se os dados estão a ser carregados do backend
   bool loadingMode = true;
-  //Indica se modo edição está ativo
   bool editMode = false;
 
   //Controllers que capturam os dados dos TextFields 
@@ -27,14 +24,19 @@ class _PageProfileState extends State<PageProfile> {
   final TextEditingController alturaController = TextEditingController();
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController generoController = TextEditingController();
+  final TextEditingController doencaController = TextEditingController();
+
 
  
 
-  @override
+ @override
   void initState() {
     super.initState();
     fetchUserData();
-}
+    carregarDoenca().then((value) {
+      setState(() => opcoesDoenca = value);
+    });
+  }
 
   Future<void> fetchUserData() async {
     //Vai buscar o token de autenticação
@@ -53,13 +55,16 @@ class _PageProfileState extends State<PageProfile> {
 
     //Faz o peiddo GET a API
     try {
+      print("GET ${uri.toString()}");
       final response = await http.get(
+        
         uri,
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
         },
       );
+      print("Status: ${response.statusCode}, Body: ${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> list = data["utilizador"];
@@ -74,6 +79,7 @@ class _PageProfileState extends State<PageProfile> {
             "altura_cm": list[4],
             "peso": list[5],
             "genero": list[6],
+            "doenca_pre_existente": list[7],
           };
 
           // Preencher os campos com os novos dados
@@ -84,6 +90,7 @@ class _PageProfileState extends State<PageProfile> {
           generoController.text = mapGenero.entries
               .firstWhere((entry) => entry.value == list[6], orElse: () => const MapEntry("", ""))
               .key;
+          doencaController.text = list[7] ?? '';
 
           loadingMode = false;
         });
@@ -112,6 +119,8 @@ class _PageProfileState extends State<PageProfile> {
       "altura_cm": int.tryParse(alturaController.text),
       "peso": double.tryParse(pesoController.text),
       "genero": mapGenero[generoController.text] ?? generoController.text,
+      "doenca_pre_existente": doencaController.text,
+     
     };
 
 
@@ -279,6 +288,17 @@ Widget build(BuildContext context) {
                   controller: generoController,
                 ),
               ),
+              _buildField(
+                "Doenças Pré-existentes",
+                userData!["doenca_pre_existente"],
+                doencaController,
+                fontSize: size.width * 0.045,
+                onTap: () => escolherDoenca(
+                  context: context,
+                  controller: doencaController,
+                  opcoes: opcoesDoenca,
+                ),
+              ),
             ],
           ),
         ),
@@ -308,5 +328,4 @@ Widget build(BuildContext context) {
     ),
   );
 }
-
 }

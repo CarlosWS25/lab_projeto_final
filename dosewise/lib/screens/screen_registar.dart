@@ -50,7 +50,7 @@ class ScreenRegistarState extends State<ScreenRegistar> {
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-          // Logo Dosewise com tamanho proporcional
+          // Logo Dosewise
           Positioned(
             top: size.height * 0.06,
             right: size.width * 0.05,
