@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:dosewise/screens/home_screen.dart';
+import "package:flutter/material.dart";
+import "package:dosewise/screens/home_screen.dart";
 
 class ScreenResposta extends StatelessWidget {
   final Map<String, dynamic> resposta;
@@ -8,33 +8,28 @@ class ScreenResposta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double riskScore = resposta['risk_score']?.toDouble() ?? 0.0;
-    final String substanciaAntagonista = resposta['substância_antagonista'] ?? 'Não aplicável';
-    final String dica = resposta['dica'] ?? 'Nenhuma dica fornecida';
+    final double riskScore = resposta["risk_score"]?.toDouble() ?? 0.0;
+    final String substanciaAntagonista = resposta["substância_antagonista"] ?? "Não aplicável";
+    final String dica = resposta["dica"] ?? "Nenhuma dica fornecida";
 
     final colorScheme = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
-      appBar: AppBar(
-        title: const Text('Resultado da Avaliação'),
-        backgroundColor: colorScheme.primary,
-        foregroundColor: colorScheme.onPrimary,
-      ),
       body: Padding(
         padding: EdgeInsets.all(size.width * 0.05),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Risco de Overdose:',
+              "Risco de Overdose:",
               style: TextStyle(fontSize: size.width * 0.06, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: size.height * 0.02),
             Text(
-              '$riskScore / 10',
+              "$riskScore / 10",
               style: TextStyle(
                 fontSize: size.width * 0.12,
                 color: colorScheme.error,
@@ -44,7 +39,7 @@ class ScreenResposta extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.04),
             Text(
-              'Substância Antagonista:',
+              "Substância Antagonista:",
               style: TextStyle(fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -56,7 +51,7 @@ class ScreenResposta extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.04),
             Text(
-              'Dica:',
+              "Dica:",
               style: TextStyle(fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -81,7 +76,7 @@ class ScreenResposta extends StatelessWidget {
                 minimumSize: Size(size.width * 0.6, size.height * 0.06),
               ),
               child: Text(
-                'Voltar ao Início',
+                "Voltar ao Início",
                 style: TextStyle(fontSize: size.width * 0.045),
               ),
             ),

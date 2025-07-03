@@ -238,6 +238,19 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                   color: colorScheme.secondary,
                 ),
               ),
+              SizedBox(height: size.height * 0.03),
+              ElevatedButton.icon(
+                onPressed: finalizarAjuda,
+                label: Text(
+                  " Avançar sem \nmedir glicemia",
+                  style: TextStyle(fontSize: size.width * 0.045),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(size.width * 0.6, size.height * 0.1),
+                  backgroundColor: colorScheme.secondary,
+                  foregroundColor: colorScheme.onSecondary,
+                ),
+              ),
             ],
           ],
         ),

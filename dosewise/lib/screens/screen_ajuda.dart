@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:dosewise/opcoes_gdd.dart";
-import "package:dosewise/screens/screen_ajuda2.dart";
+import "package:dosewise/screens/screen_endajuda.dart";
 
 class ScreenAjuda extends StatefulWidget {
   const ScreenAjuda({super.key});
@@ -13,12 +13,14 @@ class ScreenAjuda extends StatefulWidget {
 class ScreenAjudaState extends State<ScreenAjuda> {
   final TextEditingController usoController = TextEditingController();
   final TextEditingController doseController = TextEditingController();
+  final TextEditingController sintomasController = TextEditingController();
 
   void iniciarAjuda() {
     final uso = usoController.text.trim();
     final dose = doseController.text.trim();
+    final sintomas = sintomasController.text.trim();
 
-    if (uso.isEmpty || dose.isEmpty) {
+    if (uso.isEmpty || dose.isEmpty || sintomas.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Preencha todos os campos")),
       );
@@ -28,9 +30,10 @@ class ScreenAjudaState extends State<ScreenAjuda> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ScreenAjuda2(
+        builder: (context) => ScreenEndAjuda(
           uso: uso,
           dose: dose,
+          sintomas: sintomas,
         ),
       ),
     );
@@ -129,8 +132,28 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                     ),
                     style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.05),
                   ),
-
                   SizedBox(height: size.height * 0.04),
+
+                  // Campo dos Sintomas
+                  TextField(
+                    controller: sintomasController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: colorScheme.secondary,
+                      border: const OutlineInputBorder(),
+                      hintText: "Sintomas",
+                      hintStyle: TextStyle(color: colorScheme.primary),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: size.height * 0.02,
+                        horizontal: size.width * 0.04,
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.045,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.05),
 
                   // Botão Começar Ajuda com tamanho proporcional
                   Align(
@@ -166,6 +189,7 @@ class ScreenAjudaState extends State<ScreenAjuda> {
   void dispose() {
     usoController.dispose();
     doseController.dispose();
+    sintomasController.dispose();
     super.dispose();
   }
 }

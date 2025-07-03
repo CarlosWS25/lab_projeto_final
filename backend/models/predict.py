@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 class OverdoseInput(BaseModel):
-    glicemia: float
+    glicemia: Optional[float] = Field(default=None)
     sintomas: list
     uso_suspeito: str
     dose_g: float
