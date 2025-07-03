@@ -217,3 +217,22 @@ def insert_friend(user_id: int, nome_do_amigo: str, numero_amigo: str) -> bool:
     except Exception as e:
         print(f"❌ Erro ao adicionar amigo: {e}")
         return False
+    
+def delete_friend(user_id, nome_do_amigo, numero_amigo):
+    query = """
+    DELETE FROM friends
+    WHERE user_id = %s AND nome_do_amigo = %s AND numero_amigo = %s;
+    """
+
+    conn = get_connection()
+    if conn:
+        try:
+            with conn.cursor() as cur:
+                cur.execute(query, (user_id, nome_do_amigo, numero_amigo))
+                conn.commit()
+                return cur.rowcount > 0
+        except Exception as e:
+            print("Erro ao remover amigo:", e)
+        finally:
+            conn.close()
+    return False

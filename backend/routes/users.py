@@ -71,18 +71,3 @@ async def update_me(request: Request, user_update: UserUpdate):
     if success:
         return {"msg": "Dados atualizados com sucesso"}
     raise HTTPException(status_code=400, detail="Falha ao atualizar dados")
-
-
-@router.post("/amigos", dependencies=[Depends(JWTBearer())])
-async def adicionar_amigo(request: Request, friend: FriendCreate):
-    user_id = await get_user_id_from_token(request)
-
-    success = insert_friend(
-        user_id=user_id,
-        nome_do_amigo=friend.nome_do_amigo,
-        numero_amigo=friend.numero_amigo
-    )
-
-    if success:
-        return {"msg": "Amigo adicionado com sucesso"}
-    raise HTTPException(status_code=400, detail="Erro ao adicionar amigo")
