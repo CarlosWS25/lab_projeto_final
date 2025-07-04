@@ -66,22 +66,26 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
 
   void _avancarSemMedicao() {
     // Avança mesmo sem medir
-    _navegarComPayload(null);
+    navegarComPayload(null);
   }
 
-  void _navegarComPayload(double? glicemia) {
+  void navegarComPayload(double? glicemia) {
+    final double doseDouble = double.tryParse(widget.dose) ?? 0.0;
+
+
     // Constrói payload com todos os dados + glicemia (ou null)
-    final payload = {
+    final Map<String, dynamic> payload = {
       'uso': widget.uso,
-      'dose': widget.dose,
+      'dose': doseDouble,
       'sintomas': widget.sintomas,
       'ano': widget.ano,
       'altura': widget.altura,
       'peso': widget.peso,
       'genero': widget.genero,
       'doenca_pre_existente': widget.doenca_pre_existente,
-      'glicemia': glicemia,
+      'glicemia': _lastMeasurement?.concentration,
     };
+    print(payload);
 
     /*Navigator.pushReplacement(
       context,
@@ -167,10 +171,10 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               ),
               SizedBox(height: size.height * 0.03),
               ElevatedButton.icon(
-                onPressed: () => _navegarComPayload(_lastMeasurement!.concentration),
+                onPressed: () => navegarComPayload(_lastMeasurement!.concentration),
                 icon: Icon(Icons.send, size: size.width * 0.06),
                 label: Text(
-                  'Avançar com medição',
+                  'Finalizar Ajuda',
                   style: TextStyle(fontSize: size.width * 0.045),
                 ),
                 style: ElevatedButton.styleFrom(
