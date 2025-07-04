@@ -1,10 +1,12 @@
+// lib/screens/page_profile.dart
+
 import "dart:convert";
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
-import "package:dosewise/opcoes_gdd.dart";
-
+import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/screens/screen_profileadmin.dart"; // AdminUsersScreen
 
 class PageProfile extends StatefulWidget {
   const PageProfile({super.key});
@@ -18,7 +20,7 @@ class _PageProfileState extends State<PageProfile> {
   bool loadingMode = true;
   bool editMode = false;
 
-  //Controllers que capturam os dados dos TextFields 
+  // Controllers dos TextFields
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController anoController = TextEditingController();
   final TextEditingController alturaController = TextEditingController();
@@ -26,10 +28,7 @@ class _PageProfileState extends State<PageProfile> {
   final TextEditingController generoController = TextEditingController();
   final TextEditingController doencaController = TextEditingController();
 
-
- 
-
- @override
+  @override
   void initState() {
     super.initState();
     fetchUserData();
@@ -39,59 +38,44 @@ class _PageProfileState extends State<PageProfile> {
   }
 
   Future<void> fetchUserData() async {
-    //Vai buscar o token de autenticação
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
-
     if (token == null) {
-      setState(() {
-        loadingMode = false;
-      });
+      setState(() => loadingMode = false);
       return;
     }
 
-    //Cria o URL usando a função makeApiUri
     final uri = await makeApiUri("/users/me");
-
-    //Faz o peiddo GET a API
     try {
-      print("GET ${uri.toString()}");
       final response = await http.get(
-        
         uri,
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
         },
       );
-      print("Status: ${response.statusCode}, Body: ${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> list = data["utilizador"];
-
-        //Atualiza os dados do utilizador
         setState(() {
           userData = {
-            "is_admin": list[0],
-            "id": list[1],
-            "username": list[2],
+            "is_admin":       list[0] as bool,
+            "id":             list[1] as int,
+            "username":       list[2] as String,
             "ano_nascimento": list[3],
-            "altura_cm": list[4],
-            "peso": list[5],
-            "genero": list[6],
+            "altura_cm":      list[4],
+            "peso":           list[5],
+            "genero":         list[6],
             "doenca_pre_existente": list[7],
           };
-
-          // Preencher os campos com os novos dados
           usernameController.text = list[2];
-          anoController.text = "${list[3]}";
-          alturaController.text = "${list[4]}";
-          pesoController.text = "${list[5]}";
-          generoController.text = mapGenero.entries
-              .firstWhere((entry) => entry.value == list[6], orElse: () => const MapEntry("", ""))
+          anoController.text      = "${list[3]}";
+          alturaController.text   = "${list[4]}";
+          pesoController.text     = "${list[5]}";
+          generoController.text   = mapGenero.entries
+              .firstWhere((e) => e.value == list[6], orElse: () => const MapEntry("", ""))
               .key;
-          doencaController.text = list[7] ?? '';
-
+          doencaController.text   = list[7] ?? "";
           loadingMode = false;
         });
       } else {
@@ -104,27 +88,20 @@ class _PageProfileState extends State<PageProfile> {
   }
 
   Future<void> updateUserData() async {
-    //Vai buscar o token de autenticação
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
     if (token == null) return;
 
-    //Cria o URL usando a função makeApiUri
     final uri = await makeApiUri("/users/me");
-
-    // Cria o mapa com os dados atualizados
     final updatedData = {
       "username": usernameController.text,
       "ano_nascimento": int.tryParse(anoController.text),
-      "altura_cm": int.tryParse(alturaController.text),
-      "peso": double.tryParse(pesoController.text),
-      "genero": mapGenero[generoController.text] ?? generoController.text,
+      "altura_cm":      int.tryParse(alturaController.text),
+      "peso":           double.tryParse(pesoController.text),
+      "genero":         mapGenero[generoController.text] ?? generoController.text,
       "doenca_pre_existente": doencaController.text,
-     
     };
 
-
-    //Faz o pedido PUT para atualizar os dados do utilizador
     try {
       final response = await http.put(
         uri,
@@ -134,9 +111,7 @@ class _PageProfileState extends State<PageProfile> {
         },
         body: jsonEncode(updatedData),
       );
-
       if (response.statusCode == 200) {
-        // Atualizar dados locais
         await fetchUserData();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Dados atualizados com sucesso!")),
@@ -151,181 +126,199 @@ class _PageProfileState extends State<PageProfile> {
     }
   }
 
-  //Frontend dos campos de entrada de dados
   Widget _buildField(
-  String label,
-  String value,
-  TextEditingController controller, {
-  VoidCallback? onTap,
-  double fontSize = 16,
-}) {
-  final colorScheme = Theme.of(context).colorScheme; 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      editMode
-          ? TextFormField(
-              controller: controller,
-              readOnly: onTap != null,
-              onTap: onTap,
-              decoration: InputDecoration(
-                labelText: label,
-                labelStyle: TextStyle(
+    String label,
+    String value,
+    TextEditingController controller, {
+    VoidCallback? onTap,
+    double fontSize = 16,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        editMode
+            ? TextFormField(
+                controller: controller,
+                readOnly: onTap != null,
+                onTap: onTap,
+                decoration: InputDecoration(
+                  labelText: label,
+                  labelStyle: TextStyle(
+                    fontFamily: "Roboto-Regular",
+                    fontSize: fontSize,
+                    color: colorScheme.primary,
+                  ),
+                  filled: true,
+                  fillColor: colorScheme.secondary,
+                ),
+              )
+            : Text(
+                "   $label: $value",
+                style: TextStyle(
                   fontFamily: "Roboto-Regular",
                   fontSize: fontSize,
                   color: colorScheme.primary,
                 ),
-                filled: true,
-                fillColor: colorScheme.secondary,
               ),
-            )
-          : Text(
-              "   $label: $value",
-              style: TextStyle(
-                fontFamily: "Roboto-Regular",
-                fontSize: fontSize,
-                color: colorScheme.primary,
-              ),
-            ),
-      SizedBox(height: fontSize * 1.25),
-    ],
-  );
-}
-
-  
+        SizedBox(height: fontSize * 1.25),
+      ],
+    );
+  }
 
   @override
-Widget build(BuildContext context) {
-  final size = MediaQuery.of(context).size;
-  final colorScheme = Theme.of(context).colorScheme; 
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final paddingTop = MediaQuery.of(context).padding.top;
+    final colorScheme = Theme.of(context).colorScheme;
 
-  if (loadingMode) {
-    return const Center(child: CircularProgressIndicator());
-  }
-  if (userData == null) {
-    return const Center(child: Text("Erro ao carregar os dados do utilizador."));
-  }
+    if (loadingMode) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (userData == null) {
+      return const Center(child: Text("Erro ao carregar os dados do utilizador."));
+    }
 
-  return Scaffold(
-    backgroundColor: colorScheme.onPrimary,
-    body: Stack(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: size.width * 0.05,
-            vertical: size.height * 0.02,
-          ),
-          child: ListView(
-            children: [
-              SizedBox(height: size.height * 0.03),
+    final bool isAdmin = userData!["is_admin"] as bool;
+    final int  myId    = userData!["id"]       as int;
 
-              Center(
-                child: Image.asset(
-                  Theme.of(context).brightness == Brightness.light
-                      ? "assets/images/logo_dosewise.png"
-                      : "assets/images/logo_dosewise_dark.png",
-                  width: size.width * 0.25,
-                  height: size.width * 0.25,
+    return Scaffold(
+      backgroundColor: colorScheme.onPrimary,
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.05,
+              vertical: size.height * 0.02,
+            ),
+            child: ListView(
+              children: [
+                SizedBox(height: size.height * 0.03),
+                Center(
+                  child: Image.asset(
+                    Theme.of(context).brightness == Brightness.light
+                        ? "assets/images/logo_dosewise.png"
+                        : "assets/images/logo_dosewise_dark.png",
+                    width: size.width * 0.25,
+                    height: size.width * 0.25,
+                  ),
                 ),
-              ),
-
-              SizedBox(height: size.height * 0.02),
-
-              Text(
-                "   Informações do Utilizador",
-                style: TextStyle(
-                  fontFamily: "Roboto-Regular",
-                  fontSize: size.width * 0.07,
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.primary,
+                SizedBox(height: size.height * 0.02),
+                Text(
+                  "   Informações do Utilizador",
+                  style: TextStyle(
+                    fontFamily: "Roboto-Regular",
+                    fontSize: size.width * 0.07,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.primary,
+                  ),
                 ),
-              ),
-
-              SizedBox(height: size.height * 0.04),
-
-              Text(
-                "   ID: ${userData!["id"]}",
-                style: TextStyle(
-                  fontFamily: "Roboto-Regular",
+                SizedBox(height: size.height * 0.04),
+                Text(
+                  "   ID: $myId",
+                  style: TextStyle(
+                    fontFamily: "Roboto-Regular",
+                    fontSize: size.width * 0.045,
+                    color: colorScheme.primary,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                _buildField(
+                  "Username",
+                  userData!["username"],
+                  usernameController,
                   fontSize: size.width * 0.045,
-                  color: colorScheme.primary,
                 ),
-              ),
-
-              SizedBox(height: size.height * 0.03),
-
-              _buildField(
-                "Username",
-                userData!["username"],
-                usernameController,
-                fontSize: size.width * 0.045,
-              ),
-              _buildField(
-                "Ano de Nascimento (YYYY)",
-                "${userData!["ano_nascimento"]}",
-                anoController,
-                fontSize: size.width * 0.045,
-              ),
-              _buildField(
-                "Altura (cm)",
-                "${userData!["altura_cm"]}",
-                alturaController,
-                fontSize: size.width * 0.045,
-              ),
-              _buildField(
-                "Peso (kg)",
-                "${userData!["peso"]}",
-                pesoController,
-                fontSize: size.width * 0.045,
-              ),
-              _buildField(
-                "Género",
-                userData!["genero"],
-                generoController,
-                fontSize: size.width * 0.045,
-                onTap: () => escolherGenero(
-                  context: context,
-                  controller: generoController,
+                _buildField(
+                  "Ano de Nascimento (YYYY)",
+                  "${userData!["ano_nascimento"]}",
+                  anoController,
+                  fontSize: size.width * 0.045,
                 ),
-              ),
-              _buildField(
-                "Doenças Pré-existentes",
-                userData!["doenca_pre_existente"],
-                doencaController,
-                fontSize: size.width * 0.045,
-                onTap: () => escolherDoenca(
-                  context: context,
-                  controller: doencaController,
-                  opcoes: opcoesDoenca,
+                _buildField(
+                  "Altura (cm)",
+                  "${userData!["altura_cm"]}",
+                  alturaController,
+                  fontSize: size.width * 0.045,
                 ),
-              ),
-            ],
-          ),
-        ),
-
-        Positioned(
-          bottom: size.height * 0.04,
-          right: size.width * 0.05,
-          child: FloatingActionButton(
-            mini: true,
-            backgroundColor: colorScheme.primary,
-            onPressed: () async {
-              if (editMode) {
-                await updateUserData();
-              }
-              setState(() {
-                editMode = !editMode;
-              });
-            },
-            child: Icon(
-              editMode ? Icons.save : Icons.edit,
-              color: colorScheme.onPrimary,
-              size: size.width * 0.07,
+                _buildField(
+                  "Peso (kg)",
+                  "${userData!["peso"]}",
+                  pesoController,
+                  fontSize: size.width * 0.045,
+                ),
+                _buildField(
+                  "Género",
+                  userData!["genero"],
+                  generoController,
+                  fontSize: size.width * 0.045,
+                  onTap: () => escolherGenero(
+                    context: context,
+                    controller: generoController,
+                  ),
+                ),
+                _buildField(
+                  "Doenças Pré-existentes",
+                  userData!["doenca_pre_existente"],
+                  doencaController,
+                  fontSize: size.width * 0.045,
+                  onTap: () => escolherDoenca(
+                    context: context,
+                    controller: doencaController,
+                    opcoes: opcoesDoenca,
+                  ),
+                ),
+              ],
             ),
           ),
-        ),
-      ],
-    ),
-  );
-}
+
+          // botão de editar/salvar
+          Positioned(
+            bottom: size.height * 0.04,
+            right: size.width * 0.05,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: colorScheme.primary,
+              onPressed: () async {
+                if (editMode) await updateUserData();
+                setState(() => editMode = !editMode);
+              },
+              child: Icon(
+                editMode ? Icons.save : Icons.edit,
+                color: colorScheme.onPrimary,
+                size: size.width * 0.07,
+              ),
+            ),
+          ),
+
+          // botão solto de admin
+          if (isAdmin)
+            Positioned(
+              top: paddingTop + 8,
+              right: size.width * 0.05,
+              child: FloatingActionButton(
+                mini: true,
+                backgroundColor: colorScheme.primary,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => AdminUsersScreen(
+                        currentUserId: myId,  // evita o self-delete
+                      ),
+                    ),
+                  );
+                },
+                tooltip: "Gerir utilizadores",
+                child: Icon(
+                  Icons.admin_panel_settings,
+                  color: colorScheme.onPrimary,
+                  size: size.width * 0.07,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

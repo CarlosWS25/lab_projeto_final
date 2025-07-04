@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:dosewise/opcoes_gdd.dart";
+import "package:dosewise/opcoes_gdu.dart";
 import "package:dosewise/screens/screen_endajuda.dart";
 
 class ScreenAjuda extends StatefulWidget {

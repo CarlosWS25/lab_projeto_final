@@ -68,11 +68,10 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
         throw Exception("Token não encontrado");
       }
       final uri = await makeApiUri("/users/me");
-      final resp = await http.get(
-        uri,
-        headers: {"Content-Type": "application/json", "Authorization": "Bearer $token"},
+      final resp = await http.get(uri, headers: {"Content-Type": "application/json", "Authorization": "Bearer $token"},
       );
       if (resp.statusCode == 200) {
+        final userData = jsonDecode(resp.body);
         setState(() {
           _loadingProfile = false;
         });
@@ -98,7 +97,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
     final Map<String, dynamic> payload = {
       "uso_suspeito": widget.uso,
       "dose_g": doseDouble,
-      "sintomas": [widget.sintomas],
+      "sintomas": widget.sintomas,
       "glicemia": _lastMeasurement?.concentration,
     };
 
@@ -106,9 +105,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
     print("➡️ JSON a ser enviado: $bodyJson");
 
     try {
-      final response = await http.post(
-        uri,
-        headers: {
+      final response = await http.post(uri, headers: {
           "Content-Type": "application/json",
           if (token != null) "Authorization": "Bearer $token",
         },

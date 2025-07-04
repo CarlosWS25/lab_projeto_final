@@ -1,8 +1,12 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:dosewise/ble/ble_manager.dart';
-
+import "dart:async";
+import "dart:convert";
+import "package:flutter/material.dart";
+import "package:flutter_blue_plus/flutter_blue_plus.dart";
+import "package:http/http.dart" as http;
+import "package:shared_preferences/shared_preferences.dart";
+import "package:dosewise/ble/ble_manager.dart";
+import "package:dosewise/screens/screen_resposta.dart";
+import "package:dosewise/veri_device.dart";
 
 class ScreenEndAjudarConv extends StatefulWidget {
   final String uso;
@@ -46,9 +50,8 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
         BleManager.instance.requestLastRecord();
       }
     });
-
-    // Recebe medições de glicose
-    _glucoseSub = BleManager.instance.glucoseMeasurementStream.listen((meas) {
+    _glucoseSub =
+        BleManager.instance.glucoseMeasurementStream.listen((meas) {
       setState(() => _lastMeasurement = meas);
     });
   }
@@ -65,39 +68,68 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
   }
 
   void _avancarSemMedicao() {
-    // Avança mesmo sem medir
-    navegarComPayload(null);
+    endAjudarConv(null);
   }
 
-  void navegarComPayload(double? glicemia) {
+  Future<void> endAjudarConv(double? glicemia) async {
     final double doseDouble = double.tryParse(widget.dose) ?? 0.0;
 
+    // Calcula idade a partir do ano de nascimento
+    final int anoNasc = int.tryParse(widget.ano) ?? DateTime.now().year;
+    final int idade = DateTime.now().year - anoNasc;
+    final int alturaCm = int.tryParse(widget.altura) ?? 0;
+    final double pesoKg = double.tryParse(widget.peso) ?? 0.0;
 
-    // Constrói payload com todos os dados + glicemia (ou null)
+    // Substitui pela tua URL real
+      final uri = await makeApiUri("/predict_overdose");
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token") ?? prefs.getString("auth_token");
+
     final Map<String, dynamic> payload = {
-      'uso': widget.uso,
-      'dose': doseDouble,
-      'sintomas': widget.sintomas,
-      'ano': widget.ano,
-      'altura': widget.altura,
-      'peso': widget.peso,
-      'genero': widget.genero,
-      'doenca_pre_existente': widget.doenca_pre_existente,
-      'glicemia': _lastMeasurement?.concentration,
+      "uso_suspeito": widget.uso,
+      "dose_g": doseDouble,
+      "sintomas": widget.sintomas,
+      "idade": idade,
+      "altura_cm": alturaCm,
+      "peso_kg": pesoKg,
+      "genero": widget.genero,
+      "doenca_pre_existente": widget.doenca_pre_existente,
+      "glicemia": glicemia,
     };
-    print(payload);
 
-    /*Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ScreenRespostaConv(resposta: payload),
-      ),
-    );*/
+    final bodyJson = jsonEncode(payload);
+    print("➡️ JSON a ser enviado: $bodyJson");
+
+    try {
+      final response = await http.post(uri, headers: {
+          "Content-Type": "application/json",
+          if (token != null) "Authorization": "Bearer $token",
+        },
+        body: bodyJson,
+      );
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ScreenResposta(resposta: jsonDecode(response.body)),
+          ),
+        );
+      } else {
+        throw Exception(
+            "Erro ${response.statusCode}: ${response.body}");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Falha ao enviar dados: $e")),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isConnected = _connState == BluetoothConnectionState.connected;
+    final isConnected =
+        _connState == BluetoothConnectionState.connected;
     final colorScheme = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
 
@@ -113,8 +145,8 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
           children: [
             Text(
               isConnected
-                  ? '✅ Dispositivo conectado'
-                  : '❌ Dispositivo não conectado',
+                  ? "✅ Dispositivo conectado"
+                  : "❌ Dispositivo não conectado",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: size.width * 0.05,
@@ -125,20 +157,22 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
             ElevatedButton(
               onPressed: _scanAndConnect,
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(size.width * 0.6, size.height * 0.06),
+                minimumSize:
+                    Size(size.width * 0.6, size.height * 0.06),
                 backgroundColor: colorScheme.secondary,
                 foregroundColor: colorScheme.onSecondary,
-                textStyle: TextStyle(fontSize: size.width * 0.045),
+                textStyle: TextStyle(
+                    fontSize: size.width * 0.045),
               ),
-              child: const Text('Escanear e conectar'),
+              child: const Text("Escanear e conectar"),
             ),
             SizedBox(height: size.height * 0.05),
 
-            // Se já houve medição, mostra resultado
             if (_lastMeasurement != null) ...[
               Card(
                 color: colorScheme.secondaryContainer,
-                margin: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                margin: EdgeInsets.symmetric(
+                    vertical: size.height * 0.02),
                 child: Padding(
                   padding: EdgeInsets.all(size.width * 0.04),
                   child: Column(
@@ -150,7 +184,7 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                       ),
                       SizedBox(height: size.height * 0.015),
                       Text(
-                        '${_lastMeasurement!.concentration.toStringAsFixed(1)} mg/dL',
+                        "${_lastMeasurement!.concentration.toStringAsFixed(1)} mg/dL",
                         style: TextStyle(
                           fontSize: size.width * 0.08,
                           fontWeight: FontWeight.bold,
@@ -159,10 +193,11 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                       ),
                       SizedBox(height: size.height * 0.01),
                       Text(
-                        '${_lastMeasurement!.timestamp.toLocal()}',
+                        "${_lastMeasurement!.timestamp.toLocal()}",
                         style: TextStyle(
                           fontSize: size.width * 0.04,
-                          color: colorScheme.onSecondaryContainer,
+                          color:
+                              colorScheme.onSecondaryContainer,
                         ),
                       ),
                     ],
@@ -171,21 +206,26 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               ),
               SizedBox(height: size.height * 0.03),
               ElevatedButton.icon(
-                onPressed: () => navegarComPayload(_lastMeasurement!.concentration),
-                icon: Icon(Icons.send, size: size.width * 0.06),
+                onPressed: () =>
+                    endAjudarConv(_lastMeasurement!.concentration),
+                icon:
+                    Icon(Icons.send, size: size.width * 0.06),
                 label: Text(
-                  'Finalizar Ajuda',
-                  style: TextStyle(fontSize: size.width * 0.045),
+                  "Finalizar Ajuda",
+                  style: TextStyle(
+                      fontSize: size.width * 0.045),
                 ),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(size.width * 0.6, size.height * 0.06),
+                  minimumSize: Size(
+                      size.width * 0.6, size.height * 0.06),
                   backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.onSecondary,
+                  foregroundColor:
+                      colorScheme.onSecondary,
                 ),
               ),
             ] else ...[
               Text(
-                'Aguardando última medição...',
+                "Aguardando última medição...",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: size.width * 0.05,
@@ -195,16 +235,20 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               SizedBox(height: size.height * 0.03),
               ElevatedButton.icon(
                 onPressed: _avancarSemMedicao,
-                icon: Icon(Icons.skip_next, size: size.width * 0.06),
+                icon:
+                    Icon(Icons.skip_next, size: size.width * 0.06),
                 label: Text(
-                  'Avançar sem medir glicemia',
+                  "Avançar sem medir glicemia",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: size.width * 0.045),
+                  style: TextStyle(
+                      fontSize: size.width * 0.045),
                 ),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(size.width * 0.6, size.height * 0.1),
+                  minimumSize: Size(
+                      size.width * 0.6, size.height * 0.1),
                   backgroundColor: colorScheme.secondary,
-                  foregroundColor: colorScheme.onSecondary,
+                  foregroundColor:
+                      colorScheme.onSecondary,
                 ),
               ),
             ],
