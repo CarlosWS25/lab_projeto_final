@@ -1,63 +1,58 @@
-from fastapi import APIRouter, Request, HTTPException
+from fastapi import APIRouter, HTTPException, Request
+from datetime import datetime
+from models.predict import OverdoseFlexibleInput
+from database.crud import get_user_by_id
+from auth.auth_bearer import get_user_id_from_token
 import openai
 import json
-from database.crud import get_user_by_id
-from datetime import datetime
-from models.predict import OverdoseInput
-from auth.auth_bearer import get_user_id_from_token
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-api_key = os.getenv("OPENAI_API_KEY")
-
-print(f"\n\n🔑 API KEY CARREGADA: {api_key}\n\n")
-
-if api_key is None:
-    raise Exception("API Key da OpenAI não encontrada. Verifica o ficheiro .env ou a variável de ambiente.")
-
-openai.api_key = api_key
 
 router = APIRouter()
 
 @router.post("/predict_overdose")
-async def predict_overdose(data: OverdoseInput, request: Request):
+async def predict_overdose(data: OverdoseFlexibleInput, request: Request):
     user_id = await get_user_id_from_token(request)
-    user_data = get_user_by_id(user_id)
 
-    if not user_data:
-        raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
+    # MODO AUTOMÁTICO: usar DB se os campos críticos estiverem ausentes
+    if not all([data.idade, data.peso_kg, data.altura_cm, data.genero, data.doenca_pre_existente]):
+        user_data = get_user_by_id(user_id)
+        if not user_data:
+            raise HTTPException(status_code=404, detail="Utilizador não encontrado.")
 
-    _, _, _, ano_nasc, altura_cm, peso, genero, doenca_pre_existente = user_data
-    idade = datetime.now().year - ano_nasc
+        _, _, _, ano_nasc, altura_cm, peso, genero, doenca_pre_existente = user_data
+        idade = datetime.now().year - ano_nasc
+    else:
+        idade = data.idade
+        altura_cm = data.altura_cm
+        peso = data.peso_kg
+        genero = data.genero
+        doenca_pre_existente = data.doenca_pre_existente
 
-    sintomas = ", ".join(data.sintomas) if isinstance(data.sintomas, list) else data.sintomas
-    uso = ", ".join(data.uso_suspeito) if isinstance(data.uso_suspeito, list) else data.uso_suspeito
+    # Campos sempre obtidos do input
+    sintomas = ", ".join(data.sintomas) if isinstance(data.sintomas, list) else data.sintomas or "não especificado"
+    uso = ", ".join(data.uso_suspeito) if isinstance(data.uso_suspeito, list) else data.uso_suspeito or "não especificado"
+    glicemia = f"{data.glicemia} mg/dL" if data.glicemia is not None else "não fornecida"
 
     prompt = f"""
 És um assistente clínico especializado em overdoses. Com base nos dados:
 - Idade: {idade} anos
 - Peso: {peso} kg
 - Altura: {altura_cm} cm
-- Glicemia: {data.glicemia} mg/dL
+- Glicemia: {glicemia}
 - Género: {genero}
 - Sintomas: {sintomas}
 - Uso suspeito: {uso}
 - Quantidade em gramas: {data.dose_g}
 - Doença pré-existente: {doenca_pre_existente}
 
-Avalia o risco de overdose numa escala de 0 a 10 e responde apenas nem português de portugal no formato:
+Avalia o risco de overdose numa escala de 0 a 10 e responde apenas no formato:
 {{
   "risk_score": [valor entre 0 e 10],
   "substância_antagonista": "nome da substância, caso necessário",
-  "dica": "Como agir e o que fazer com a vitima"
+  "dica": "Como agir e o que fazer com a vítima"
 }}
 """
 
     try:
-        
-        
         resposta = openai.ChatCompletion.create(
             model="gpt-4.1-mini",
             messages=[{"role": "user", "content": prompt}],
