@@ -136,34 +136,32 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Logo
+
+// Logo Dosewise
           Positioned(
-            top: size.height * 0.05,
-            right: size.width * 0.05,
-            child: Padding(
-              padding: EdgeInsets.all(size.width * 0.02),
+            top: size.height * 0.08,
+            right: size.width * 0.08,
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.light
                     ? "assets/images/logo_dosewise.png"
                     : "assets/images/logo_dosewise_dark.png",
-                width: size.width * 0.25,
-                height: size.width * 0.25,
+                width: size.width * 0.3,
+                height: size.width * 0.3,
               ),
-            ),
           ),
-
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: size.height * 0.08),
+                  SizedBox(height: size.height * 0.2),
 
-                  // Título
+// Título Finalizar Registo
                   Text(
                     "Finalizar Registo",
                     style: TextStyle(
@@ -172,12 +170,11 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       color: colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: size.height * 0.05),
+                  SizedBox(height: size.height * 0.04),
 
                   // Ano de Nascimento
                   TextField(
                     controller: anoController,
-                    showCursor: false,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(4),
@@ -187,23 +184,15 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Ano de Nascimento (YYYY)",
-                      hintStyle: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: size.width * 0.045,
-                      ),
-                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                      hintStyle: TextStyle(color: colorScheme.primary,),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
-                  // Altura (cm)
+//Campo Altura (cm)
                   TextField(
                     controller: alturaController,
-                    showCursor: false,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(3),
@@ -213,23 +202,15 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Altura (cm)",
-                      hintStyle: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: size.width * 0.045,
-                      ),
-                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
-                  // Peso (kg)
+//Campo Peso (kg)
                   TextField(
                     controller: pesoController,
-                    showCursor: false,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$")),
                     ],
@@ -238,25 +219,15 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Peso (kg)",
-                      hintStyle: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: size.width * 0.045,
-                      ),
-                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
-                  // Género
+//Campo Género
                   TextField(
-                    onTap: () => escolherGenero(
-                      context: context,
-                      controller: generoController,
-                    ),
+                    onTap: () => escolherGenero(context: context, controller: generoController),
                     controller: generoController,
                     showCursor: false,
                     readOnly: true,
@@ -265,18 +236,11 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Género",
-                      hintStyle: TextStyle(
-                        color: colorScheme.primary,
-                        fontSize: size.width * 0.045,
-                      ),
-                      contentPadding: EdgeInsets.all(size.width * 0.04),
+                      hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
                   // Doenças prévias
                   TextField(
@@ -290,22 +254,34 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                       border: const OutlineInputBorder(),
                       hintText: "Doenças prévias",
                       hintStyle: TextStyle(color: colorScheme.primary),
-                      contentPadding: EdgeInsets.all(size.width * 0.04),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
                   SizedBox(height: size.height * 0.05),
 
-                  // Botão Finalizar
-                  FloatingActionButton(
-                    heroTag: "finalizar_registo_conta",
-                    onPressed: finalizarRegisto,
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: const Icon(Icons.create_outlined),
+// Botão Finalizar Registo
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () async {
+                            print("Botão Finalziar Registo pressionado!");
+                            finalizarRegisto();
+                          },
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Finalizar Registo",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
+                        ),
+                        SizedBox(height: size.height * 0.02),
+                      ]
+                    ),
                   ),
                 ],
               ),

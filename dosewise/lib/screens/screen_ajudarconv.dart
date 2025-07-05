@@ -60,6 +60,7 @@ List<String> opcoesdoenca_pre_existente = [];
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
@@ -68,7 +69,7 @@ List<String> opcoesdoenca_pre_existente = [];
             top: size.height * 0.05,
             right: size.width * 0.05,
             child: Padding(
-              padding: EdgeInsets.all(size.width * 0.04),
+              padding: EdgeInsets.all(size.width * 0.08),
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.light
                     ? "assets/images/logo_dosewise.png"
@@ -81,18 +82,18 @@ List<String> opcoesdoenca_pre_existente = [];
 
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: size.height * 0.15),
+                  SizedBox(height: size.height * 0.14),
 
                   Text(
-                    "Preencha com os dados \ndo convidado",
+                    "Preencha os\ncampos abaixo",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      fontSize: size.width * 0.07,
+                      fontSize: size.width * 0.08,
                       color: colorScheme.primary,
                     ),
                   ),
@@ -101,7 +102,6 @@ List<String> opcoesdoenca_pre_existente = [];
                   // Ano de nascimento
                   TextField(
                     controller: anoController,
-                    showCursor: false,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(4)
@@ -111,19 +111,22 @@ List<String> opcoesdoenca_pre_existente = [];
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Ano de Nascimento (YYYY)",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontFamily: "Roboto-Regular",
+                      ),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
                     ),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
                   // Altura
                   TextField(
                     controller: alturaController,
-                    showCursor: false,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
                       LengthLimitingTextInputFormatter(3)
@@ -133,19 +136,22 @@ List<String> opcoesdoenca_pre_existente = [];
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Altura (cm)",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontFamily: "Roboto-Regular",
+                        ),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
                     ),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
                   // Peso
                   TextField(
                     controller: pesoController,
-                    showCursor: false,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(RegExp(r"^\d{0,3}(\.\d{0,2})?$"))
                     ],
@@ -154,71 +160,87 @@ List<String> opcoesdoenca_pre_existente = [];
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Peso (kg)",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontFamily: "Roboto-Regular",
+                        ),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
                     ),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
                   // Género
                   TextField(
-                    onTap: () => escolherGenero(
-                      context: context,
-                      controller: generoController,
-                    ),
+                    onTap: () => escolherGenero(context: context, controller: generoController),
                     controller: generoController,
-                    showCursor: false,
                     readOnly: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Género",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontFamily: "Roboto-Regular",
+                        ),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
                     ),
                   ),
-                  SizedBox(height: size.height * 0.025),
+                  SizedBox(height: size.height * 0.02),
 
                   // Doenças prévias
                   TextField(
                     onTap: () => escolherDoenca(context: context, controller: doenca_pre_existenteController, opcoes: opcoesdoenca_pre_existente),
                     controller: doenca_pre_existenteController,
-                    showCursor: false,
                     readOnly: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Doenças prévias",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary,
+                        fontFamily: "Roboto-Regular",
+                        ),
                       contentPadding: EdgeInsets.all(size.width * 0.04),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
                       fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
                     ),
                   ),
-                  SizedBox(height: size.height * 0.05),
+                  SizedBox(height: size.height * 0.04),
 
-                  // Botão Finalizar
-                  FloatingActionButton(
-                    heroTag: "finalizar_registo_conta",
-                    onPressed: () async {
-                      iniciarRegistoConvidado();
-                      print("Finalizar Registo Utilizador pressionado!");
-                    },
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: Icon(
-                      Icons.create_outlined,
-                      size: size.width * 0.07,
+                  // Botão inciar registo convidado
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            print("Botão Iniciar Registo Convidado pressionado!");
+                            iniciarRegistoConvidado();
+                          },
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Iniciar Registo",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
+                        ),
+                      ],
                     ),
                   ),
                 ],

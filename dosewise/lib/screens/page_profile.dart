@@ -1,12 +1,9 @@
-// lib/screens/page_profile.dart
-
 import "dart:convert";
 import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
 import "package:dosewise/opcoes_gdu.dart";
-import "package:dosewise/screens/screen_profileadmin.dart"; // AdminUsersScreen
 
 class PageProfile extends StatefulWidget {
   const PageProfile({super.key});
@@ -31,10 +28,7 @@ class _PageProfileState extends State<PageProfile> {
   @override
   void initState() {
     super.initState();
-    fetchUserData();
-    carregarDoenca().then((value) {
-      setState(() => opcoesDoenca = value);
-    });
+    fetchUserData(); // Chama a função para buscar os dados do utilizador
   }
 
   Future<void> fetchUserData() async {
@@ -59,23 +53,25 @@ class _PageProfileState extends State<PageProfile> {
         final List<dynamic> list = data["utilizador"];
         setState(() {
           userData = {
-            "is_admin":       list[0] as bool,
-            "id":             list[1] as int,
-            "username":       list[2] as String,
+            "is_admin": list[0] as bool,
+            "id": list[1] as int,  // Armazenando ID do usuário
+            "username": list[2] as String,
             "ano_nascimento": list[3],
-            "altura_cm":      list[4],
-            "peso":           list[5],
-            "genero":         list[6],
+            "altura_cm": list[4],
+            "peso": list[5],
+            "genero": list[6],
             "doenca_pre_existente": list[7],
           };
+
+          // Salvar ID do usuário nas SharedPreferences
+          prefs.setInt("user_id", list[1] as int);
+
           usernameController.text = list[2];
-          anoController.text      = "${list[3]}";
-          alturaController.text   = "${list[4]}";
-          pesoController.text     = "${list[5]}";
-          generoController.text   = mapGenero.entries
-              .firstWhere((e) => e.value == list[6], orElse: () => const MapEntry("", ""))
-              .key;
-          doencaController.text   = list[7] ?? "";
+          anoController.text = "${list[3]}";
+          alturaController.text = "${list[4]}";
+          pesoController.text = "${list[5]}";
+          generoController.text = list[6];
+          doencaController.text = list[7] ?? "";
           loadingMode = false;
         });
       } else {
@@ -96,9 +92,9 @@ class _PageProfileState extends State<PageProfile> {
     final updatedData = {
       "username": usernameController.text,
       "ano_nascimento": int.tryParse(anoController.text),
-      "altura_cm":      int.tryParse(alturaController.text),
-      "peso":           double.tryParse(pesoController.text),
-      "genero":         mapGenero[generoController.text] ?? generoController.text,
+      "altura_cm": int.tryParse(alturaController.text),
+      "peso": double.tryParse(pesoController.text),
+      "genero": generoController.text,
       "doenca_pre_existente": doencaController.text,
     };
 
@@ -169,7 +165,6 @@ class _PageProfileState extends State<PageProfile> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final paddingTop = MediaQuery.of(context).padding.top;
     final colorScheme = Theme.of(context).colorScheme;
 
     if (loadingMode) {
@@ -179,8 +174,7 @@ class _PageProfileState extends State<PageProfile> {
       return const Center(child: Text("Erro ao carregar os dados do utilizador."));
     }
 
-    final bool isAdmin = userData!["is_admin"] as bool;
-    final int  myId    = userData!["id"]       as int;
+    final int myId = userData!["id"] as int;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
@@ -188,8 +182,8 @@ class _PageProfileState extends State<PageProfile> {
         children: [
           Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.05,
-              vertical: size.height * 0.02,
+              horizontal: size.width * 0.08,
+              vertical: size.height * 0.05,
             ),
             child: ListView(
               children: [
@@ -205,7 +199,7 @@ class _PageProfileState extends State<PageProfile> {
                 ),
                 SizedBox(height: size.height * 0.02),
                 Text(
-                  "   Informações do Utilizador",
+                  "Informações do Utilizador",
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
                     fontSize: size.width * 0.07,
@@ -258,7 +252,7 @@ class _PageProfileState extends State<PageProfile> {
                   ),
                 ),
                 _buildField(
-                  "Doenças Pré-existentes",
+                  "Doenças",
                   userData!["doenca_pre_existente"],
                   doencaController,
                   fontSize: size.width * 0.045,
@@ -290,33 +284,6 @@ class _PageProfileState extends State<PageProfile> {
               ),
             ),
           ),
-
-          // botão solto de admin
-          if (isAdmin)
-            Positioned(
-              top: paddingTop + 8,
-              right: size.width * 0.05,
-              child: FloatingActionButton(
-                mini: true,
-                backgroundColor: colorScheme.primary,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => AdminUsersScreen(
-                        currentUserId: myId,  // evita o self-delete
-                      ),
-                    ),
-                  );
-                },
-                tooltip: "Gerir utilizadores",
-                child: Icon(
-                  Icons.admin_panel_settings,
-                  color: colorScheme.onPrimary,
-                  size: size.width * 0.07,
-                ),
-              ),
-            ),
         ],
       ),
     );

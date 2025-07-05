@@ -73,6 +73,7 @@ Widget build(BuildContext context) {
   final size = MediaQuery.of(context).size;
 
   return Scaffold(
+    resizeToAvoidBottomInset: false,
     backgroundColor: colorScheme.onPrimary,
     body: Stack(
       children: [
@@ -102,10 +103,10 @@ Widget build(BuildContext context) {
 
                 // Título do Ajuda com tamanho relativo
                 Text(
-                  "Preencha os seguintes campos",
+                  "Preencha os campos abaixo",
                   style: TextStyle(
                     fontFamily: "Roboto-Regular",
-                    fontSize: size.width * 0.07,
+                    fontSize: size.width * 0.08,
                     color: colorScheme.primary,
                   ),
                 ),
@@ -114,21 +115,24 @@ Widget build(BuildContext context) {
 
                 // Campo de Drogas
                 TextField(
-                  onTap: () => escolherUso(
-                      context: context,
-                      controller: usoController,
-                      opcoes: opcoesUso),
+                  onTap: () => escolherUso(context: context, controller: usoController, opcoes: opcoesUso),
                   controller: usoController,
-                  showCursor: false,
                   readOnly: true,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: colorScheme.secondary,
                     border: OutlineInputBorder(),
                     hintText: "Drogas usadas",
-                    hintStyle: TextStyle(color: colorScheme.primary),
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontFamily: "Roboto-Regular",
+                      ),
                   ),
-                  style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.05),
+                  style: TextStyle(
+                    color: colorScheme.primary,
+                    fontSize: size.width * 0.05,
+                    fontFamily: "Roboto-Regular",
+                    ),
                 ),
 
                 SizedBox(height: size.height * 0.02),
@@ -136,7 +140,6 @@ Widget build(BuildContext context) {
                 // Campo de Dose em Gramas
                 TextField(
                   controller: doseController,
-                  showCursor: false,
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(
                         RegExp(r"^\d{0,3}(\.\d{0,1})?$"))
@@ -146,11 +149,17 @@ Widget build(BuildContext context) {
                     fillColor: colorScheme.secondary,
                     border: OutlineInputBorder(),
                     hintText: "Dose (g)",
-                    hintStyle: TextStyle(color: colorScheme.primary),
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontFamily: "Roboto-Regular",
+                      ),
                   ),
-                  style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.05),
+                  style: TextStyle(color: colorScheme.primary,
+                  fontSize: size.width * 0.05,
+                  fontFamily: "Roboto-Regular",
+                  ),
                 ),
-                SizedBox(height: size.height * 0.04),
+                SizedBox(height: size.height * 0.02),
 
                 // Campo dos Sintomas
                 TextField(
@@ -160,40 +169,42 @@ Widget build(BuildContext context) {
                     fillColor: colorScheme.secondary,
                     border: const OutlineInputBorder(),
                     hintText: "Sintomas",
-                    hintStyle: TextStyle(color: colorScheme.primary),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: size.height * 0.02,
-                      horizontal: size.width * 0.04,
-                    ),
+                    hintStyle: TextStyle(
+                      color: colorScheme.primary,
+                      fontFamily: "Roboto-Regular",
+                      ),
                   ),
                   style: TextStyle(
                     color: colorScheme.primary,
                     fontSize: size.width * 0.045,
+                    fontFamily: "Roboto-Regular",
                   ),
                 ),
-                SizedBox(height: size.height * 0.05),
+                SizedBox(height: size.height * 0.04),
 
                 // Botão Começar Ajuda com tamanho proporcional
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SizedBox(
-                    width: size.width * 0.18,
-                    height: size.width * 0.18,
-                  child: FloatingActionButton(
-                    heroTag: "ajudar_utilizador",
-                    onPressed: () {
-                      ajudarConv2();
-                      print("Botão Ajudar utilizador pressionado!");
-                    },
-                    foregroundColor: colorScheme.primary,
-                      backgroundColor: colorScheme.secondary,
-                      child: Icon(
-                        Icons.create_outlined,
-                        size: size.width * 0.09,
-                      ),
+                Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            print("Botão Ajudar Convidado 2 pressionado!");
+                            ajudarConv2();
+                          },
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Continuar Registo",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
+                        ),
+                      ],
                     ),
                   ),
-                ),
               ],
             ),
           ),

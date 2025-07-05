@@ -16,11 +16,11 @@ class PageMainMenu extends StatelessWidget {
       backgroundColor: colorScheme.onPrimary,
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center, // Centraliza na vertical
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: size.height * 0.15),
 
-            // Título - agora centrado horizontalmente
+// Título Menu Principal
             Text(
               "Menu Principal",
               style: TextStyle(
@@ -29,20 +29,19 @@ class PageMainMenu extends StatelessWidget {
                 fontSize: size.width * 0.1,
                 color: colorScheme.primary,
               ),
-              textAlign: TextAlign.center, // Alinhamento do texto
+              textAlign: TextAlign.center,
             ),
 
             SizedBox(height: size.height * 0.1),
 
-            // Primeira linha de botões (Ajudar e Ajudar Convidado)
+// Primeira linha de botões
             Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Centraliza horizontalmente
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   width: size.width * 0.35,
                   height: size.height * 0.12,
                   child: FloatingActionButton.extended(
-                    heroTag: "ajudar",
                     onPressed: () {
                       print("Botão Ajudar pressionado!");
                       Navigator.push(
@@ -62,11 +61,9 @@ class PageMainMenu extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: size.width * 0.05),
-                SizedBox(
-                  width: size.width * 0.35,
-                  height: size.height * 0.12,
+
+                SizedBox(width: size.width * 0.35, height: size.height * 0.12,
                   child: FloatingActionButton.extended(
-                    heroTag: "ajudar_convidado",
                     onPressed: () {
                       print("Botão Ajudar Convidado pressionado!");
                       Navigator.push(
@@ -91,15 +88,12 @@ class PageMainMenu extends StatelessWidget {
 
             SizedBox(height: size.height * 0.1),
 
-            // Segunda linha de botões (SOS e Alerta Amigo)
+// Segunda linha de botões
             Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Centraliza horizontalmente
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: size.width * 0.35,
-                  height: size.height * 0.12,
+                SizedBox(width: size.width * 0.35, height: size.height * 0.12,
                   child: FloatingActionButton.extended(
-                    heroTag: "sos",
                     onPressed: () {
                       print("Botão SOS pressionado!");
                       Navigator.push(
@@ -119,11 +113,8 @@ class PageMainMenu extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: size.width * 0.05),
-                SizedBox(
-                  width: size.width * 0.35,
-                  height: size.height * 0.12,
+                SizedBox(width: size.width * 0.35, height: size.height * 0.12,
                   child: FloatingActionButton.extended(
-                    heroTag: "alerta_amigo",
                     onPressed: () {
                       print("Botão Alerta Amigo pressionado!");
                       Navigator.push(

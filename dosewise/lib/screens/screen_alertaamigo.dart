@@ -207,27 +207,34 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final size        = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.onPrimary,
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(
           horizontal: size.width * 0.08,
-          vertical:   size.height * 0.1,
+          vertical: size.height * 0.05,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: size.height * 0.02),
+
+
+// Titulo Alerta Amigo  
             Text(
-              "Adicionar Amigo",
+              "Alerta Amigo",
               style: TextStyle(
                 fontSize: size.width * 0.08,
                 color:   colorScheme.primary,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.02),
+
+// Campo Nome do Amigo
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -238,7 +245,9 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
                 hintStyle: TextStyle(fontSize: size.width * 0.045),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: size.height * 0.02),
+
+// Campo Número do Amigo
             TextField(
               controller: _numberController,
               keyboardType: TextInputType.phone,
@@ -250,80 +259,98 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
                 hintStyle: TextStyle(fontSize: size.width * 0.045),
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: size.height * 0.04),
+
+// Botão Adicionar Amigo
             Center(
-              child: FloatingActionButton(
-                heroTag: "botao_adicionar_amigo",
-                onPressed: _addFriend,
-                backgroundColor: colorScheme.primary,
-                child: const Icon(Icons.person_add),
-              ),
-            ),
-            const SizedBox(height: 24),
-            Column(
-              children: List.generate(3, (i) {
-                final has = i < _friends.length;
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: has
-                          ? colorScheme.primary
-                          : colorScheme.primary.withOpacity(0.3),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FloatingActionButton.extended(
+                    onPressed: () async {
+                      print("Botão Adicionar Amigo pressionado!");
+                      await _addFriend();
+                    },
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "Adicionar Amigo",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
                       ),
-                      borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        has
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _friends[i].name,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(_friends[i].number),
-                              ],
-                            )
-                          : Text(
-                              "Slot ${i + 1} vazio",
-                              style: TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: colorScheme.onSurface.withOpacity(0.6),
-                              ),
+                  ),
+                  SizedBox(height: size.height * 0.04),
+
+                  // Lista de Amigos
+                  Column(
+                    children: List.generate(3, (i) {
+                      final has = i < _friends.length;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: has
+                                ? colorScheme.primary
+                                : colorScheme.primary.withOpacity(0.3),
                             ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: has ? () => _removeFriend(i) : null,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: EdgeInsets.all(size.width * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              has
+                                ? Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _friends[i].name,
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(_friends[i].number),
+                                    ],
+                                  )
+                                : Text(
+                                    "Slot ${i + 1} vazio",
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      color: colorScheme.onSurface.withOpacity(0.6),
+                                    ),
+                                  ),
+                              IconButton(
+                                icon: const Icon(Icons.close),
+                                onPressed: has ? () => _removeFriend(i) : null,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 24),
+                  Center(
+                    child: SizedBox(
+                      width:  size.width * 0.25,
+                      height: size.width * 0.25,
+                      child: FloatingActionButton(
+                        heroTag: "botao_alertar_amigos",
+                        onPressed: _friends.isEmpty ? null : _alertarAmigos,
+                        backgroundColor: colorScheme.primary,
+                        child: Text(
+                          "Alertar\nAmigo",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: size.width * 0.05,
+                            color:    colorScheme.onPrimary,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                );
-              }),
-            ),
-            const SizedBox(height: 24),
-            Center(
-              child: SizedBox(
-                width:  size.width * 0.25,
-                height: size.width * 0.25,
-                child: FloatingActionButton(
-                  heroTag: "botao_alertar_amigos",
-                  onPressed: _friends.isEmpty ? null : _alertarAmigos,
-                  backgroundColor: colorScheme.primary,
-                  child: Text(
-                    "Alertar\nAmigo",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: size.width * 0.05,
-                      color:    colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
+                ],
               ),
             ),
           ],

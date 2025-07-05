@@ -1,20 +1,18 @@
-// lib/screens/screen_profileadmin.dart
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:dosewise/veri_device.dart';
 
-class AdminUsersScreen extends StatefulWidget {
+class ScreenAdminUser extends StatefulWidget {
   final int currentUserId;
-  const AdminUsersScreen({Key? key, required this.currentUserId}) : super(key: key);
+  const ScreenAdminUser({Key? key, required this.currentUserId}) : super(key: key);
 
   @override
-  State<AdminUsersScreen> createState() => _AdminUsersScreenState();
+  State<ScreenAdminUser> createState() => ScreenAdminUserState();
 }
 
-class _AdminUsersScreenState extends State<AdminUsersScreen> {
+class ScreenAdminUserState extends State<ScreenAdminUser> {
   bool loading = true;
   List<Map<String, dynamic>> users = [];
 
@@ -87,14 +85,51 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     }
   }
 
+  // Função para mostrar o diálogo de confirmação antes de apagar o usuário
+  Future<void> _showDeleteConfirmationDialog(int userId) async {
+    final bool? confirmDelete = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmação'),
+          content: const Text('Tem certeza de que deseja apagar este usuário?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false), // Não apaga
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true), // Apaga
+              child: const Text('Confirmar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmDelete == true) {
+      // Se o usuário confirmar, executa a exclusão
+      _deleteUser(userId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin: Lista de Utilizadores'),
+        title: Text(
+          'Menu Admin',
+          style: TextStyle(
+            fontFamily: "Roboto-Regular",
+            fontSize: size.width * 0.06,
+            color: colorScheme.onPrimary,        
+          ),
+        ),
         backgroundColor: colorScheme.primary,
+        iconTheme: IconThemeData(color: colorScheme.onPrimary),
       ),
       body: loading
           ? const Center(child: CircularProgressIndicator())
@@ -111,7 +146,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       : IconButton(
                           icon: const Icon(Icons.delete),
                           color: Colors.red,
-                          onPressed: () => _deleteUser(u['id'] as int),
+                          onPressed: () => _showDeleteConfirmationDialog(u['id'] as int), // Chama o dialogo
                         ),
                 );
               },

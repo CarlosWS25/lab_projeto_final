@@ -76,7 +76,7 @@ flutter:
     - assets/images/logo_dosewise_dark.png
     - assets/images/button_off.png
     - assets/images/button_on.png
-    - assets/txt/doencas.txt
+    - assets/txt/doenca.txt
     - assets/txt/drogas.txt
 
 

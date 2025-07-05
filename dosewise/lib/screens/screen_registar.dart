@@ -24,12 +24,25 @@ class ScreenRegistarState extends State<ScreenRegistar> {
       );
       return;
     }
+    if (password.length < 8) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("A password deve ter pelo menos 8 caracteres")),
+      );
+      return;
+    }
+    if (!RegExp(r'(?=.*[A-Z])').hasMatch(password) || !RegExp(r'(?=.*[a-z])').hasMatch(password) || !RegExp(r'(?=.*\d)').hasMatch(password) || !RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])').hasMatch(password)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("A password deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um símbolo especial")),
+    );
+    return;
+  }
     if (password != confirmarPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("A password não coincide")),
       );
       return;
     }
+    
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -48,12 +61,14 @@ class ScreenRegistarState extends State<ScreenRegistar> {
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Logo Dosewise
+
+// Logo Dosewise
           Positioned(
-            top: size.height * 0.06,
-            right: size.width * 0.05,
+            top: size.height * 0.08,
+            right: size.width * 0.08,
             child: Image.asset(
               Theme.of(context).brightness == Brightness.light
                 ? "assets/images/logo_dosewise.png"
@@ -65,29 +80,27 @@ class ScreenRegistarState extends State<ScreenRegistar> {
 
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: size.height * 0.04),
 
-                  // Título Registar
+// Título Criar Conta
                   Text(
-                    "Create account",
+                    "Criar Conta",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: size.width * 0.08,
                       color: colorScheme.primary,
                     ),
                   ),
-
                   SizedBox(height: size.height * 0.04),
 
-                  // Campo Username
+// Campo Username
                   TextField(
                     controller: usernameController,
-                    showCursor: false,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
@@ -95,15 +108,13 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                       hintText: "Username",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-
                   SizedBox(height: size.height * 0.02),
 
-                  // Campo Password
+// Campo Password
                   TextField(
                     controller: passwordController,
-                    showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
                     decoration: InputDecoration(
@@ -113,15 +124,13 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                       hintText: "Password",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-
                   SizedBox(height: size.height * 0.02),
 
-                  // Campo Confirmar Password
+// Campo Confirmar Password
                   TextField(
                     controller: confirmarPasswordController,
-                    showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
                     decoration: InputDecoration(
@@ -131,24 +140,32 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                       hintText: "Confirmar Password",
                       hintStyle: TextStyle(color: colorScheme.primary),
                     ),
-                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.045),
+                    style: TextStyle(color: colorScheme.primary),
                   ),
-
                   SizedBox(height: size.height * 0.04),
 
-                  // Botão Registar Utilizador com tamanho proporcional
-                  SizedBox(
-                    width: size.width * 0.15,
-                    height: size.width * 0.15,
-                    child: FloatingActionButton(
-                      heroTag: "registar_utilizador_conta",
-                      onPressed: () {
-                        print("Botão Registar pressionado!");
-                        iniciarRegisto();
-                      },
-                      foregroundColor: colorScheme.primary,
-                      backgroundColor: colorScheme.secondary,
-                      child: Icon(Icons.create_outlined, size: size.width * 0.08),
+// Botão Criar Conta
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () async {
+                            print("Botão Criar Conta pressionado!");
+                            iniciarRegisto();
+                          },
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Criar Conta",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
+                        ),
+                        SizedBox(height: size.height * 0.02),
+                      ]
                     ),
                   ),
                 ],

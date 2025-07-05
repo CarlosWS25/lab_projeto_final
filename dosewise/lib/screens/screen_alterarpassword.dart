@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dosewise/veri_device.dart'; 
 
-class ScreenRecuperar extends StatefulWidget {
-  const ScreenRecuperar({super.key});
+class ScreenAlterarPassword extends StatefulWidget {
+  const ScreenAlterarPassword({super.key});
 
   @override
-  State<ScreenRecuperar> createState() => ScreenRecuperarState();
+  State<ScreenAlterarPassword> createState() => ScreenAlterarPasswordState();
 }
 
-class ScreenRecuperarState extends State<ScreenRecuperar> {
+class ScreenAlterarPasswordState extends State<ScreenAlterarPassword> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController recoveryKeyController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -19,7 +19,7 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
 
   bool _loading = false;
 
-  Future<void> recuperarPassword() async {
+  Future<void> alterarPassword() async {
     final username = usernameController.text.trim();
     final recoveryKey = recoveryKeyController.text.trim();
     final newPassword = passwordController.text;
@@ -67,7 +67,7 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
       } else {
         final data = jsonDecode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(data["detail"] ?? "Erro ao recuperar password.")),
+          SnackBar(content: Text(data["detail"] ?? "Erro ao Alterar password.")),
         );
       }
     } catch (e) {
@@ -96,31 +96,35 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
+
+//logo Dosewise
           Positioned(
-            top: size.height * 0.05,
-            right: size.width * 0.05,
-            child: Padding(
-              padding: EdgeInsets.all(size.width * 0.04),
-              child: Image.asset(
-                Theme.of(context).brightness == Brightness.light
-                    ? "assets/images/logo_dosewise.png"
-                    : "assets/images/logo_dosewise_dark.png",
-                width: size.width * 0.25,
-                height: size.width * 0.25,
-              ),
+            top: size.height * 0.08,
+            right: size.width * 0.08,
+            child: Image.asset(
+              Theme.of(context).brightness == Brightness.light
+                  ? "assets/images/logo_dosewise.png"
+                  : "assets/images/logo_dosewise_dark.png",
+              width: size.width * 0.3,
+              height: size.width * 0.3,
             ),
           ),
           Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
-              child: ListView(
-                shrinkWrap: true,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: size.height * 0.12),
+
+// Titulo Alterar Palavra-Passe
                   Text(
-                    "Recuperar Palavra-Passe",
+                    "Alterar Password",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
                       fontSize: size.width * 0.08,
@@ -128,6 +132,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.04),
+
+//TextField Username
                   TextField(
                     controller: usernameController,
                     decoration: InputDecoration(
@@ -135,7 +141,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Username",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
@@ -143,6 +150,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.02),
+
+// TextField Código de Recuperação
                   TextField(
                     controller: recoveryKeyController,
                     decoration: InputDecoration(
@@ -150,7 +159,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Código de recuperação",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
@@ -158,6 +168,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.02),
+
+// TextField Nova Password
                   TextField(
                     controller: passwordController,
                     obscureText: true,
@@ -166,7 +178,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Nova password",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        color: colorScheme.primary),
                     ),
                     style: TextStyle(
                       color: colorScheme.primary,
@@ -174,6 +187,8 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.02),
+
+// TextField Confirmar Nova Password
                   TextField(
                     controller: confirmarPasswordController,
                     obscureText: true,
@@ -190,14 +205,19 @@ class ScreenRecuperarState extends State<ScreenRecuperar> {
                     ),
                   ),
                   SizedBox(height: size.height * 0.04),
-                  FloatingActionButton(
-                    heroTag: "botao_recuperar_password",
-                    onPressed: _loading ? null : recuperarPassword,
-                    foregroundColor: colorScheme.primary,
-                    backgroundColor: colorScheme.secondary,
-                    child: _loading
-                        ? CircularProgressIndicator(color: colorScheme.primary)
-                        : const Icon(Icons.key),
+
+// Botão Alterar Password
+                  FloatingActionButton.extended(
+                    onPressed: _loading ? null : alterarPassword,
+                    backgroundColor: colorScheme.primary,
+                    label: Text(
+                      "Alterar Password",
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.onPrimary,
+                        fontSize: size.width * 0.05,
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -1,5 +1,5 @@
 import "dart:convert";
-import "package:dosewise/screens/screen_recuperar.dart";
+import "package:dosewise/screens/screen_alterarpassword.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/screens/home_screen.dart";
@@ -19,7 +19,7 @@ class ScreenLoginState extends State<ScreenLogin> {
 
   Future<void> fazerLogin() async {
     final username = usernameController.text.trim();
-    final password = passwordController.text;
+    final password = passwordController.text.trim();
 
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -72,12 +72,14 @@ class ScreenLoginState extends State<ScreenLogin> {
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Logo
+
+// Logo Dosewise
           Positioned(
-            top: size.height * 0.05,
-            right: size.width * 0.05,
+            top: size.height * 0.08,
+            right: size.width * 0.08,
             child: Image.asset(
               Theme.of(context).brightness == Brightness.light
                   ? "assets/images/logo_dosewise.png"
@@ -86,14 +88,16 @@ class ScreenLoginState extends State<ScreenLogin> {
               height: size.width * 0.3,
             ),
           ),
+          
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Título
+
+// Título do Login
                   Text(
                     "Login",
                     style: TextStyle(
@@ -104,25 +108,26 @@ class ScreenLoginState extends State<ScreenLogin> {
                   ),
                   SizedBox(height: size.height * 0.04),
 
-                  // Campo Username
+// Campo Username
                   TextField(
                     controller: usernameController,
-                    showCursor: false,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Username",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary
+                      ),
                     ),
                     style: TextStyle(color: colorScheme.primary),
                   ),
                   SizedBox(height: size.height * 0.02),
 
-                  // Campo Password
+// Campo Password
                   TextField(
                     controller: passwordController,
-                    showCursor: false,
                     obscureText: true,
                     obscuringCharacter: "*",
                     decoration: InputDecoration(
@@ -130,48 +135,59 @@ class ScreenLoginState extends State<ScreenLogin> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Password",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary
+                      ),
                     ),
                     style: TextStyle(color: colorScheme.primary),
                   ),
                   SizedBox(height: size.height * 0.04),
 
-                  // Linha com os dois botões
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.2,
-                        height: size.height * 0.07,
-                        child: FloatingActionButton(
-                          heroTag: "botao_entrar_conta",
+// Botão Inciar sessão
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
                           onPressed: () async {
-                            print("Botão Entrar pressionado!");
+                            print("Botão Iniciar sessão pressionado!");
                             await fazerLogin();
                           },
-                          foregroundColor: colorScheme.primary,
-                          backgroundColor: colorScheme.secondary,
-                          child: const Icon(Icons.login),
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Iniciar sessão",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
                         ),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.2,
-                        height: size.height * 0.07,
-                        child: FloatingActionButton(
-                          heroTag: "botao_recuperar_password",
+                        SizedBox(height: size.height * 0.02),
+
+//Botão Recuperar Password
+                        FloatingActionButton.extended(
                           onPressed: () {
+                            print("Botão Recuperar Password pressionado!");
                             Navigator.pushReplacement(
                               context,
-                              MaterialPageRoute(builder: (context) => const ScreenRecuperar()),
+                              MaterialPageRoute(builder: (context) => const ScreenAlterarPassword()),
                             );
                           },
-                          foregroundColor: colorScheme.primary,
-                          backgroundColor: colorScheme.secondary,
-                          child: const Icon(Icons.key),
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Esqueci-me da password",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -55,15 +55,15 @@ class ScreenAjudaState extends State<ScreenAjuda> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: colorScheme.onPrimary,
       body: Stack(
         children: [
-          // Logo Dosewise com tamanho proporcional
+
+// Logo Dosewise
           Positioned(
-            top: size.height * 0.06,
-            right: size.width * 0.05,
-            child: Padding(
-              padding: EdgeInsets.all(size.width * 0.04),
+            top: size.height * 0.08,
+            right: size.width * 0.08,
               child: Image.asset(
                 Theme.of(context).brightness == Brightness.light
                     ? "assets/images/logo_dosewise.png"
@@ -72,45 +72,47 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                 height: size.width * 0.3,
               ),
             ),
-          ),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: size.height * 0.04),
 
-                  // Título do Ajuda com tamanho relativo
+// Título do Ajuda com tamanho relativo
                   Text(
-                    "Preencha os seguintes campos",
+                    "Preencha os campos abaixo",
                     style: TextStyle(
                       fontFamily: "Roboto-Regular",
-                      fontSize: size.width * 0.07,
+                      fontSize: size.width * 0.08,
                       color: colorScheme.primary,
                     ),
                   ),
 
                   SizedBox(height: size.height * 0.04),
 
-                  // Campo de Drogas
+// Campo de Drogas
                   TextField(
-                    onTap: () => escolherUso(
-                        context: context,
-                        controller: usoController,
-                        opcoes: opcoesUso),
+                    onTap: () => escolherUso(context: context, controller: usoController, opcoes: opcoesUso),
                     controller: usoController,
-                    showCursor: false,
                     readOnly: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Drogas usadas",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary,
+                      ),
                     ),
-                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.05),
+                    style: TextStyle(
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.05,
+                      fontFamily: "Roboto-Regular",
+                      ),
                   ),
 
                   SizedBox(height: size.height * 0.02),
@@ -128,11 +130,18 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                       fillColor: colorScheme.secondary,
                       border: OutlineInputBorder(),
                       hintText: "Dose (g)",
-                      hintStyle: TextStyle(color: colorScheme.primary),
+                      hintStyle: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary
+                      ),
                     ),
-                    style: TextStyle(color: colorScheme.primary, fontSize: size.width * 0.05),
+                    style: TextStyle(
+                      fontFamily: "Roboto-Regular",
+                      color: colorScheme.primary,
+                      fontSize: size.width * 0.05
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.04),
+                  SizedBox(height: size.height * 0.02),
 
                   // Campo dos Sintomas
                   TextField(
@@ -142,38 +151,40 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                       fillColor: colorScheme.secondary,
                       border: const OutlineInputBorder(),
                       hintText: "Sintomas",
-                      hintStyle: TextStyle(color: colorScheme.primary),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: size.height * 0.02,
-                        horizontal: size.width * 0.04,
+                      hintStyle: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary
                       ),
                     ),
-                    style: TextStyle(
-                      color: colorScheme.primary,
-                      fontSize: size.width * 0.045,
-                    ),
-                  ),
-                  SizedBox(height: size.height * 0.05),
+                      style: TextStyle(
+                        fontFamily: "Roboto-Regular",
+                        color: colorScheme.primary,
+                        fontSize: size.width * 0.05
+                        ), 
+                      ),
+                  SizedBox(height: size.height * 0.04),
 
-                  // Botão Começar Ajuda com tamanho proporcional
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SizedBox(
-                      width: size.width * 0.18,
-                      height: size.width * 0.18,
-                    child: FloatingActionButton(
-                      heroTag: "ajudar_utilizador",
-                      onPressed: () {
-                        print("Botão Ajudar utilizador pressionado!");
-                        iniciarAjuda();
-                      },
-                      foregroundColor: colorScheme.primary,
-                        backgroundColor: colorScheme.secondary,
-                        child: Icon(
-                          Icons.create_outlined,
-                          size: size.width * 0.09,
+// Botão Começar Ajuda
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FloatingActionButton.extended(
+                          onPressed: () {
+                            print("Botão Iniciar Ajuda pressionado!");
+                            iniciarAjuda();
+                          },
+                          backgroundColor: colorScheme.primary,
+                          label: Text(
+                            "Iniciar Ajuda",
+                            style: TextStyle(
+                              fontFamily: "Roboto-Regular",
+                              color: colorScheme.onPrimary,
+                              fontSize: size.width * 0.05,
+                            ),
+                          )
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ],

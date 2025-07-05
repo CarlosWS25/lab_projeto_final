@@ -71,7 +71,6 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
       final resp = await http.get(uri, headers: {"Content-Type": "application/json", "Authorization": "Bearer $token"},
       );
       if (resp.statusCode == 200) {
-        final userData = jsonDecode(resp.body);
         setState(() {
           _loadingProfile = false;
         });
@@ -153,6 +152,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: size.width * 0.2,
@@ -162,25 +162,34 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              isConnected ? "✅ Dispositivo conectado" : "❌ Não conectado",
+              isConnected 
+                ? "✅ Dispositivo conectado" 
+                : "❌ Não conectado",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: size.width * 0.05,
+                fontFamily: "Roboto-Regular",
                 color: colorScheme.primary,
               ),
             ),
             SizedBox(height: size.height * 0.03),
+
             ElevatedButton(
               onPressed: _scanAndConnect,
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(size.width * 0.6, size.height * 0.06),
-                backgroundColor: colorScheme.secondary,
-                foregroundColor: colorScheme.onSecondary,
-                textStyle: TextStyle(fontSize: size.width * 0.045),
+                backgroundColor: colorScheme.primary,
               ),
-              child: Text("Escanear e conectar"),
+              child: Text("Escanear e conectar",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                color: colorScheme.onPrimary,
+                fontSize: size.width * 0.05,
+                )
+              ),
             ),
-            SizedBox(height: size.height * 0.05),
+            SizedBox(height: size.height * 0.04),
+            
             if (_lastMeasurement != null) ...[
               Card(
                 color: colorScheme.secondaryContainer,
@@ -214,15 +223,22 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
               SizedBox(height: size.height * 0.03),
               ElevatedButton.icon(
                 onPressed: finalizarAjuda,
-                icon: Icon(Icons.send, size: size.width * 0.06),
+                icon: Icon(
+                  Icons.send, 
+                  size: size.width * 0.06,
+                  color: colorScheme.onPrimary,
+                  ),
                 label: Text(
                   "Finalizar Ajuda",
-                  style: TextStyle(fontSize: size.width * 0.045),
+                  style: TextStyle(
+                    fontSize: size.width * 0.045,
+                    fontFamily: "Roboto-Regular",
+                    color: colorScheme.onPrimary,
+                    ),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(size.width * 0.6, size.height * 0.06),
                   backgroundColor: colorScheme.primary,
-                  foregroundColor: colorScheme.secondary,
                 ),
               ),
             ] else ...[
@@ -230,8 +246,9 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                 "Aguardando última medição...",
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  color: colorScheme.primary,
+                  fontFamily: "Roboto-Regular",
                   fontSize: size.width * 0.05,
-                  color: colorScheme.secondary,
                 ),
               ),
               SizedBox(height: size.height * 0.03),
@@ -239,12 +256,15 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                 onPressed: finalizarAjuda,
                 label: Text(
                   " Avançar sem \nmedir glicemia",
-                  style: TextStyle(fontSize: size.width * 0.045),
+                  style: TextStyle(
+                    fontSize: size.width * 0.045,
+                    fontFamily: "Roboto-Regular",
+                    color: colorScheme.onPrimary,
+                    ),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(size.width * 0.6, size.height * 0.1),
-                  backgroundColor: colorScheme.secondary,
-                  foregroundColor: colorScheme.onSecondary,
+                  backgroundColor: colorScheme.primary,
                 ),
               ),
             ],

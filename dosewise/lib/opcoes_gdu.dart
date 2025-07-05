@@ -44,8 +44,8 @@ void escolherGenero({
 
 // Carrega doenças de ficheiro .txt
 Future<List<String>> carregarDoenca() async {
-  final String listaDoencas = await rootBundle.loadString("assets/txt/doencas.txt");
-  return listaDoencas
+  final String listaDoenca = await rootBundle.loadString("assets/txt/doenca.txt");
+  return listaDoenca
       .split("\n")
       .map((e) => e.trim())
       .where((e) => e.isNotEmpty)
@@ -79,11 +79,11 @@ void escolherDoenca({
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: opcoes.map((String doencas) {
+              children: opcoes.map((String doenca) {
                 return ListTile(
-                  title: Text(doencas),
+                  title: Text(doenca),
                   onTap: () {
-                    controller.text = doencas;
+                    controller.text = doenca;
                     Navigator.pop(context);
                   },
                 );

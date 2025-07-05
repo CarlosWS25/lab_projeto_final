@@ -150,38 +150,37 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: size.width * 0.05,
+                fontFamily: "Roboto-Regular",
                 color: colorScheme.primary,
               ),
             ),
             SizedBox(height: size.height * 0.03),
+
             ElevatedButton(
               onPressed: _scanAndConnect,
               style: ElevatedButton.styleFrom(
-                minimumSize:
-                    Size(size.width * 0.6, size.height * 0.06),
-                backgroundColor: colorScheme.secondary,
-                foregroundColor: colorScheme.onSecondary,
-                textStyle: TextStyle(
-                    fontSize: size.width * 0.045),
+                minimumSize: Size(size.width * 0.6, size.height * 0.06),
+                backgroundColor: colorScheme.primary,
               ),
-              child: const Text("Escanear e conectar"),
+              child: Text("Escanear e conectar",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                color: colorScheme.onPrimary,
+                fontSize: size.width * 0.05,
+                )
+              ),
             ),
-            SizedBox(height: size.height * 0.05),
+            SizedBox(height: size.height * 0.04),
 
             if (_lastMeasurement != null) ...[
               Card(
                 color: colorScheme.secondaryContainer,
-                margin: EdgeInsets.symmetric(
-                    vertical: size.height * 0.02),
+                margin: EdgeInsets.symmetric(vertical: size.height * 0.02),
                 child: Padding(
                   padding: EdgeInsets.all(size.width * 0.04),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.opacity,
-                        size: size.width * 0.12,
-                        color: colorScheme.primary,
-                      ),
+                      Icon(Icons.opacity, size: size.width * 0.12, color: colorScheme.primary,),
                       SizedBox(height: size.height * 0.015),
                       Text(
                         "${_lastMeasurement!.concentration.toStringAsFixed(1)} mg/dL",
@@ -208,19 +207,22 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               ElevatedButton.icon(
                 onPressed: () =>
                     endAjudarConv(_lastMeasurement!.concentration),
-                icon:
-                    Icon(Icons.send, size: size.width * 0.06),
+                icon:Icon(
+                  Icons.send,
+                  size: size.width * 0.06,
+                  color: colorScheme.onPrimary
+                  ),
                 label: Text(
                   "Finalizar Ajuda",
                   style: TextStyle(
-                      fontSize: size.width * 0.045),
+                      fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
+                      color: colorScheme.onPrimary,
+                      ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      size.width * 0.6, size.height * 0.06),
+                  minimumSize: Size(size.width * 0.6, size.height * 0.06),
                   backgroundColor: colorScheme.primary,
-                  foregroundColor:
-                      colorScheme.onSecondary,
                 ),
               ),
             ] else ...[
@@ -228,27 +230,25 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                 "Aguardando última medição...",
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  color: colorScheme.primary,
+                  fontFamily: "Roboto-Regular",
                   fontSize: size.width * 0.05,
-                  color: colorScheme.secondary,
                 ),
               ),
               SizedBox(height: size.height * 0.03),
               ElevatedButton.icon(
                 onPressed: _avancarSemMedicao,
-                icon:
-                    Icon(Icons.skip_next, size: size.width * 0.06),
                 label: Text(
-                  "Avançar sem medir glicemia",
-                  textAlign: TextAlign.center,
+                  "Avançar sem \nmedir glicemia",
                   style: TextStyle(
-                      fontSize: size.width * 0.045),
+                      fontSize: size.width * 0.045,
+                      fontFamily: "Roboto-Regular",
+                      color: colorScheme.onPrimary,
+                  )
                 ),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      size.width * 0.6, size.height * 0.1),
-                  backgroundColor: colorScheme.secondary,
-                  foregroundColor:
-                      colorScheme.onSecondary,
+                  minimumSize: Size(size.width * 0.6, size.height * 0.1),
+                  backgroundColor: colorScheme.primary,
                 ),
               ),
             ],

@@ -12,8 +12,8 @@ class PageGuia extends StatelessWidget {
       backgroundColor: colorScheme.onPrimary,
       body: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.05,
-          vertical: size.height * 0.03,
+          horizontal: size.width * 0.08,
+          vertical: size.height * 0.05,
         ),
         child: ListView(
           children: [
@@ -42,7 +42,7 @@ class PageGuia extends StatelessWidget {
                   TextSpan(
                     text:
                         "\nO consumo recreativo de drogas e álcool é frequente em várias situações sociais. No entanto, é crucial conhecer limites, efeitos específicos das substâncias e os riscos associados para prevenir incidentes perigosos.\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Recomendações Gerais para um Consumo Seguro:\n",
@@ -57,7 +57,7 @@ class PageGuia extends StatelessWidget {
                         "• Evite misturar substâncias sem conhecer possíveis interações.\n"
                         "• Alimente-se e hidrate-se adequadamente antes e durante o consumo.\n"
                         "• Certifique-se de estar acompanhado por pessoas de confiança.\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Efeitos Comuns de Drogas Recreativas:\n",
@@ -73,7 +73,7 @@ class PageGuia extends StatelessWidget {
                         "• MDMA (Ecstasy): Euforia, aumento de energia e empatia, dilatação das pupilas, risco de hipertermia (temperatura corporal elevada).\n"
                         "• Cocaína: Estimulação intensa, euforia, aumento do estado de alerta, ansiedade, risco cardíaco elevado em doses altas.\n"
                         "• LSD e psicadélicos semelhantes: Alucinações visuais e auditivas, alterações profundas da perceção, possibilidade de ansiedade ou pânico.\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Sinais de Alerta em Caso de Consumo Excessivo:\n",
@@ -90,7 +90,7 @@ class PageGuia extends StatelessWidget {
                         "• Perda de consciência\n"
                         "• Respiração lenta ou irregular\n"
                         "• Pele fria e húmida\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Como Agir em Caso de Excesso:\n",
@@ -111,7 +111,7 @@ class PageGuia extends StatelessWidget {
                         "   • Não abandone a pessoa.\n"
                         "   • Mantenha-a aquecida.\n"
                         "   • Evite induzir vómitos ou fornecer bebidas estimulantes.\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Prevenção e Educação:\n",
@@ -123,7 +123,7 @@ class PageGuia extends StatelessWidget {
                   TextSpan(
                     text:
                         "\nA informação é essencial na prevenção. Converse abertamente sobre riscos, dosagens seguras e as consequências do consumo excessivo.\n\n"
-                        "───────────────────────────────\n\n",
+                        "─────────────────────────────\n\n",
                   ),
                   TextSpan(
                     text: "Conclusão:\n",
