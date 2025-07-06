@@ -1,17 +1,15 @@
 import "dart:io";
 import "package:device_info_plus/device_info_plus.dart";
+import 'package:wifi_info_flutter/wifi_info_flutter.dart';  // Corrige a importação
 
-
-const String enderecoIP_host = "192.168.1.74";
 const int porta_host = 8000;
-
 
 Future<String> _getAndroidHost() async {
   final deviceInfo = DeviceInfoPlugin();
   final androidInfo = await deviceInfo.androidInfo;
 
   if (androidInfo.isPhysicalDevice) {
-    return enderecoIP_host;
+    return await _getLocalIP();
   }
 
   final fingerprint = androidInfo.fingerprint.toLowerCase();
@@ -24,6 +22,11 @@ Future<String> _getAndroidHost() async {
   return "10.0.2.2";
 }
 
+Future<String> _getLocalIP() async {
+  final wifiInfo = WifiInfo();
+  final ipAddress = await wifiInfo.getWifiIP();
+  return ipAddress ?? "192.168.1.74"; 
+}
 
 Future<Uri> makeApiUri(String path) async {
   final host = Platform.isAndroid ? await _getAndroidHost() : "192.168.1.74";

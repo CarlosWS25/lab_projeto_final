@@ -10,6 +10,7 @@
     <!-- Permissões Localização -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <!-- Permissões Telefone -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
