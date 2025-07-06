@@ -163,8 +163,8 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
           children: [
             Text(
               isConnected 
-                ? "✅ Dispositivo conectado" 
-                : "❌ Não conectado",
+                ? "Dispositivo conectado" 
+                : "Não conectado",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: size.width * 0.05,
@@ -180,11 +180,11 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                 minimumSize: Size(size.width * 0.6, size.height * 0.06),
                 backgroundColor: colorScheme.primary,
               ),
-              child: Text("Escanear e conectar",
+              child: Text("Ler e conectar",
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 color: colorScheme.onPrimary,
-                fontSize: size.width * 0.05,
+                fontSize: size.width * 0.04,
                 )
               ),
             ),

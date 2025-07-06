@@ -145,8 +145,8 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
           children: [
             Text(
               isConnected
-                  ? "✅ Dispositivo conectado"
-                  : "❌ Dispositivo não conectado",
+                  ? "Dispositivo conectado"
+                  : "Dispositivo não conectado",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: size.width * 0.05,
@@ -162,11 +162,11 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                 minimumSize: Size(size.width * 0.6, size.height * 0.06),
                 backgroundColor: colorScheme.primary,
               ),
-              child: Text("Escanear e conectar",
+              child: Text("Ler e conectar",
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 color: colorScheme.onPrimary,
-                fontSize: size.width * 0.05,
+                fontSize: size.width * 0.04,
                 )
               ),
             ),

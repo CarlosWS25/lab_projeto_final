@@ -31,7 +31,7 @@ class ScreenWarnState extends State<ScreenWarn> {
       backgroundColor: colorScheme.onPrimary,
       body: Center(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.07),
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.08),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -44,7 +44,7 @@ As recomendações fornecidas pela aplicação são baseadas em dados e critéri
                 style: TextStyle(
                   fontFamily: "Roboto-Regular",
                   fontWeight: FontWeight.bold,
-                  fontSize: size.width * 0.04, // fonte responsiva
+                  fontSize: size.width * 0.04,
                   height: 1.5,
                   color: colorScheme.primary,
                 ),

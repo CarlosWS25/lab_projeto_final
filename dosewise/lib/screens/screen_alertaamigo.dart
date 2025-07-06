@@ -221,7 +221,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: size.height * 0.02),
+            SizedBox(height: size.height * 0.06),
 
 
 // Titulo Alerta Amigo  
