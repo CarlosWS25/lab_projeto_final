@@ -3,7 +3,7 @@ import "package:flutter/services.dart";
 import "package:flutter/material.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
-import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/opcoes_gdus.dart";
 import "package:dosewise/screens/splashscreen_recoverypass.dart";
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -242,7 +242,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
                   ),
                   SizedBox(height: size.height * 0.02),
 
-                  // Doenças prévias
+// Doenças prévias
                   TextField(
                     onTap: () => escolherDoenca(context: context, controller: doencaController, opcoes: opcoesDoenca),
                     controller: doencaController,

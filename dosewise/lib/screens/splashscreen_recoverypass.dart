@@ -12,10 +12,26 @@ class ScreenRecovery extends StatefulWidget {
 }
 
 class _ScreenRecoveryState extends State<ScreenRecovery> {
+  int tempoRestante = 20; 
+  late Timer countdown;
+  late Timer navigationTimer; 
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 10), () {
+
+
+    countdown = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (tempoRestante == 1) {
+        timer.cancel();
+      }
+      setState(() {
+        tempoRestante--;
+      });
+    });
+
+
+    navigationTimer = Timer(const Duration(seconds: 20), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -26,9 +42,16 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
   }
 
   @override
+  void dispose() {
+    countdown.cancel();
+    navigationTimer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final size = MediaQuery.of(context).size; // pega o tamanho da tela
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
@@ -41,7 +64,7 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
               style: TextStyle(
                 fontFamily: "Roboto-Regular",
                 fontWeight: FontWeight.bold,
-                fontSize: size.width * 0.08, // fonte relativa à largura
+                fontSize: size.width * 0.08,
                 color: colorScheme.primary,
               ),
             ),
@@ -62,13 +85,25 @@ class _ScreenRecoveryState extends State<ScreenRecovery> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
               child: Text(
-                "Guarde este número de recuperação\n para caso perca a sua password.",
+                "Guarde este código de recuperação\npara caso perca a sua password.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: "Roboto-Regular",
                   fontSize: size.width * 0.045,
                   color: colorScheme.primary,
                 ),
+              ),
+            ),
+
+            SizedBox(height: size.height * 0.05),
+
+            Text(
+              "A redirecionar em $tempoRestante segundos...",
+              style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                fontSize: size.width * 0.045,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.primary,
               ),
             ),
           ],

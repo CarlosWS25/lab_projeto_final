@@ -8,6 +8,7 @@ import "package:dosewise/ble/ble_manager.dart";
 import "package:dosewise/veri_device.dart";
 import "package:dosewise/screens/screen_resposta.dart";
 
+
 class ScreenEndAjuda extends StatefulWidget {
   final String uso;
   final String dose;
@@ -133,6 +134,37 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
     }
   }
 
+   void mostrarInstrucoes(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Instruções"),
+          content: const SingleChildScrollView(
+            child: Text(
+              "1º Conecte a máquina por Bluetooth ao seu telemóvel;\n\n"
+              "2º Faça a medição do nível de glicemia;\n\n"
+              "3º Clique no botão de ler e conectar e aguarde que o valor da sua glicemia apareça no ecrã "
+              "(o botão de ler e conectar deve ser clicado enquanto a máquina está no modo de emparelhamento "
+              "(símbolo de Bluetooth com traços laterais intermitentes));",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Roboto-Regular",
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Fechar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     if (_loadingProfile) {
@@ -161,6 +193,8 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: size.height * 0.08),
+
             Text(
               isConnected 
                 ? "Dispositivo conectado" 
@@ -173,6 +207,27 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
               ),
             ),
             SizedBox(height: size.height * 0.03),
+
+            /// Botão para abrir as instruções
+            ElevatedButton(
+              onPressed: () {
+                mostrarInstrucoes(context);
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(size.width * 0.6, size.height * 0.06),
+                backgroundColor: colorScheme.primary,
+              ),
+              child: Text(
+                "Ver Instruções",
+                style: TextStyle(
+                  fontFamily: "Roboto-Regular",
+                  color: colorScheme.onPrimary,
+                  fontSize: size.width * 0.04,
+                ),
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
+
 
             ElevatedButton(
               onPressed: _scanAndConnect,
@@ -242,6 +297,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                 ),
               ),
             ] else ...[
+
               Text(
                 "Aguardando última medição...",
                 textAlign: TextAlign.center,
@@ -252,6 +308,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
                 ),
               ),
               SizedBox(height: size.height * 0.03),
+
               ElevatedButton.icon(
                 onPressed: finalizarAjuda,
                 label: Text(

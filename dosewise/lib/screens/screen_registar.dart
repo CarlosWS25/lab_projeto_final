@@ -142,7 +142,17 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                     ),
                     style: TextStyle(color: colorScheme.primary),
                   ),
-                  SizedBox(height: size.height * 0.04),
+                  SizedBox(height: size.height * 0.02),
+
+                  Text(
+                    """A password deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um símbolo especial""",
+                    style: TextStyle(
+                      fontFamily: "Roboto-Regular",
+                      fontSize: size.width * 0.025,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                  SizedBox(height: size.height * 0.06),
 
 // Botão Criar Conta
                   Center(
@@ -156,7 +166,7 @@ class ScreenRegistarState extends State<ScreenRegistar> {
                           },
                           backgroundColor: colorScheme.primary,
                           label: Text(
-                            "Criar Conta",
+                            "Continuar",
                             style: TextStyle(
                               fontFamily: "Roboto-Regular",
                               color: colorScheme.onPrimary,

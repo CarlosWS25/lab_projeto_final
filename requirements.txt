@@ -3,3 +3,4 @@ uvicorn[standard]
 PyJWT
 passlib[bcrypt]
 python-jose[cryptography]
+openai

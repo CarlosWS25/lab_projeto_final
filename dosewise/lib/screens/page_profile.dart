@@ -3,7 +3,7 @@ import "package:flutter/material.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "package:http/http.dart" as http;
 import "package:dosewise/veri_device.dart";
-import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/opcoes_gdus.dart";
 
 class PageProfile extends StatefulWidget {
   const PageProfile({super.key});
@@ -28,7 +28,10 @@ class _PageProfileState extends State<PageProfile> {
   @override
   void initState() {
     super.initState();
-    fetchUserData(); // Chama a função para buscar os dados do utilizador
+    carregarDoenca().then((value) {
+      setState(() => opcoesDoenca = value);
+    });
+    fetchUserData();
   }
 
   Future<void> fetchUserData() async {
@@ -70,7 +73,9 @@ class _PageProfileState extends State<PageProfile> {
           anoController.text = "${list[3]}";
           alturaController.text = "${list[4]}";
           pesoController.text = "${list[5]}";
-          generoController.text = list[6];
+           generoController.text   = mapGenero.entries
+              .firstWhere((e) => e.value == list[6], orElse: () => const MapEntry("", ""))
+              .key;
           doencaController.text = list[7] ?? "";
           loadingMode = false;
         });
@@ -84,43 +89,71 @@ class _PageProfileState extends State<PageProfile> {
   }
 
   Future<void> updateUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString("token");
-    if (token == null) return;
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString("token");
+  if (token == null) return;
 
-    final uri = await makeApiUri("/users/me");
-    final updatedData = {
-      "username": usernameController.text,
-      "ano_nascimento": int.tryParse(anoController.text),
-      "altura_cm": int.tryParse(alturaController.text),
-      "peso": double.tryParse(pesoController.text),
-      "genero": generoController.text,
-      "doenca_pre_existente": doencaController.text,
-    };
+  // Validação robusta
+  final int? anoNascimento = int.tryParse(anoController.text);
+  final int? altura = int.tryParse(alturaController.text);
+  final double? peso = double.tryParse(pesoController.text);
 
-    try {
-      final response = await http.put(
-        uri,
-        headers: {
-          "Authorization": "Bearer $token",
-          "Content-Type": "application/json",
-        },
-        body: jsonEncode(updatedData),
-      );
-      if (response.statusCode == 200) {
-        await fetchUserData();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Dados atualizados com sucesso!")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Erro ao atualizar os dados.")),
-        );
-      }
-    } catch (e) {
-      print("Erro ao atualizar: $e");
-    }
+  if (usernameController.text.trim().isEmpty ||
+      anoNascimento == null ||
+      altura == null ||
+      peso == null ||
+      generoController.text.trim().isEmpty ||
+      doencaController.text.trim().isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Por favor, preencha todos os campos com dados válidos.")),
+    );
+    return;
   }
+
+  final uri = await makeApiUri("/users/me");
+  final updatedData = {
+    "username": usernameController.text.trim(),
+    "ano_nascimento": anoNascimento,
+    "altura_cm": altura,
+    "peso": peso,
+    "genero": mapGenero[generoController.text] ?? generoController.text,
+    "doenca_pre_existente": doencaController.text.trim(),
+  };
+
+  print("➡️ Dados enviados: ${jsonEncode(updatedData)}");
+
+  try {
+    final response = await http.put(
+      uri,
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(updatedData),
+    );
+
+    print("📡 Status Code: ${response.statusCode}");
+    print("📡 Body: ${response.body}");
+
+    if (response.statusCode == 200) {
+      await fetchUserData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Dados atualizados com sucesso!")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao atualizar os dados: ${response.body}")),
+      );
+    }
+  } catch (e) {
+    print("Erro ao atualizar: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Erro inesperado: $e")),
+    );
+  }
+}
+
+
 
   Widget _buildField(
     String label,
@@ -148,6 +181,11 @@ class _PageProfileState extends State<PageProfile> {
                   filled: true,
                   fillColor: colorScheme.secondary,
                 ),
+                style: TextStyle(
+                fontFamily: "Roboto-Regular",
+                fontSize: fontSize,
+                color: colorScheme.primary,
+              ),
               )
             : Text(
                 "   $label: $value",
@@ -246,21 +284,14 @@ class _PageProfileState extends State<PageProfile> {
                   userData!["genero"],
                   generoController,
                   fontSize: size.width * 0.045,
-                  onTap: () => escolherGenero(
-                    context: context,
-                    controller: generoController,
-                  ),
+                  onTap: () => escolherGenero(context: context, controller: generoController),
                 ),
                 _buildField(
                   "Doenças",
                   userData!["doenca_pre_existente"],
                   doencaController,
                   fontSize: size.width * 0.045,
-                  onTap: () => escolherDoenca(
-                    context: context,
-                    controller: doencaController,
-                    opcoes: opcoesDoenca,
-                  ),
+                  onTap: () => escolherDoenca(context: context, controller: doencaController, opcoes: opcoesDoenca),
                 ),
               ],
             ),

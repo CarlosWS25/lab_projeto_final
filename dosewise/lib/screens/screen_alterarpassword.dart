@@ -31,13 +31,19 @@ class ScreenAlterarPasswordState extends State<ScreenAlterarPassword> {
       );
       return;
     }
-
+    if (!RegExp(r'(?=.*[A-Z])').hasMatch(newPassword) || !RegExp(r'(?=.*[a-z])').hasMatch(newPassword) || !RegExp(r'(?=.*\d)').hasMatch(newPassword) || !RegExp(r'(?=.*[!@#$%^&*(),.?":{}|<>])').hasMatch(newPassword)) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("A password deve conter pelo menos uma letra maiúscula, uma letra minúscula, um número e um símbolo especial")),
+    );
+    return;
+    }
     if (newPassword != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('As passwords não coincidem.')),
       );
       return;
     }
+
 
     setState(() {
       _loading = true;

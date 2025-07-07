@@ -53,17 +53,17 @@ class MyApp extends StatelessWidget {
           // Tema Escuro personalizado
           darkTheme: ThemeData(
             colorScheme: const ColorScheme(
-              brightness: Brightness.dark,
-              onPrimary: Color(0xFF787878),
-              primary: Color(0xFF222222),
-              onSecondary: Color.fromARGB(255, 0, 0, 0),
-              secondary: Color.fromARGB(255, 255, 255, 255),
-              onSurface: Color.fromARGB(255, 34, 34, 34),
-              surface: Color.fromARGB(255, 120, 120, 120),
-              error: Colors.redAccent,
-              onError: Color.fromARGB(255, 34, 34, 34),
-            ),
+            brightness: Brightness.dark,
+            primary: Color(0xFF1F1F1F),          // Fundo principal - cinza escuro elegante
+            onPrimary: Color.fromARGB(255, 186, 186, 186),        // Texto sobre primary - branco suave
+            secondary: Color.fromARGB(255, 255, 255, 255),        // Cor de destaque (verde água, moderna)
+            onSecondary: Color(0xFF000000),      // Texto sobre secondary
+            surface: Color(0xFF2C2C2C),          // Fundo de cards/inputs - cinza secundário
+            onSurface: Color(0xFFE0E0E0),        // Texto sobre surface - branco suave
+            error: Color(0xFFCF6679),            // Vermelho recomendado Material Design
+            onError: Color(0xFF000000),          // Texto sobre erro
           ),
+        ),
         home: ScreenLoad(),
         );
       },

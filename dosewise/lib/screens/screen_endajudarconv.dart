@@ -1,12 +1,12 @@
-import "dart:async";
-import "dart:convert";
-import "package:flutter/material.dart";
-import "package:flutter_blue_plus/flutter_blue_plus.dart";
-import "package:http/http.dart" as http;
-import "package:shared_preferences/shared_preferences.dart";
-import "package:dosewise/ble/ble_manager.dart";
-import "package:dosewise/screens/screen_resposta.dart";
-import "package:dosewise/veri_device.dart";
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dosewise/ble/ble_manager.dart';
+import 'package:dosewise/screens/screen_resposta.dart';
+import 'package:dosewise/veri_device.dart';
 
 class ScreenEndAjudarConv extends StatefulWidget {
   final String uso;
@@ -50,8 +50,7 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
         BleManager.instance.requestLastRecord();
       }
     });
-    _glucoseSub =
-        BleManager.instance.glucoseMeasurementStream.listen((meas) {
+    _glucoseSub = BleManager.instance.glucoseMeasurementStream.listen((meas) {
       setState(() => _lastMeasurement = meas);
     });
   }
@@ -73,17 +72,14 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
 
   Future<void> endAjudarConv(double? glicemia) async {
     final double doseDouble = double.tryParse(widget.dose) ?? 0.0;
-
-    // Calcula idade a partir do ano de nascimento
     final int anoNasc = int.tryParse(widget.ano) ?? DateTime.now().year;
     final int idade = DateTime.now().year - anoNasc;
     final int alturaCm = int.tryParse(widget.altura) ?? 0;
     final double pesoKg = double.tryParse(widget.peso) ?? 0.0;
 
-    // Substitui pela tua URL real
-      final uri = await makeApiUri("/predict_overdose");
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString("token") ?? prefs.getString("auth_token");
+    final uri = await makeApiUri("/predict_overdose");
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token") ?? prefs.getString("auth_token");
 
     final Map<String, dynamic> payload = {
       "uso_suspeito": widget.uso,
@@ -102,11 +98,9 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
 
     try {
       final response = await http.post(uri, headers: {
-          "Content-Type": "application/json",
-          if (token != null) "Authorization": "Bearer $token",
-        },
-        body: bodyJson,
-      );
+        "Content-Type": "application/json",
+        if (token != null) "Authorization": "Bearer $token",
+      }, body: bodyJson);
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
@@ -116,8 +110,7 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
           ),
         );
       } else {
-        throw Exception(
-            "Erro ${response.statusCode}: ${response.body}");
+        throw Exception("Erro ${response.statusCode}: ${response.body}");
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -126,10 +119,40 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
     }
   }
 
+  /// Função para abrir a caixa de texto com as instruções
+  void mostrarInstrucoes(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Instruções"),
+          content: const SingleChildScrollView(
+            child: Text(
+              "1º Conecte a máquina por Bluetooth ao seu telemóvel;\n\n"
+              "2º Faça a medição do nível de glicemia;\n\n"
+              "3º Clique no botão de ler e conectar e aguarde que o valor da sua glicemia apareça no ecrã "
+              "(o botão de ler e conectar deve ser clicado enquanto a máquina está no modo de emparelhamento "
+              "(símbolo de Bluetooth com traços laterais intermitentes));",
+              style: TextStyle(
+                fontSize: 16,
+                fontFamily: "Roboto-Regular",
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Fechar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final isConnected =
-        _connState == BluetoothConnectionState.connected;
+    final isConnected = _connState == BluetoothConnectionState.connected;
     final colorScheme = Theme.of(context).colorScheme;
     final size = MediaQuery.of(context).size;
 
@@ -156,18 +179,39 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
             ),
             SizedBox(height: size.height * 0.03),
 
+            /// Botão para abrir as instruções
+            ElevatedButton(
+              onPressed: () {
+                mostrarInstrucoes(context);
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(size.width * 0.6, size.height * 0.06),
+                backgroundColor: colorScheme.primary,
+              ),
+              child: Text(
+                "Ver Instruções",
+                style: TextStyle(
+                  fontFamily: "Roboto-Regular",
+                  color: colorScheme.onPrimary,
+                  fontSize: size.width * 0.04,
+                ),
+              ),
+            ),
+            SizedBox(height: size.height * 0.03),
+
             ElevatedButton(
               onPressed: _scanAndConnect,
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(size.width * 0.6, size.height * 0.06),
                 backgroundColor: colorScheme.primary,
               ),
-              child: Text("Ler e conectar",
-              style: TextStyle(
-                fontFamily: "Roboto-Regular",
-                color: colorScheme.onPrimary,
-                fontSize: size.width * 0.04,
-                )
+              child: Text(
+                "Ler e conectar",
+                style: TextStyle(
+                  fontFamily: "Roboto-Regular",
+                  color: colorScheme.onPrimary,
+                  fontSize: size.width * 0.04,
+                ),
               ),
             ),
             SizedBox(height: size.height * 0.04),
@@ -180,7 +224,8 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                   padding: EdgeInsets.all(size.width * 0.04),
                   child: Column(
                     children: [
-                      Icon(Icons.opacity, size: size.width * 0.12, color: colorScheme.primary,),
+                      Icon(Icons.opacity,
+                          size: size.width * 0.12, color: colorScheme.primary),
                       SizedBox(height: size.height * 0.015),
                       Text(
                         "${_lastMeasurement!.concentration.toStringAsFixed(1)} mg/dL",
@@ -195,8 +240,7 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                         "${_lastMeasurement!.timestamp.toLocal()}",
                         style: TextStyle(
                           fontSize: size.width * 0.04,
-                          color:
-                              colorScheme.onSecondaryContainer,
+                          color: colorScheme.onSecondaryContainer,
                         ),
                       ),
                     ],
@@ -207,18 +251,15 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
               ElevatedButton.icon(
                 onPressed: () =>
                     endAjudarConv(_lastMeasurement!.concentration),
-                icon:Icon(
-                  Icons.send,
-                  size: size.width * 0.06,
-                  color: colorScheme.onPrimary
-                  ),
+                icon: Icon(Icons.send,
+                    size: size.width * 0.06, color: colorScheme.onPrimary),
                 label: Text(
                   "Finalizar Ajuda",
                   style: TextStyle(
-                      fontSize: size.width * 0.045,
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                      ),
+                    fontSize: size.width * 0.045,
+                    fontFamily: "Roboto-Regular",
+                    color: colorScheme.onPrimary,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(size.width * 0.6, size.height * 0.06),
@@ -241,10 +282,10 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
                 label: Text(
                   "Avançar sem \nmedir glicemia",
                   style: TextStyle(
-                      fontSize: size.width * 0.045,
-                      fontFamily: "Roboto-Regular",
-                      color: colorScheme.onPrimary,
-                  )
+                    fontSize: size.width * 0.045,
+                    fontFamily: "Roboto-Regular",
+                    color: colorScheme.onPrimary,
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(size.width * 0.6, size.height * 0.1),

@@ -1,6 +1,6 @@
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
-import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/opcoes_gdus.dart";
 import "package:dosewise/screens/screen_ajudarconv2.dart";
 
 class ScreenAjudarConv extends StatefulWidget {

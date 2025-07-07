@@ -78,6 +78,7 @@ flutter:
     - assets/images/button_on.png
     - assets/txt/doenca.txt
     - assets/txt/drogas.txt
+    - assets/txt/sintomas.txt
 
 
   # To add assets to your application, add an assets section, like this:

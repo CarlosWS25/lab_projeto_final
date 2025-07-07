@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/opcoes_gdus.dart";
 import "package:dosewise/screens/screen_endajuda.dart";
 
 class ScreenAjuda extends StatefulWidget {
@@ -45,6 +45,11 @@ class ScreenAjudaState extends State<ScreenAjuda> {
     carregarUso().then((value) {
       setState(() {
         opcoesUso = value;
+      });
+    });
+    carregarSintomas().then((value) {
+      setState(() {
+        opcoesSintomas = value;
       });
     });
   }
@@ -143,13 +148,15 @@ class ScreenAjudaState extends State<ScreenAjuda> {
                   ),
                   SizedBox(height: size.height * 0.02),
 
-                  // Campo dos Sintomas
+// Campo dos Sintomas
                   TextField(
+                    onTap: () => escolherSintomas(context: context, controller: sintomasController, opcoes: opcoesSintomas),
                     controller: sintomasController,
+                    readOnly: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: colorScheme.secondary,
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(),
                       hintText: "Sintomas",
                       hintStyle: TextStyle(
                         fontFamily: "Roboto-Regular",

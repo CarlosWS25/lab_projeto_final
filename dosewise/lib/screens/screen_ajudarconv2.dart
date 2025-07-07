@@ -1,6 +1,6 @@
 import "package:flutter/services.dart";
 import "package:flutter/material.dart";
-import "package:dosewise/opcoes_gdu.dart";
+import "package:dosewise/opcoes_gdus.dart";
 import 'package:dosewise/screens/screen_endajudarconv.dart';
 
 class ScreenAjudarConv2 extends StatefulWidget {
@@ -64,6 +64,11 @@ class ScreenAjudarConv2State extends State<ScreenAjudarConv2> {
         opcoesUso = value;
       });
     });
+    carregarSintomas().then((value) {
+      setState(() {
+        opcoesSintomas = value;
+      });
+    });                                          
   }
 
 
@@ -163,7 +168,9 @@ Widget build(BuildContext context) {
 
                 // Campo dos Sintomas
                 TextField(
+                  onTap: () => escolherSintomas(context: context, controller: sintomasController, opcoes: opcoesSintomas),
                   controller: sintomasController,
+                  readOnly: true,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: colorScheme.secondary,
