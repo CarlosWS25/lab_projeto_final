@@ -1,30 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:dosewise/controlador_tema.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'screens/splashscreen_load.dart';
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
+import "package:dosewise/controlador_tema.dart";
+import "screens/splashscreen_load.dart";
 
-void main() async {
-  await checkPermissions();
-  
+void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
       child: const MyApp(),
     ),
   );
-}
-
-Future<void> checkPermissions() async {
-  final status = await Permission.location.request();
-
-  if (status.isDenied) {
-    print('Permissão de localização negada!');
-  } else if (status.isPermanentlyDenied) {
-    
-    print('Permissão de localização permanentemente negada!');
-    openAppSettings();
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -49,20 +34,21 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           themeMode: themeProvider.themeMode,
 
-          // Tema Claro personalizado
-          theme: ThemeData(
-            colorScheme: const ColorScheme(
-              brightness: Brightness.light,
-              primary: Color(0xFF1B3568),
-              onPrimary: Color(0xFFA7C4E2),
-              secondary: Color.fromARGB(255, 255, 255, 255),
-              onSecondary: Color.fromARGB(255, 0, 0, 0),
-              surface: Color.fromARGB(255, 255, 255, 255),
-              onSurface: Color(0xFF1B3568),
-              error: Colors.red,
-              onError: Colors.white,
-            ),
+        // Tema Claro personalizado
+        theme: ThemeData(
+          colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: Color(0xFF1B3568),
+            onPrimary: Color(0xFFA7C4E2),
+            secondary: Color.fromARGB(255, 255, 255, 255),
+            onSecondary: Color.fromARGB(255, 0, 0, 0),
+            surface: Color.fromARGB(255, 255, 255, 255),
+            onSurface: Color(0xFF1B3568),
+            error: Colors.red,
+            onError: Colors.white,
+            
           ),
+        ),
 
           // Tema Escuro personalizado
           darkTheme: ThemeData(
@@ -78,8 +64,7 @@ class MyApp extends StatelessWidget {
               onError: Color.fromARGB(255, 34, 34, 34),
             ),
           ),
-          
-          home: ScreenLoad(),
+        home: ScreenLoad(),
         );
       },
     );
