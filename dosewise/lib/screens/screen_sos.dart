@@ -20,7 +20,7 @@ class _ScreenAlarmeState extends State<ScreenAlarme> {
       isPressed = true;
       timeNow = DateTime.now();
       fiveSecPressed = Timer(const Duration(seconds: 5), () {
-        callNumber("+351966650501");
+        callNumber("112");
         print("Botão pressionado por 5 segundos!");
       });
     });

@@ -92,7 +92,7 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
           break;
         case 409:
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("❌ Esse nome de utilizador já existe.")),
+            const SnackBar(content: Text("Esse nome de utilizador já existe.")),
           );
           break;
         case 422:
@@ -119,15 +119,6 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
     }
   }
 
-  @override
-  void dispose() {
-    anoController.dispose();
-    alturaController.dispose();
-    pesoController.dispose();
-    generoController.dispose();
-    doencaController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -291,4 +282,14 @@ class ScreenEndRegistarState extends State<ScreenEndRegistar> {
       ),
     );
   }
+  @override
+  void dispose() {
+    anoController.dispose();
+    alturaController.dispose();
+    pesoController.dispose();
+    generoController.dispose();
+    doencaController.dispose();
+    super.dispose();
+  }
 }
+

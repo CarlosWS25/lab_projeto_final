@@ -38,7 +38,7 @@ class ScreenRegistarState extends State<ScreenRegistar> {
   }
     if (password != confirmarPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("A password não coincide")),
+        const SnackBar(content: Text("As passwords não coincidem")),
       );
       return;
     }

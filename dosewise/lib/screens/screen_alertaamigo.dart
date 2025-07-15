@@ -17,8 +17,8 @@ class ScreenAlertaAmigo extends StatefulWidget {
 class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
   final TextEditingController _nameController   = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
-  final List<Friend> _friends                  = [];
-  final Location _locationService              = Location();
+  final List<Friend> _friends = [];
+  final Location _locationService = Location();
 
   @override
   void initState() {
@@ -123,7 +123,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
         );
       }
     } catch (e) {
-      print("❌ Exception POST /friends/amigos: $e");
+      print("Exception POST /friends/amigos: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Falha na requisição: $e")),
       );
@@ -156,7 +156,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
         );
       }
     } catch (e) {
-      print("❌ Exception DELETE /friends/amigos: $e");
+      print("Exception DELETE /friends/amigos: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Falha na requisição: $e")),
       );
@@ -221,7 +221,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: size.height * 0.06),
+            SizedBox(height: size.height * 0.02),
 
 
 // Titulo Alerta Amigo  

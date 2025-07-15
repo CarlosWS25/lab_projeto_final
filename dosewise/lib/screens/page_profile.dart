@@ -120,7 +120,7 @@ class _PageProfileState extends State<PageProfile> {
     "doenca_pre_existente": doencaController.text.trim(),
   };
 
-  print("➡️ Dados enviados: ${jsonEncode(updatedData)}");
+  print("Dados enviados: ${jsonEncode(updatedData)}");
 
   try {
     final response = await http.put(
@@ -132,8 +132,8 @@ class _PageProfileState extends State<PageProfile> {
       body: jsonEncode(updatedData),
     );
 
-    print("📡 Status Code: ${response.statusCode}");
-    print("📡 Body: ${response.body}");
+    print("Status Code: ${response.statusCode}");
+    print("Body: ${response.body}");
 
     if (response.statusCode == 200) {
       await fetchUserData();

@@ -18,52 +18,73 @@ class ScreenLoginState extends State<ScreenLogin> {
   final TextEditingController passwordController = TextEditingController();
 
   Future<void> fazerLogin() async {
-    final username = usernameController.text.trim();
-    final password = passwordController.text.trim();
+  final username = usernameController.text.trim();
+  final password = passwordController.text.trim();
 
-    if (username.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Preencha todos os campos.")),
-      );
-      return;
-    }
+  if (username.isEmpty || password.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Preencha todos os campos.")),
+    );
+    return;
+  }
 
-    final uri = await makeApiUri("/login");
+  final uri = await makeApiUri("/login");
 
-    try {
-      final response = await http.post(
-        uri,
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "username": username,
-          "password": password,
-        }),
-      );
+  try {
+    final response = await http.post(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "username": username,
+        "password": password,
+      }),
+    );
 
-      if (response.statusCode == 200) {
+    switch (response.statusCode) {
+      case 200:
         final body = jsonDecode(response.body);
         final token = body["access_token"];
 
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("token", token);
-        print("Token guardado: $token");
+        debugPrint("Token guardado: $token");
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Login bem-sucedido!")),
+          const SnackBar(content: Text("Login bem‑sucedido!")),
         );
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
-      } else {
+        break;
+
+      case 401:
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Falha no login: ${response.statusCode}")),
+          const SnackBar(content: Text("Usuário ou senha inválidos. Verifique suas credenciais."),
+          ),
         );
-      }
-    } catch (e) {
-      print("Erro na requisição: $e");
+        break;
+
+      case 500:
+        debugPrint("SERVER ERROR 500: ${response.body}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Erro interno do servidor. Tente mais tarde.")),
+        );
+        break;
+
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Falha no login: código ${response.statusCode}")),
+        );
     }
+  } catch (e) {
+    debugPrint("Erro na requisição: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Erro de conexão. Verifique sua ligação ao servidor.")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

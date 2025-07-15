@@ -102,7 +102,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
     };
 
     final bodyJson = jsonEncode(payload);
-    print("➡️ JSON a ser enviado: $bodyJson");
+    print("JSON a ser enviado: $bodyJson");
 
     try {
       final response = await http.post(uri, headers: {
@@ -122,7 +122,7 @@ class ScreenEndAjudaState extends State<ScreenEndAjuda> {
           ),
         );
       } else {
-        print("◀️ Erro ${response.statusCode}: ${response.body}");
+        print("Erro ${response.statusCode}: ${response.body}");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Erro ao adicionar os seus dados: ${response.statusCode}")),
         );

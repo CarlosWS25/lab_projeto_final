@@ -94,7 +94,7 @@ class ScreenEndAjudarConvState extends State<ScreenEndAjudarConv> {
     };
 
     final bodyJson = jsonEncode(payload);
-    print("➡️ JSON a ser enviado: $bodyJson");
+    print("JSON a ser enviado: $bodyJson");
 
     try {
       final response = await http.post(uri, headers: {
