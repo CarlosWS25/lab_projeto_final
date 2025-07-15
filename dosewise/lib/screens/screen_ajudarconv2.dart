@@ -201,7 +201,7 @@ Widget build(BuildContext context) {
                           },
                           backgroundColor: colorScheme.primary,
                           label: Text(
-                            "Continuar Registo",
+                            "Continuar",
                             style: TextStyle(
                               fontFamily: "Roboto-Regular",
                               color: colorScheme.onPrimary,

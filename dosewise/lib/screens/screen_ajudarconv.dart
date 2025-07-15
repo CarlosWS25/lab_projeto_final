@@ -232,7 +232,7 @@ List<String> opcoesdoenca_pre_existente = [];
                           },
                           backgroundColor: colorScheme.primary,
                           label: Text(
-                            "Iniciar Registo",
+                            "Continuar",
                             style: TextStyle(
                               fontFamily: "Roboto-Regular",
                               color: colorScheme.onPrimary,
