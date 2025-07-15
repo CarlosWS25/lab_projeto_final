@@ -226,7 +226,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
 
 // Titulo Alerta Amigo  
             Text(
-              "Alerta Amigo",
+              "Alerta Amigos",
               style: TextStyle(
                 fontSize: size.width * 0.08,
                 color:   colorScheme.primary,
@@ -340,7 +340,7 @@ class ScreenAlertaAmigoState extends State<ScreenAlertaAmigo> {
                         onPressed: _friends.isEmpty ? null : _alertarAmigos,
                         backgroundColor: colorScheme.primary,
                         child: Text(
-                          "Alertar\nAmigo",
+                          "Alertar\nAmigos",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: size.width * 0.05,
