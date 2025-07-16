@@ -1,6 +1,6 @@
-fastapi
-uvicorn[standard]
-PyJWT
-passlib[bcrypt]
-python-jose[cryptography]
-openai
+fastapi==0.115.12
+fastapi-cli==0.0.7
+openai==0.28.0
+passlib==1.7.4
+python-jose==3.4.0
+uvicorn==0.34.2
