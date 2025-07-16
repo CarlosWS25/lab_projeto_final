@@ -124,7 +124,7 @@ class PageMainMenu extends StatelessWidget {
                     },
                     backgroundColor: colorScheme.primary,
                     label: Text(
-                      "Alertar Amigo",
+                      "Alerta Amigos",
                       style: TextStyle(
                         fontFamily: "Roboto-Regular",
                         color: colorScheme.onPrimary,
