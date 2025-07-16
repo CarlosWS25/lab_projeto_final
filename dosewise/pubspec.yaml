@@ -56,10 +56,9 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
   flutter_launcher_icons: ^0.10.0
 
-  flutter_icons:
+flutter_launcher_icons:
   android: true
   image_path: "assets/icon/logo_dosewise.png"
   
